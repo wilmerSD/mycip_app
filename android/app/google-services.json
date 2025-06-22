@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "471763509371",
+    "project_id": "backendcip-874bf",
+    "storage_bucket": "backendcip-874bf.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:471763509371:android:e32aeb3118e518cb4842de",
+        "android_client_info": {
+          "package_name": "com.example.cip_payment_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnAaXiNAzpZoSPlE5SK51mbWQkJ3moqbk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
