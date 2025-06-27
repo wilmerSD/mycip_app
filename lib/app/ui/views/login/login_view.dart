@@ -59,10 +59,11 @@ class LoginView extends StatelessWidget {
       textEditingController: loginController.ctrlEmail,
     );
     Widget button = BtnPrimaryInk(
-      text: "Ingresar",
+      loading: loginController.isAuthenticating,
+      text: loginController.isAuthenticating ? 'Ingresando' : 'Ingresar',
       onTap: () {
         // loginController. getLogin(context); 
-        loginController.goToHome(context);
+        loginController.authentication(context);
       },
       /*onTap: () =>  controller.validateForm(context) */
     );

@@ -105,7 +105,10 @@ class MyprofileView extends StatelessWidget {
         context,
         CircleAvatar(
           backgroundColor: AppColors.red,
-          child: Icon(Bootstrap.file_person, color: Colors.white,),
+          child: Icon(
+            Bootstrap.file_person,
+            color: Colors.white,
+          ),
         ),
         'Contacto',
         () {},
@@ -122,7 +125,7 @@ class MyprofileView extends StatelessWidget {
         Icons.arrow_right);
     Widget changePassword = _customContainer(
         context,
-        CircleAvatar(
+        const CircleAvatar(
           backgroundColor: AppColors.red,
           child: Icon(Bootstrap.lock, color: Colors.white),
         ),
@@ -131,30 +134,22 @@ class MyprofileView extends StatelessWidget {
         Icons.arrow_right);
     Widget closeSesion = _customContainer(
         context, const Icon(Bootstrap.door_open), "Cerrar Sesión", () {
-      if (whatPlatformIs ?? false) {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return CupertinoAlertDialogComp(
-              tittle: '¿Seguro que quieres salir de tasking?s',
-              onTapButton: () => Helpers.goToLoginRemoveUntil(context),
-            );
-          },
-        );
-         
-      } else {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialogComponent(
-                onTapButton: () => {
-                      // Provider.of<HomeController>(context, listen: false).onClose(),
-                      Helpers.goToLoginRemoveUntil(context)
-                    },
-                title: "¿Seguro que quieres salir de tasking?");
-          },
-        );
-      }
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return whatPlatformIs
+              ? CupertinoAlertDialogComp(
+                  tittle: '¿Seguro que quieres salir de MiCip?',
+                  onTapButton: () => Helpers.goToLoginRemoveUntil(context),
+                )
+              : AlertDialogComponent(
+                  onTapButton: () => {
+                        // Provider.of<HomeController>(context, listen: false).onClose(),
+                        Helpers.goToLoginRemoveUntil(context)
+                      },
+                  title: "¿Seguro que quieres salir de MiCip?");
+        },
+      );
     }, Icons.arrow_forward_ios);
 
     Widget helpWidget = _customContainer(
@@ -187,7 +182,10 @@ class MyprofileView extends StatelessWidget {
               Column(
                 spacing: 10.0,
                 children: [
-                  Text('Jose Guevara Martinez', style: AppTextStyle(context).bold15(),),
+                  Text(
+                    'Jose Guevara Martinez',
+                    style: AppTextStyle(context).bold15(),
+                  ),
                   personalData,
                   personalContact,
                   personalColegiatura,

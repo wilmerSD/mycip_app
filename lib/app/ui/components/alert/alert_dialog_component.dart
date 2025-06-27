@@ -2,7 +2,6 @@ import 'package:cip_payment_app/core/helpers/constant.dart';
 import 'package:cip_payment_app/core/theme/app_colors.dart';
 import 'package:cip_payment_app/core/theme/app_text_style.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AlertDialogComponent extends StatelessWidget {
   const AlertDialogComponent({
@@ -85,7 +84,7 @@ class AlertDialogComponent extends StatelessWidget {
                             )
                           : Container(),
                       (title != null)
-                          ? SizedBox(height: 10.h)
+                          ? const SizedBox(height: 10.0)
                           : const SizedBox(),
                       Text(
                         content,
@@ -101,32 +100,35 @@ class AlertDialogComponent extends StatelessWidget {
         actions: [
           (isOnlyPrimary)
               ? const SizedBox()
-              : MaterialButton(
-                  onPressed: (onTapButtonSecondary != null)
-                      ? onTapButtonSecondary
-                      : () => Navigator.of(context).pop(),
-                  elevation: 0.0,
-                  height: 40.0,
-                  shape: RoundedRectangleBorder(
-                    side: BorderSide(color: AppColors.primaryConst),
-                    borderRadius: BorderRadius.circular(kRadiusSmall.r),
-                  ),
-                  child: Text(
-                    textSecondaryButton!,
-                    style: AppTextStyle(context).medium12(
-                      color: AppColors.primaryConst,
+              : SizedBox(
+                height: 39.0,
+                child: MaterialButton(
+                    onPressed: (onTapButtonSecondary != null)
+                        ? onTapButtonSecondary
+                        : () => Navigator.of(context).pop(),
+                    elevation: 0.0,
+                    height: 40.0,
+                    shape: RoundedRectangleBorder(
+                      side: const BorderSide(color: AppColors.primaryConst),
+                      borderRadius: BorderRadius.circular(kRadiusSmall),
+                    ),
+                    child: Text(
+                      textSecondaryButton!,
+                      style: AppTextStyle(context).medium12(
+                        color: AppColors.primaryConst,
+                      ),
                     ),
                   ),
-                ),
+              ),
           Container(
-            height: kSizeExtraMediun.h,
+            height: kSizeExtraMediun,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(kRadiusSmall.r),
+                borderRadius: BorderRadius.circular(kRadiusSmall),
                 gradient: (isPrimaryButton)
                     ? LinearGradient(
                         colors: [
                           AppColors
-                              .degradedStart, // Color de inicio del degradado
+                              .primaryConst, // Color de inicio del degradado
                           Colors.red, //Coor final del degradado
                         ],
                         begin: Alignment.centerLeft,
