@@ -107,7 +107,7 @@ class HomeView extends StatelessWidget {
                                       Bootstrap.cash_stack,
                                       context,
                                       const Color.fromRGBO(227, 30, 36, .5),
-                                      const Color.fromRGBO(227, 30, 36, 1),(){homeController.goToMonthlyFees(context);}),
+                                      const Color.fromRGBO(227, 30, 36, 1),(){homeController.goToAdvancePayment(context);}),
                                 ],
                               )
                             ],

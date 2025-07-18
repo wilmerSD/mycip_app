@@ -25,7 +25,7 @@ class PopupGeneral extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      // backgroundColor: AppColors.backgroundColor(context),
+      backgroundColor: AppColors.backgroundColor(context),
        insetPadding: const EdgeInsets.symmetric(horizontal: 20.0),
       contentPadding: const EdgeInsets.symmetric(horizontal: 10.0),
       scrollable: scrollable,

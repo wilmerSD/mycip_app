@@ -16,7 +16,7 @@ class LoginController with ChangeNotifier {
   TextEditingController ctrlEmail2 =
       TextEditingController(text: 'software@ciplambayeque.com');
 
-  bool _isVisibleIcon = false;
+  bool _isVisibleIcon = true;
   bool _rememberPass = false;
   bool _isAuthenticating = false;
 
@@ -50,7 +50,8 @@ class LoginController with ChangeNotifier {
           context,
           title: 'Validar',
           message: 'Usuario o contraseña incorrecta',
-          color: AppColors.warningColor,
+          type: 2,
+          time: 2,
         );
         return;
     }

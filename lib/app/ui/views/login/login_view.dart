@@ -3,6 +3,7 @@ import 'package:cip_payment_app/app/ui/components/btn_primary_ink.dart';
 import 'package:cip_payment_app/app/ui/components/field_form.dart';
 import 'package:cip_payment_app/app/ui/views/home/home_controller.dart';
 import 'package:cip_payment_app/app/ui/views/login/login_controller.dart';
+import 'package:cip_payment_app/app/ui/views/login/logo.dart';
 import 'package:cip_payment_app/core/helpers/navigator_view.dart';
 import 'package:cip_payment_app/core/theme/app_colors.dart';
 import 'package:cip_payment_app/core/theme/app_text_style.dart';
@@ -19,16 +20,6 @@ class LoginView extends StatelessWidget {
     final generalConditions =
         '* La afiliación otorgará una contraseña única e intransferible, la misma que será utilizada por el Cliente para realizar cualquiera de los Servicios desde cualquier dispositivo. La contraseña será requerida cada vez que el Cliente desee realizar el servicio de pago desde el aplicativo móvil\n* El acceso al aplicativo móvil implica el consumo de datos, los mismos que serán consumidos de tu plan de datos contratado, salvo que te encuentres en una conexión WIFI.\n* Si te encuentras en el extranjero y utilizas el aplicativo, estarás realizando consumo de datos de tu plan de datos contratado por lo que se te aplicarán costos de transmisión de datos en Roaming de acuerdo a las tarifas vigentes, te recomendamos utilizar una conexión WIFI para evitar costos adicionales.';
     final legalConditions = 'EL COLEGIO DE INGENIEROS DEL PERU CONSEJO DEPARTAMENTAL DE LAMBAYEQUE (CIP – CD LAMBAYEQUE) garantiza la seguridad y confidencialidad en el tratamiento de los datos de carácter personal facilitados por sus Clientes, de conformidad con la legislación peruana.\n';
-    Widget imageLogo = Container(
-      width: 100.0,
-      height: 100.0,
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage('assets/LOGO_CIP.png'), // Reemplaza con tu imagen
-          fit: BoxFit.cover,
-        ),
-      ),
-    );
 
     Widget password = FieldForm(
       label: "Contraseña",
@@ -72,21 +63,14 @@ class LoginView extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Text('¿Olvidaste tu contraseña?',
-            style: TextStyle(
-                color: AppColors.grayMiddle,
-                fontWeight: FontWeight.w700,
-                fontSize: 13.0)),
+         Text('¿Olvidaste tu contraseña?',
+            style: AppTextStyle(context).bold13(color: AppColors.quaternaryConst, fontWeight: FontWeight.w500 )),
         InkWell(
             onTap: () {
               NavigatorView.goToRecoverPass(context);
             },
-            child: const Text(' Recuperar aquí',
-                // textScaler: TextScaler.linear(0.2),
-                style: TextStyle(
-                    color: AppColors.primaryConst,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 13.0))),
+            child: Text(' Recuperar aquí',
+                style: AppTextStyle(context).bold13(color: AppColors.primaryConst )),)
       ],
     );
     
@@ -166,31 +150,26 @@ class LoginView extends StatelessWidget {
         child: RichText(
           text: TextSpan(
             children: [
-              const TextSpan(
+              TextSpan(
                 text: 'Al continuar, aceptas nuestros ',
-                style: TextStyle(color: Colors.black, fontSize: 14),
+               style: AppTextStyle(context).bold10(color: AppColors.quaternaryConst),
               ),
               TextSpan(
                 text: 'Términos y Condiciones',
-                style: AppTextStyle(context).bold14(color: AppColors.primaryConst),
+                style: AppTextStyle(context).bold10(color: AppColors.granateConst),
               ),
             ],
           ),
         ));
 
-    Widget tittle = const Text('MiCIP',
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          fontSize: 24.0,
-          fontWeight: FontWeight.bold,
-          color: AppColors.primaryConst,
-        ));
-
     Widget rememberPass = InkWell(
       onTap: () => loginController.rememberPass = !loginController.rememberPass,
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Checkbox(
+            side: const BorderSide(color: AppColors.quaternaryConst),
               activeColor: AppColors.primaryConst,
               value: loginController.rememberPass,
               onChanged: (_) {
@@ -199,48 +178,62 @@ class LoginView extends StatelessWidget {
           Text(
             "Recordar datos",
             style: AppTextStyle(context)
-                .bold14(color: Colors.black, fontWeight: FontWeight.normal),
+                .bold14(color: AppColors.quaternaryConst, fontWeight: FontWeight.normal),
           )
         ],
       ),
     );
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+      backgroundColor: AppColors.backgroundColor(context),
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Center(
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 30.0),
-              width: 400.0,
-              // height: 630.0,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(8.0),
-                boxShadow: [
-                    BoxShadow(
-                      color: const Color.fromRGBO(0, 0, 0, 0.07),
-                      spreadRadius: 1,
-                      blurRadius: 5,
-                      offset: Offset(0, 1), // changes position of shadow
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Spacer(),
+                Center(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 40.0),
+                    width: 400.0,
+                    //  height: 630.0,
+                    decoration: BoxDecoration(
+                      color: AppColors.backgroundColor(context),
+                      borderRadius: BorderRadius.circular(8.0),
+                      boxShadow: [
+                          BoxShadow(
+                            color: const Color.fromRGBO(0, 0, 0, 0.08),
+                            spreadRadius: 1,
+                            blurRadius: 5,
+                            offset: Offset(0, 1), // changes position of shadow
+                          ),
+                        ],
                     ),
-                  ],
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                spacing: 20.0,
-                children: [
-                  imageLogo,
-                  tittle,
-                  user,
-                  password,
-                  rememberPass,
-                  forgotPassword,
-                  button,
-                  termsAndCoditions
-                ],
-              ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Center(child: Logo()),
+                        const SizedBox(height: 30.0,),
+                        user,
+                        const SizedBox(height: 30.0,),
+                        password,
+                        const SizedBox(height: 15.0,),
+                        rememberPass,
+                        const SizedBox(height: 15.0,),
+                        button,
+                        const SizedBox(height: 30.0,),
+                        Center(child: forgotPassword)
+                      ],
+                    ),
+                  ),
+                ),
+                Spacer(),
+                termsAndCoditions
+              ],
             ),
           ),
         ),

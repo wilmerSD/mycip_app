@@ -20,7 +20,8 @@ class MyprofileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final myprofilecontroller = Provider.of<MyprofileController>(context);
+    final myprofileController =
+        Provider.of<MyprofileController>(context, listen: false);
     // final loginController = Provider.of<LoginController>(context);
     // final splashController = Provider.of<SplashController>(context);
     bool whatPlatformIs = false;
@@ -41,17 +42,17 @@ class MyprofileView extends StatelessWidget {
             children: [
               CircleAvatar(
                   radius: 80,
-                  backgroundImage: myprofilecontroller.profileImage != null
-                      ? FileImage(myprofilecontroller.profileImage!)
+                  backgroundImage: myprofileController.profileImage != null
+                      ? FileImage(myprofileController.profileImage!)
                       : null,
-                  child: myprofilecontroller.profileImage != null
+                  child: myprofileController.profileImage != null
                       ? const SizedBox()
                       : const Icon(Icons.person, size: 80)),
               Positioned(
                   bottom: 0,
                   right: 0,
                   child: InkWell(
-                    onTap: () => myprofilecontroller.pickImageFromGallery(),
+                    onTap: () => myprofileController.pickImageFromGallery(),
                     child: const Icon(
                       Iconsax.edit_outline,
                     ),
@@ -98,9 +99,9 @@ class MyprofileView extends StatelessWidget {
           backgroundColor: AppColors.red,
           child: Icon(Bootstrap.person, color: Colors.white),
         ),
-        'Datos personales',
-        () {},
-        Icons.arrow_right);
+        'Datos personales', () {
+      myprofileController.goToPersonalData(context);
+    }, Icons.arrow_right);
     Widget personalContact = _customContainer(
         context,
         CircleAvatar(
@@ -111,7 +112,7 @@ class MyprofileView extends StatelessWidget {
           ),
         ),
         'Contacto',
-        () {},
+        () {myprofileController.goToPersonalContact(context);},
         Icons.arrow_right);
 
     Widget personalColegiatura = _customContainer(
@@ -121,7 +122,7 @@ class MyprofileView extends StatelessWidget {
           child: Icon(Bootstrap.award, color: Colors.white),
         ),
         'Colegiatura',
-        () {},
+        () {myprofileController.goToPersonalCollege(context);},
         Icons.arrow_right);
     Widget changePassword = _customContainer(
         context,
@@ -129,9 +130,9 @@ class MyprofileView extends StatelessWidget {
           backgroundColor: AppColors.red,
           child: Icon(Bootstrap.lock, color: Colors.white),
         ),
-        'Cambiar contraseña',
-        () {},
-        Icons.arrow_right);
+        'Cambiar contraseña', () {
+      myprofileController.goToResetPass(context);
+    }, Icons.arrow_right);
     Widget closeSesion = _customContainer(
         context, const Icon(Bootstrap.door_open), "Cerrar Sesión", () {
       showDialog(
@@ -179,13 +180,12 @@ class MyprofileView extends StatelessWidget {
                   ],
                 ),
               ),
+              const SizedBox(
+                height: 25.0,
+              ),
               Column(
-                spacing: 10.0,
+                spacing: 12.0,
                 children: [
-                  Text(
-                    'Jose Guevara Martinez',
-                    style: AppTextStyle(context).bold15(),
-                  ),
                   personalData,
                   personalContact,
                   personalColegiatura,
@@ -194,6 +194,7 @@ class MyprofileView extends StatelessWidget {
                   closeSesion
                 ],
               ),
+              // const SizedBox(height: 25.0,)
             ],
           ),
         ));

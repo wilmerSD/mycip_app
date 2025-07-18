@@ -10,8 +10,14 @@ class AppColors {
   }
   static Color primary(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark
-        ? const Color.fromRGBO(108, 14, 16, 1) //dark
-        : const Color.fromRGBO(108, 14, 16, 1); //light
+        ? const Color.fromRGBO(227, 30, 36, 1) //dark
+        : const Color.fromRGBO(227, 30, 36, 1); //light
+  }
+
+  static Color secondary(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark
+        ? const Color.fromRGBO(215, 181, 109, 1) //dark
+        : const Color.fromRGBO(215, 181, 109, 1); //light
   }
 
   static Color textBasic(BuildContext context) {
@@ -20,7 +26,18 @@ class AppColors {
         : const Color.fromARGB(255, 0, 0, 0); //light
   }
 
+  static Color textQuaternaryBasic(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark
+        ? const Color.fromRGBO(109, 108, 108, 1) //dark
+        : const Color.fromRGBO(109, 108, 108, 1); //light
+  } 
+
   static const Color primaryConst = Color.fromRGBO(227, 30, 36, 1);
+  static const Color secondConst = Color.fromRGBO(215, 181, 109, 1);
+  static const Color thirdConst = Color.fromRGBO(42, 42, 41, 1);
+  static const Color quaternaryConst = Color.fromRGBO(109, 108, 108, 1);
+  static const Color granateConst = Color.fromRGBO(108, 14, 16, 1);
+  
   static const Color warningColor = Color.fromRGBO(242, 140, 3, 1.0);
   static const Color red = Color.fromRGBO(231, 44, 49, 1.0);
   static const Color orange = Color.fromRGBO(242, 140, 3, 1.0);

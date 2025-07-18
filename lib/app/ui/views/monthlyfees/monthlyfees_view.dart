@@ -1,96 +1,78 @@
-import 'package:cip_payment_app/app/ui/components/btn_primary_ink.dart';
+import 'dart:io';
+import 'package:cip_payment_app/app/ui/components/custom_tab_switch.dart';
+import 'package:cip_payment_app/app/ui/views/monthlyfees/monthlyfees_controller.dart';
+import 'package:cip_payment_app/app/ui/views/monthlyfees/widgets/monthlyfees_history.dart';
+import 'package:cip_payment_app/app/ui/views/monthlyfees/widgets/monthlyfees_pay.dart';
 import 'package:cip_payment_app/core/theme/app_colors.dart';
 import 'package:cip_payment_app/core/theme/app_text_style.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:icons_plus/icons_plus.dart';
+import 'package:provider/provider.dart';
 
 class MonthlyfeesView extends StatelessWidget {
-  const MonthlyfeesView({Key? key}) : super(key: key);
+  const MonthlyfeesView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final monthlyfeesController = Provider.of<MonthlyfeesController>(context);
+    bool isIos = false;
+    if (!kIsWeb) {
+      isIos = Platform.isIOS;
+    }
     return Scaffold(
+      backgroundColor: AppColors.backgroundColor(context),
       appBar: AppBar(
-        title: Text('Cuotas mensuales'),
+        backgroundColor: AppColors.backgroundColor(context),
+        title: const Text('Cuotas mensuales'),
       ),
       body: Column(
+        mainAxisSize: MainAxisSize.max,
         spacing: 10.0,
         children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 15),
-            child: Row(
-              children: [
-                Checkbox(value: false, onChanged: (bool? value) {}),
-                Text('Seleccionar todo'),
+          Align(  
+              alignment: Alignment.centerRight,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                width: 260.0,
+                height: 40.0,
+                decoration: const BoxDecoration(
+                  color: AppColors.secondConst,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(50),
+                        bottomLeft: Radius.circular(50.0))
+                    ),
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  // mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text('Afiliate a pago automático',style: AppTextStyle(context).bold14(color: Colors.white), ),
+                    const Icon(Bootstrap.box_arrow_up_right, color: Colors.white,)
+                  ],
+                ),
+              )
+              ),
+              
+              ),
+          const SizedBox(),
+          CustomTabSwitch(
+            tabs: const ['Pagar', 'Historial'],
+            initialIndex: monthlyfeesController.selectedIndex,
+            onChanged: monthlyfeesController.selectTab,
+          ),
+          Expanded(
+            child: PageView(
+              controller: monthlyfeesController.pageController,
+              onPageChanged: monthlyfeesController.onPageChanged,
+              children: const [
+                MonthlyfeesPay(),
+                MonthlyfeesHistory(),
               ],
             ),
           ),
-          _customContainer(
-              context,
-              Checkbox(value: true, onChanged: (value) {}),
-              'Cuota ordinaria',
-              () {},
-              'Abril 2025'),
-          _customContainer(
-              context,
-              Checkbox(value: false, onChanged: (value) {}),
-              'Cuota ordinaria',
-              () {},
-              'Mayo 2025'),
-          _customContainer(
-              context,
-              Checkbox(value: false, onChanged: (value) {}),
-              'Cuota ordinaria',
-              () {},
-              'Junio 2025'),
-          Spacer(),
-          
-          Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15),
-              child: BtnPrimaryInk(text: 'Pagar S/ 0.0')),
-          Text('Ver historial de pagos'),
-          SizedBox(
-            height: 20.0,
-          ),
-          
         ],
       ),
     );
   }
-}
-
-Widget _customContainer(BuildContext context, Widget icon, String text,
-    VoidCallback ontap, String textSecond) {
-  return InkWell(
-    onTap: ontap,
-    borderRadius: BorderRadius.circular(10.0),
-    child: Container(
-      height: 50.0,
-      padding: const EdgeInsets.symmetric(
-        horizontal: 15.0, /*  vertical: 20.0 */
-      ),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10.0),
-          color: const Color.fromARGB(92, 249, 249, 250),
-          border: Border.all(color: const Color.fromRGBO(232, 242, 250, 1))),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            spacing: 10.0,
-            children: [
-              icon,
-              Text(
-                text,
-                style: AppTextStyle(context).bold16(
-                    // fontWeight: FontWeight.w500,
-                    color: AppColors.textBasic(context)),
-              ),
-            ],
-          ),
-          Text(textSecond),
-        ],
-      ),
-    ),
-  );
 }

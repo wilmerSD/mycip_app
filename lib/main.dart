@@ -1,9 +1,12 @@
+import 'package:cip_payment_app/app/ui/views/advancepayment/advancepayment_controller.dart';
 import 'package:cip_payment_app/app/ui/views/certificateskill/certificateskill_controller.dart';
 import 'package:cip_payment_app/app/ui/views/home/home_controller.dart';
+import 'package:cip_payment_app/app/ui/views/iepi/iepi_controller.dart';
 import 'package:cip_payment_app/app/ui/views/login/login_controller.dart';
 import 'package:cip_payment_app/app/ui/views/login/login_view.dart';
 import 'package:cip_payment_app/app/ui/views/monthlyfees/monthlyfees_controller.dart';
 import 'package:cip_payment_app/app/ui/views/myprofile/myprofile_controller.dart';
+import 'package:cip_payment_app/app/ui/views/recoverpass/recoverpass_controller.dart';
 import 'package:cip_payment_app/app/ui/views/splash/splash_controller.dart';
 import 'package:cip_payment_app/app/ui/views/splash/splash_view.dart';
 import 'package:cip_payment_app/core/config/theme_app.dart';
@@ -35,6 +38,10 @@ void main() async{
         ChangeNotifierProvider(create: (_) => MyprofileController()),
         ChangeNotifierProvider(create: (_) => MonthlyfeesController()),
         ChangeNotifierProvider(create: (_) => CertificateSkillController()),
+        ChangeNotifierProvider(create: (_) => RecoverPassController()),
+        ChangeNotifierProvider(create: (_) => IepiController()),
+        ChangeNotifierProvider(create: (_) => AdvancepaymentController()),
+        
         
         ChangeNotifierProvider(
             create: (_) =>
@@ -74,6 +81,6 @@ class MyApp extends StatelessWidget {
                                 .themeDark)
                     .getTheme(),
                 routes: AppRoutes.routes,
-                home: const LoginView()));
+                home: const SplashView()));
   }
 }

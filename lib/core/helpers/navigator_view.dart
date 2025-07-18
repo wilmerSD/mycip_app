@@ -13,6 +13,11 @@ class NavigatorView {
   static void goToLogin(BuildContext context) {
     Navigator.pushNamed(context, AppRoutesName.LOGIN);
   }
+
+  static void goToIepi(BuildContext context) {
+    Navigator.pushNamed(context, AppRoutesName.IEPI);
+  }
+
   static void goToHomeRemoveUntil(BuildContext context) {
     Navigator.pushNamedAndRemoveUntil(
       context,

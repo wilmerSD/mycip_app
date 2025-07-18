@@ -20,6 +20,7 @@ class BtnSecondary extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 45.0,
+      padding: const EdgeInsets.symmetric(horizontal: 10.0),
       decoration: BoxDecoration(
           color: Colors.transparent,
           borderRadius: BorderRadius.circular(kRadiusSmall.r),
@@ -32,7 +33,7 @@ class BtnSecondary extends StatelessWidget {
           onTap: onTap,
           child: Center(
             child: Text(text,
-                style: AppTextStyle(context).bold18(color: AppColors.primaryConst)),
+                style: AppTextStyle(context).bold17(color: AppColors.primaryConst), overflow: TextOverflow.ellipsis,),
           ),
         ),
       ),

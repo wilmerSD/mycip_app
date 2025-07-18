@@ -42,6 +42,7 @@ class FieldForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
+    
       enableSuggestions: true,
       inputFormatters: inputFormats,
       autofocus: autofocus ?? false,

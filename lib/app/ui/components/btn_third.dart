@@ -1,10 +1,9 @@
-import 'package:cip_payment_app/core/helpers/constant.dart';
 import 'package:cip_payment_app/core/theme/app_colors.dart';
 import 'package:cip_payment_app/core/theme/app_text_style.dart';
 import 'package:flutter/material.dart';
 
-class BtnPrimaryInk extends StatelessWidget {
-  const BtnPrimaryInk({
+class BtnThird extends StatelessWidget {
+  const BtnThird({
     super.key,
     required this.text,
     this.loading = false,
@@ -22,11 +21,11 @@ class BtnPrimaryInk extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 60.0,
+      height: 46.5,
       margin: margin,
       decoration: BoxDecoration(
         gradient: AppColors.primaryGradient,
-        borderRadius: BorderRadius.circular(kRadiusMedium),
+        borderRadius: BorderRadius.circular(10.0),
         boxShadow: showBoxShadow
             ? [
                 BoxShadow(
@@ -50,7 +49,7 @@ class BtnPrimaryInk extends StatelessWidget {
                   textScaleFactor: 1,
                   text,
                   style: AppTextStyle(context)
-                      .bold18(color: AppColors.backgroundColor(context)),
+                      .bold17(color: AppColors.backgroundColor(context)),
                 ),
                 loading
                     ? const Row(

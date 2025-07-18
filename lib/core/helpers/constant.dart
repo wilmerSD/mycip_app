@@ -52,6 +52,7 @@ const kRadiusNormal = 25.0;
 const kRadiusMedium = 15.0;
 const kRadiusSmall = 10.0;
 const kRadiusLittle = 8.0;
+const kRadiusExtraLittle = 5.0;
 
 /// Usa [kLogoSize] para definir la altura de los buttons
 const kLogoSizeLarge = 240.0;

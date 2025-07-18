@@ -12,6 +12,23 @@ class AppTextStyle {
       Theme.of(context).textTheme.titleLarge!.copyWith(
           color: color, fontWeight: FontWeight.bold, fontFamily: 'Montserrat');
 
+  TextStyle bold45(
+          {Color color = Colors.black,
+          FontWeight fontWeight = FontWeight.w700}) =>
+      Theme.of(context).textTheme.titleLarge!.copyWith(
+          color: color,
+          fontWeight: fontWeight,
+          fontSize: 45.0,
+          fontFamily: 'Montserrat');
+  TextStyle bold30(
+          {Color color = Colors.black,
+          FontWeight fontWeight = FontWeight.w700}) =>
+      Theme.of(context).textTheme.titleLarge!.copyWith(
+          color: color,
+          fontWeight: fontWeight,
+          fontSize: 30.0,
+          fontFamily: 'Montserrat');
+
   TextStyle bold26(
           {Color color = Colors.black,
           FontWeight fontWeight = FontWeight.w700}) =>
@@ -51,7 +68,7 @@ class AppTextStyle {
       Theme.of(context).textTheme.titleLarge!.copyWith(
           color: color,
           fontWeight: fontWeight,
-          fontSize: 22.0,
+          fontSize: 21.0,
           fontFamily: 'Montserrat');
   TextStyle bold20(
           {Color color = Colors.black,
@@ -59,7 +76,15 @@ class AppTextStyle {
       Theme.of(context).textTheme.titleLarge!.copyWith(
           color: color,
           fontWeight: fontWeight,
-          fontSize: 22.0,
+          fontSize: 20.0,
+          fontFamily: 'Montserrat');
+  TextStyle bold19(
+          {Color? color = Colors.black,
+          FontWeight fontWeight = FontWeight.w700}) =>
+      Theme.of(context).textTheme.bodyMedium!.copyWith(
+          color: color,
+          fontWeight: fontWeight,
+          fontSize: 19.0,
           fontFamily: 'Montserrat');
   TextStyle bold18(
           {Color? color = Colors.black,
@@ -84,7 +109,7 @@ class AppTextStyle {
           FontWeight fontWeight = FontWeight.w700}) =>
       Theme.of(context).textTheme.bodyMedium!.copyWith(
           color: color,
-          fontWeight: FontWeight.w700,
+          fontWeight: fontWeight,
           fontSize: 16.0,
           fontFamily: 'Montserrat');
 
@@ -104,6 +129,39 @@ class AppTextStyle {
           color: color,
           fontWeight: fontWeight,
           fontSize: 14.0,
+          fontFamily: 'Montserrat');
+  TextStyle bold13(
+          {Color? color = AppColors.grayDark,
+          FontWeight fontWeight = FontWeight.w700}) =>
+      Theme.of(context).textTheme.bodyMedium!.copyWith(
+          color: color,
+          fontWeight: fontWeight,
+          fontSize: 13.0,
+          fontFamily: 'Montserrat');
+    TextStyle bold12(
+          {Color? color = AppColors.grayDark,
+          FontWeight fontWeight = FontWeight.w700}) =>
+      Theme.of(context).textTheme.bodyMedium!.copyWith(
+          color: color,
+          fontWeight: fontWeight,
+          fontSize: 12.0,
+          fontFamily: 'Montserrat');
+
+    TextStyle bold11(
+          {Color? color = AppColors.grayDark,
+          FontWeight fontWeight = FontWeight.w700}) =>
+      Theme.of(context).textTheme.bodyMedium!.copyWith(
+          color: color,
+          fontWeight: fontWeight,
+          fontSize: 11.0,
+          fontFamily: 'Montserrat');
+    TextStyle bold10(
+          {Color? color = AppColors.grayDark,
+          FontWeight fontWeight = FontWeight.w700}) =>
+      Theme.of(context).textTheme.bodyMedium!.copyWith(
+          color: color,
+          fontWeight: fontWeight,
+          fontSize: 10.0,
           fontFamily: 'Montserrat');
 
   TextStyle semi14({

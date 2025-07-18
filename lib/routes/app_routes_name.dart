@@ -3,6 +3,10 @@ abstract class AppRoutesName {
   static const LOGIN = "/login";
   static const HOME = "/home";
   static const RECOVERPASS = "/recoverpass"; 
+  static const IEPI = "/iepi"; 
+  // static const RECOVERPASS = "/recoverpass"; 
+  // static const RECOVERPASS = "/recoverpass"; 
+
  /*  static const DETAIL = "/detail";
   static const ORDERDETAIL = "/orderDetail";
   static const NEWORDER = "/newOrder";

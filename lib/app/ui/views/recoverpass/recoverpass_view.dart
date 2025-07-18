@@ -55,52 +55,96 @@ class RecoverpassView extends StatelessWidget {
     );
 
     return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        leading: IconButton(
+            padding: EdgeInsets.all(10.0),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: CircleAvatar(child: Icon(Icons.arrow_back))),
+      ),
+      
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Center(
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(15.0),
             child: Container(
-              padding: const EdgeInsets.all(15.0),
+              // padding: const EdgeInsets.all(15.0),
               width: 400.0,
-              height: 630.0,
+              // height: 630.0,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(8.0),
-                
               ),
               child: Column(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: 25.0,
                 children: [
-                  const SizedBox(height: 20.0),
-                  Lottie.network(
-                      'https://raw.githubusercontent.com/xvrh/lottie-flutter/master/example/assets/Mobilo/A.json'),
-                  const SizedBox(height: 20.0),
-                  // Título
-                  const Text('MiCIP',
-                      textAlign: TextAlign.center,
+                  // Stack(
+                  //   children: [
+                  //     // Align(
+                  //     //   alignment: Alignment.topRight,
+                  //     //   child: Lottie.asset(
+                  //     //     'assets/recoverPassAnimation.json',
+                  //     //     width: 200,
+                  //     //     height: 200,
+                  //     //     fit: BoxFit.contain,
+                  //     //     repeat: false,
+                  //     //   ),
+                  //     // ),
+                  //     Container(
+                  //       height: 190,
+                  //       // color: Colors.red,
+                  //       child: Align(
+                  //         alignment: Alignment.bottomLeft,
+                  //         child: Column(
+                  //           mainAxisAlignment: MainAxisAlignment.start,
+                  //           crossAxisAlignment: CrossAxisAlignment.start,
+                  //           mainAxisSize: MainAxisSize.min,
+                  //           children: [
+                  //             Text("¿Olvidaste tu contraseña?",
+                  //                 style: AppTextStyle(context).bold22()),
+                  //             Text(
+                  //                 "No te preocupes, eso pasa. Por favor, ingrese su email asociado con su cuenta",
+                  //                 style: TextStyle(
+                  //                   fontSize: 14.0,
+                  //                   fontWeight: FontWeight.w500,
+                  //                   color: AppColors.black,
+                  //                 )),
+                  //           ],
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
+                  // const SizedBox(height: 25.0),
+                  Text("¿Olvidaste tu contraseña?",
+                      style: AppTextStyle(context).bold22()),
+                  Text(
+                      "No te preocupes, eso pasa. Por favor, ingrese su email asociado con su cuenta",
                       style: TextStyle(
-                        fontSize: 24.0,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.primaryConst,
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.black,
                       )),
-                  const SizedBox(height: 25.0),
                   // dni
                   identificationNumber,
-                  const SizedBox(height: 25.0),
-                  // nombre
-                  nameUser,
-                  const SizedBox(height: 25.0),
                   //correo
-                  emailUser,
-                  const SizedBox(height: 25.0),
+                  // emailUser,
                   //Boton
                   button,
-                  const SizedBox(height: 25.0),
-                  InkWell(
-                    onTap: () => NavigatorView.goToLogin(context),
-                    child: Text('Regresar a  inicio de sesión',
-                        style: AppTextStyle(context)
-                            .bold14(color: AppColors.primaryConst)),
+                  Spacer(),
+                  Center(
+                    child: InkWell(
+                      onTap: () => NavigatorView.goToLogin(context),
+                      child: Text('Regresar a  inicio de sesión',
+                          style: AppTextStyle(context)
+                              .bold14(color: AppColors.primaryConst)),
+                    ),
                   )
                 ],
               ),

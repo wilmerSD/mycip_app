@@ -1,3 +1,4 @@
+import 'package:cip_payment_app/app/ui/views/advancepayment/advancepayment_view.dart';
 import 'package:cip_payment_app/app/ui/views/certificateskill/certificateskill_view.dart';
 import 'package:cip_payment_app/app/ui/views/home/home_view.dart';
 import 'package:cip_payment_app/app/ui/views/monthlyfees/monthlyfees_view.dart';
@@ -22,6 +23,8 @@ class HomeController with ChangeNotifier {
   void goToProofnodebtView(BuildContext context) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => const ProofnodebtView()));
   }
-  
+  void goToAdvancePayment(BuildContext context) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => const AdvancepaymentView()));
+  }
   
 }
