@@ -1,4 +1,5 @@
 import 'package:cip_payment_app/app/ui/views/home/home_view.dart';
+import 'package:cip_payment_app/app/ui/views/iepi/detail_course.dart';
 import 'package:cip_payment_app/app/ui/views/iepi/iepi_view.dart';
 import 'package:cip_payment_app/app/ui/views/login/login_view.dart';
 import 'package:cip_payment_app/app/ui/views/manteiners/person/person_view.dart';
@@ -37,6 +38,11 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: AppRoutesName.IEPI,
       builder: (context, state) => const IepiView(),
+    ),
+
+    GoRoute(
+      path: AppRoutesName.DETAILCOURSE,
+      builder: (context, state) => const DetailCourse(),
     ),
 
     GoRoute(
