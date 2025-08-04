@@ -22,7 +22,7 @@ class CustomSnackbar {
         right: 16,
         child: FadeInDown(
           child: Material(
-            color: Colors.transparent,
+            color: const Color.fromARGB(0, 248, 195, 195),
             child: Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(

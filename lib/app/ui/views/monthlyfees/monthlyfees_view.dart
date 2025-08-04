@@ -21,6 +21,7 @@ class MonthlyfeesView extends StatelessWidget {
       isIos = Platform.isIOS;
     }
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.backgroundColor(context),
       appBar: AppBar(
         backgroundColor: AppColors.backgroundColor(context),
@@ -30,31 +31,33 @@ class MonthlyfeesView extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         spacing: 10.0,
         children: [
-          Align(  
-              alignment: Alignment.centerRight,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                width: 260.0,
-                height: 40.0,
-                decoration: const BoxDecoration(
-                  color: AppColors.secondConst,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(50),
-                        bottomLeft: Radius.circular(50.0))
-                    ),
-              child: Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  // mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text('Afiliate a pago automático',style: AppTextStyle(context).bold14(color: Colors.white), ),
-                    const Icon(Bootstrap.box_arrow_up_right, color: Colors.white,)
-                  ],
+          InkWell(
+            onTap: ()=> monthlyfeesController.goToAutomaticPay(context),
+            child: Align(  
+                alignment: Alignment.centerRight,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  width: 260.0,
+                  height: 40.0,
+                  decoration: const BoxDecoration(
+                    color: AppColors.secondConst,
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(50),
+                          bottomLeft: Radius.circular(50.0))
+                      ),
+                child: Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    // mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text('Afiliate a pago automático',style: AppTextStyle(context).bold14(color: Colors.white), ),
+                      const Icon(Bootstrap.box_arrow_up_right, color: Colors.white,)
+                    ],
+                  ),
+                )
                 ),
-              )
-              ),
-              
-              ),
+                ),
+          ),
           const SizedBox(),
           CustomTabSwitch(
             tabs: const ['Pagar', 'Historial'],

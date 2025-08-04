@@ -1,26 +1,17 @@
-import 'package:cip_payment_app/app/ui/views/login/login_controller.dart';
-import 'package:cip_payment_app/app/ui/views/login/login_view.dart';
 import 'package:cip_payment_app/core/theme/app_colors.dart';
 import 'package:cip_payment_app/core/theme/app_text_style.dart';
+import 'package:cip_payment_app/routes/app_routes_name.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:go_router/go_router.dart';
 
 class SplashView extends StatelessWidget {
-  const SplashView({Key? key}) : super(key: key);
+  const SplashView({super.key});
 
   @override
   Widget build(BuildContext context) {
     // Simula una espera antes de redirigir a la vista de inicio de sesión
     Future.delayed(const Duration(seconds: 2), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ChangeNotifierProvider(
-            create: (_) => LoginController(),
-            child: const LoginView(),
-          ),
-        ),
-      );
+      context.go(AppRoutesName.LOGIN);
     });
 
     return Scaffold(

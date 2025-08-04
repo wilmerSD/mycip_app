@@ -1,16 +1,16 @@
 import 'dart:io';
+import 'package:cip_payment_app/app/providers/auth_provider.dart';
 import 'package:cip_payment_app/app/ui/components/alert/alert_dialog_component.dart';
 import 'package:cip_payment_app/app/ui/components/alert/cupertino_alert_dialog_comp.dart';
-import 'package:cip_payment_app/app/ui/views/home/home_controller.dart';
-import 'package:cip_payment_app/app/ui/views/login/login_controller.dart';
 import 'package:cip_payment_app/app/ui/views/myprofile/myprofile_controller.dart';
-import 'package:cip_payment_app/app/ui/views/splash/splash_controller.dart';
 import 'package:cip_payment_app/core/helpers/helpers.dart';
 import 'package:cip_payment_app/core/theme/app_colors.dart';
 import 'package:cip_payment_app/core/theme/app_text_style.dart';
 import 'package:cip_payment_app/preferences/shared_preferences.dart';
 import 'package:cip_payment_app/preferences/theme_provider.dart';
+import 'package:cip_payment_app/routes/app_routes_name.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -22,8 +22,8 @@ class MyprofileView extends StatelessWidget {
   Widget build(BuildContext context) {
     final myprofileController =
         Provider.of<MyprofileController>(context, listen: false);
-    // final loginController = Provider.of<LoginController>(context);
-    // final splashController = Provider.of<SplashController>(context);
+    final authProvider = Provider.of<AuthProvider>(context);
+    final person = authProvider.currentPerson;
     bool whatPlatformIs = false;
     if (!kIsWeb) {
       whatPlatformIs = Platform.isIOS;
@@ -111,9 +111,9 @@ class MyprofileView extends StatelessWidget {
             color: Colors.white,
           ),
         ),
-        'Contacto',
-        () {myprofileController.goToPersonalContact(context);},
-        Icons.arrow_right);
+        'Contacto', () {
+      myprofileController.goToPersonalContact(context);
+    }, Icons.arrow_right);
 
     Widget personalColegiatura = _customContainer(
         context,
@@ -121,9 +121,9 @@ class MyprofileView extends StatelessWidget {
           backgroundColor: AppColors.red,
           child: Icon(Bootstrap.award, color: Colors.white),
         ),
-        'Colegiatura',
-        () {myprofileController.goToPersonalCollege(context);},
-        Icons.arrow_right);
+        'Colegiatura', () {
+      myprofileController.goToPersonalCollege(context);
+    }, Icons.arrow_right);
     Widget changePassword = _customContainer(
         context,
         const CircleAvatar(
@@ -141,13 +141,10 @@ class MyprofileView extends StatelessWidget {
           return whatPlatformIs
               ? CupertinoAlertDialogComp(
                   tittle: '¿Seguro que quieres salir de MiCip?',
-                  onTapButton: () => Helpers.goToLoginRemoveUntil(context),
+                  onTapButton: () => context.go(AppRoutesName.LOGIN),
                 )
               : AlertDialogComponent(
-                  onTapButton: () => {
-                        // Provider.of<HomeController>(context, listen: false).onClose(),
-                        Helpers.goToLoginRemoveUntil(context)
-                      },
+                  onTapButton: () => context.go(AppRoutesName.LOGIN),
                   title: "¿Seguro que quieres salir de MiCip?");
         },
       );

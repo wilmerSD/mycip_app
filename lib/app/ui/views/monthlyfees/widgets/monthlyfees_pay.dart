@@ -1,6 +1,8 @@
 import 'package:cip_payment_app/app/ui/components/alert/popup_general.dart';
 import 'package:cip_payment_app/app/ui/components/btn_primary_ink.dart';
+import 'package:cip_payment_app/app/ui/components/modal_new_note.dart';
 import 'package:cip_payment_app/app/ui/views/monthlyfees/widgets/checkout_monthlyfees.dart';
+import 'package:cip_payment_app/app/ui/views/monthlyfees/widgets/select_receipt.dart';
 import 'package:cip_payment_app/core/theme/app_colors.dart';
 import 'package:cip_payment_app/core/theme/app_text_style.dart';
 import 'package:flutter/material.dart';
@@ -51,14 +53,21 @@ class MonthlyfeesPay extends StatelessWidget {
             child: BtnPrimaryInk(
                 text: 'Pagar S/ 30.0',
                 onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return PopupGeneral(
-                        onTapButton: () => {},
-                        title: "Cuota mensual",
-                        content: const CheckoutMonthlyfees(),
+                  ModalUtils.getShowModalBS(
+                        context,
+                        content: const SelectReceipt(),
+                        title: 'Detalle de pago',
                       );
+
+                  // showDialog(
+                  //   context: context,
+                  //   builder: (BuildContext context) {
+                       
+                      // return PopupGeneral(
+                      //   onTapButton: () => {},
+                      //   title: "Cuota mensual",
+                      //   content: const CheckoutMonthlyfees(),
+                      // );
                       // return isIos
                       //     ? CupertinoAlertDialogComp(
                       //         tittle: '¿Estás seguro(a) de cerrar sesión?',
@@ -68,8 +77,8 @@ class MonthlyfeesPay extends StatelessWidget {
                       //     : AlertDialogComponent(
                       //         onTapButton: () => {},
                       //         title: "¿Estás seguro(a) de cerrar sesión?");
-                    },
-                  );
+                  //   },
+                  // );
                   // CheckoutMonthlyfees
                   // monthlyfeesController.createToken(
 

@@ -17,6 +17,8 @@ class MyprofileController with ChangeNotifier {
   factory MyprofileController() => _instance;
   MyprofileController._internal();
   final FlutterSecureStorage secureStorage = const FlutterSecureStorage();
+  // Provider.of<AuthProvider>(context, listen: false);
+  
 
   TextEditingController ctrlPassword = TextEditingController();
   TextEditingController ctrlPasswordToConfirm = TextEditingController();

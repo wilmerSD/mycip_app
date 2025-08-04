@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:cip_payment_app/app/ui/views/monthlyfees/widgets/automatic_pay.dart';
+import 'package:cip_payment_app/core/helpers/custom_snackbar.dart';
 import 'package:cip_payment_app/services/culqi_service.dart';
 import 'package:flutter/material.dart';
 
@@ -35,10 +37,31 @@ class MonthlyfeesController with ChangeNotifier {
     }
   }
 
-  Future<void> pagar() async{
+  Future<void> pagar(BuildContext context) async{
     final token = await crearTokenCulqi();
     final response = await culquiServise.payCulqui(token ?? '', amount,ctrlEmail.text);// Enviar este token a tu backend para crear el cargo
-    print(response);
+    
+    if (response){
+      Navigator.pop(context);
+      CustomSnackbar.showSnackBarCustom(
+          context,
+          title: 'Éxito',
+          message: 'El pago se realizo correctamente',
+          type: 3,
+          time: 2,
+        );
+        return;
+    } else {
+      CustomSnackbar.showSnackBarCustom(
+          context,
+          title: 'Validar',
+          message: 'Ups...Ocurrio un error, intente nuevamente',
+          type: 2,
+          time: 2,
+        );
+    }
+
+    
   }
 
   Future<String?> crearTokenCulqi() async {
@@ -86,7 +109,9 @@ class MonthlyfeesController with ChangeNotifier {
     _selectedIndex = index;
     notifyListeners();
   }
-
+  void goToAutomaticPay(BuildContext context) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => const AutomaticPay()));
+  }
   @override
   void dispose() {
     pageController.dispose();

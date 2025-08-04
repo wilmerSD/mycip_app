@@ -1,19 +1,17 @@
+// ignore_for_file: constant_identifier_names
 abstract class AppRoutesName {
   static const SPLASH = "/splash";
   static const LOGIN = "/login";
   static const HOME = "/home";
-  static const RECOVERPASS = "/recoverpass"; 
   static const IEPI = "/iepi"; 
-  // static const RECOVERPASS = "/recoverpass"; 
+  static const PERSON = "/person";
+  static const PROFILE = "/profile";
+
+  static const RECOVERPASS = "/recoverpass"; 
+  static const RECOVERPASSEMAIL = "/dni";
+  static const RECOVERPASSVERIFY = "/verify";
+  static const RECOVERPASSNEW = "/newpass";
+  
   // static const RECOVERPASS = "/recoverpass"; 
 
- /*  static const DETAIL = "/detail";
-  static const ORDERDETAIL = "/orderDetail";
-  static const NEWORDER = "/newOrder";
-  static const SEARCHPRODUCT = "/searchProduct";
-  static const PERMISSION = "/permission";
-  static const REQUESTBOX = "/request_box";
-  static const SCHEDULE = "/schedule";
-  static const CHANGEPASS = "/changepass";
-  */
 }

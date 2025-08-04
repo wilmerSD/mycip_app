@@ -59,10 +59,10 @@ class RecoverPassReset extends StatelessWidget {
           );
 
     return Scaffold(
-      appBar: AppBar(leading: Leading(),),
+      appBar: AppBar(leading: const Leading(),),
       body: 
       Padding(
-        padding: EdgeInsets.all(15),
+        padding: const EdgeInsets.all(15),
         child: Column(
           spacing: 20.0,
           crossAxisAlignment: CrossAxisAlignment.start,

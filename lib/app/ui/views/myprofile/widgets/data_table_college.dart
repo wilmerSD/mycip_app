@@ -1,3 +1,4 @@
+import 'package:cip_payment_app/core/theme/app_colors.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 
@@ -11,7 +12,7 @@ class DataTableCollege extends StatelessWidget {
       horizontalMargin: 12,
       minWidth: 300,
       headingRowHeight: 56,
-      headingRowColor: MaterialStateProperty.all(const Color(0xFF7A0C0C)), // Color granate
+      headingRowColor: WidgetStateProperty.all(AppColors.granateConst),
       headingTextStyle: const TextStyle(
         fontWeight: FontWeight.bold,
         color: Colors.white,

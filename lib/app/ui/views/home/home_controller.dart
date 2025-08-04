@@ -11,9 +11,7 @@ class HomeController with ChangeNotifier {
   void goToHome(BuildContext context) {
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomeView()));
   }
-  void goToProfile(BuildContext context) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => const MyprofileView()));
-  }
+
   void goToMonthlyFees(BuildContext context) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => const MonthlyfeesView()));
   }

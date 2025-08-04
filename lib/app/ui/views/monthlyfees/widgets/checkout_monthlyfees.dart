@@ -62,7 +62,7 @@ class CheckoutMonthlyfees extends StatelessWidget {
     );
 
     Widget btnPay = BtnPrimaryInk(text: 'Pagar S/. 30.0', onTap: () {
-      monthlyfeesController.pagar();
+      monthlyfeesController.pagar(context);
       // monthlyfeesController.crearTokenCulqi();
       
     });

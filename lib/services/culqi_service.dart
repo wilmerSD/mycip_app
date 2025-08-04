@@ -42,7 +42,7 @@ class CulqiService {
 
   Future<bool> payCulqui(String token, double amount, String email) async {
     final response = await http.post(
-      Uri.parse("http://192.168.100.45:8080/pago"),
+      Uri.parse("http://192.168.100.51:8080/pago"),
       headers: {"Content-Type": "application/json"},
       body: jsonEncode({
         "token": token,

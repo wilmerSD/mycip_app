@@ -1,3 +1,4 @@
+import 'package:cip_payment_app/app/ui/views/iepi/prueba.dart';
 import 'package:flutter/material.dart';
 
 class CertificateSkillController with ChangeNotifier{
@@ -8,4 +9,6 @@ class CertificateSkillController with ChangeNotifier{
   TextEditingController ctrlEnabledUntil = TextEditingController(text: '31 de Agosto del 2025');
   TextEditingController ctrlNumberCertf = TextEditingController(text: '01');
   TextEditingController ctrlSpecialty = TextEditingController(text: 'Ing. De Sistemas e informática');
+
+ 
 }

@@ -1,5 +1,7 @@
+import 'package:cip_payment_app/app/providers/auth_provider.dart';
 import 'package:cip_payment_app/app/ui/components/btn_primary_ink.dart';
 import 'package:cip_payment_app/app/ui/components/custom_text_field.dart';
+import 'package:cip_payment_app/app/ui/components/display_text.dart';
 import 'package:cip_payment_app/app/ui/views/myprofile/myprofile_controller.dart';
 import 'package:cip_payment_app/app/ui/views/myprofile/widgets/custom_tittle_appbar.dart';
 import 'package:cip_payment_app/app/ui/views/myprofile/widgets/data_table_college.dart';
@@ -14,39 +16,25 @@ const PersonalCollege({ super.key });
   @override
   Widget build(BuildContext context) {
     final recoverpassController = Provider.of<MyprofileController>(context);
-
+    final authProvider = Provider.of<AuthProvider>(context);
+    final person = authProvider.currentPerson;
+    
     /* 📌 Input cip del colegiado */
-    Widget inputCollege = CustomTextField(
-      enabledfield: true,
+    Widget inputCollege = DisplayText(    
       helperText: 'Numero Cip',
-      textEditingController: recoverpassController.ctrlCipNumber,
-      onEditingComplete: () {
-        FocusScope.of(context).unfocus();
-        // Lógica para validar el formulario
-      },
+      text: person?.numberCip ?? '',
     );
     
     /* 📌 Input fecha de ingreso al colegio de ingenieros */
-    Widget inputEntryDate = CustomTextField(
-      enabledfield: true,
+    Widget inputEntryDate = DisplayText(
       helperText: 'Fecha de ingreso',
-      privateText: recoverpassController.isVisiblePass,
-      textEditingController: recoverpassController.ctrlEntryDate,
-      onEditingComplete: () {
-        FocusScope.of(context).unfocus();
-        // Lógica para validar el formulario
-      },
+      text: '23/07/2020' //person?.numberCip ?? '',
     );
    
     /* 📌 Input catidad de años del colegiado*/
-    Widget inputQuantityAges = CustomTextField(
-      enabledfield: true,
+    Widget inputQuantityAges = DisplayText(
       helperText: 'Años de colegiado',
-      textEditingController: recoverpassController.ctrlQuantityAge,
-      onEditingComplete: () {
-        FocusScope.of(context).unfocus();
-        // Lógica para validar el formulario
-      },
+      text: authProvider.yearsOfMembership.toString(),
     );
 
  
@@ -83,7 +71,7 @@ const PersonalCollege({ super.key });
                 //   height: 200,
                 //   child: DataTableCollege(),
                 // ),
-                 Container(
+                  Container(
                   height: 160,
                   // color: Colors.amber,
                   child: const ClipRRect(

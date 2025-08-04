@@ -1,3 +1,4 @@
+import 'package:cip_payment_app/app/providers/auth_provider.dart';
 import 'package:cip_payment_app/app/ui/views/home/home_controller.dart';
 import 'package:cip_payment_app/app/ui/views/home/widgets/appBar_home.dart';
 import 'package:cip_payment_app/app/ui/views/home/widgets/drawer_menu_app.dart';
@@ -8,12 +9,15 @@ import 'package:icons_plus/icons_plus.dart';
 import 'package:provider/provider.dart';
 
 class HomeView extends StatelessWidget {
-  const HomeView({Key? key}) : super(key: key);
+  const HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
     final homeController = Provider.of<HomeController>(context);
+    final authProvider = Provider.of<AuthProvider>(context);
+    final person = authProvider.currentPerson;
     final size = MediaQuery.sizeOf(context);
+
     return ChangeNotifierProvider(
         create: (_) => HomeController(),
         child: Scaffold(
@@ -124,11 +128,11 @@ class HomeView extends StatelessWidget {
                                 height: 20.0,
                               ),
                               Text(
-                                'Hola, José Guevara',
+                                'Hola, ${person?.namePerson}',
                                 style: AppTextStyle(context).bold22(),
                               ),
                               Text(
-                                'N° CIP:1010203',
+                                'N° ${person?.numberCip}',
                                 style: AppTextStyle(context).bold17(fontWeight: FontWeight.w200),
                               ),
                             ],

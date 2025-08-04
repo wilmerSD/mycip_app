@@ -1,7 +1,9 @@
 import 'package:cip_payment_app/app/ui/views/login/login_view.dart';
 import 'package:cip_payment_app/app/ui/views/recoverpass/widgets/recover_pass_code.dart';
 import 'package:cip_payment_app/app/ui/views/recoverpass/widgets/recover_pass_reset.dart';
+import 'package:cip_payment_app/routes/app_routes_name.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class RecoverPassController with ChangeNotifier{
   bool _isVisiblePass = false;
@@ -51,6 +53,6 @@ class RecoverPassController with ChangeNotifier{
     Navigator.push(context, MaterialPageRoute(builder: (context) => const RecoverPassCode()));
   }
   Future validatePass(BuildContext context) async{
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginView()));
+    context.go(AppRoutesName.LOGIN);
   }
 }

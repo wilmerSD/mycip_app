@@ -4,11 +4,12 @@ import 'package:cip_payment_app/app/ui/components/alert/cupertino_alert_dialog_c
 import 'package:cip_payment_app/app/ui/views/home/home_controller.dart';
 import 'package:cip_payment_app/core/helpers/constant.dart';
 import 'package:cip_payment_app/core/helpers/helpers.dart';
-import 'package:cip_payment_app/core/helpers/navigator_view.dart';
 import 'package:cip_payment_app/core/theme/app_colors.dart';
 import 'package:cip_payment_app/core/theme/app_text_style.dart';
+import 'package:cip_payment_app/routes/app_routes_name.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:provider/provider.dart';
 
@@ -49,21 +50,23 @@ class DrawerMenuApp extends StatelessWidget {
             ),
             const SizedBox(height: kSize),
             customDivider(),
-            customListTile(context, "Perfil", BoxIcons.bx_user,
-                () {
-              homeController.goToProfile(context);
+            customListTile(context, "Perfil", BoxIcons.bx_user, () {
+              context.push(AppRoutesName.PROFILE);
             }),
             customDivider(),
-            customListTile(
-                context, "IEPI", BoxIcons.bx_book, () {
-                  NavigatorView.goToIepi(context);
-                }),
+            customListTile(context, "IEPI", BoxIcons.bx_book, () {
+              context.push(AppRoutesName.IEPI);
+            }),
             customDivider(),
-            customListTile(
-                context, "Capítulo", Icons.book_online, () {}),
+            customListTile(context, "Capítulo", Icons.book_online, () {}),
             customDivider(),
             customListTile(
                 context, "Gestión", Icons.admin_panel_settings, () {}),
+            customDivider(),
+            customListTile(
+                context, "Persona", Icons.person, () {
+                context.push(AppRoutesName.PERSON);
+                }),
             const Spacer(),
             customListTile(context, "Cerrar sesión", Icons.logout, () {
               showDialog(
@@ -72,11 +75,9 @@ class DrawerMenuApp extends StatelessWidget {
                   return isIos
                       ? CupertinoAlertDialogComp(
                           tittle: '¿Estás seguro(a) de cerrar sesión?',
-                          onTapButton: () =>
-                              Helpers.goToLoginRemoveUntil(context),
-                        )
+                          onTapButton: () => context.go(AppRoutesName.LOGIN))
                       : AlertDialogComponent(
-                          onTapButton: () => {},
+                          onTapButton: () => {context.go(AppRoutesName.LOGIN)},
                           title: "¿Estás seguro(a) de cerrar sesión?");
                 },
               );

@@ -1,10 +1,10 @@
+import 'package:cip_payment_app/app/providers/auth_provider.dart';
 import 'package:cip_payment_app/app/ui/components/btn_primary_ink.dart';
-import 'package:cip_payment_app/app/ui/components/custom_text_field.dart';
+import 'package:cip_payment_app/app/ui/components/display_text.dart';
 import 'package:cip_payment_app/app/ui/views/myprofile/myprofile_controller.dart';
 import 'package:cip_payment_app/app/ui/views/myprofile/widgets/custom_tittle_appbar.dart';
 import 'package:cip_payment_app/app/ui/views/recoverpass/widgets/leading.dart';
 import 'package:cip_payment_app/core/theme/app_colors.dart';
-import 'package:cip_payment_app/core/theme/app_text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -14,39 +14,25 @@ class PersonalContact extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final recoverpassController = Provider.of<MyprofileController>(context);
-
+    final authProvider = Provider.of<AuthProvider>(context);
+    final person = authProvider.currentPerson;
+    
     /* 📌 Input de colegiado */
-    Widget inputAddress = CustomTextField(
-      enabledfield: true,
+    Widget inputAddress = DisplayText(
       helperText: 'Dirección',
-      textEditingController: recoverpassController.ctrlAddress,
-      onEditingComplete: () {
-        FocusScope.of(context).unfocus();
-        // Lógica para validar el formulario
-      },
+      text: person?.address ?? '',
     );
 
     /* 📌 Input de dni */
-    Widget inputPhoneNumber = CustomTextField(
-      enabledfield: true,
+    Widget inputPhoneNumber = DisplayText(
       helperText: 'Celular',
-      privateText: recoverpassController.isVisiblePass,
-      textEditingController: recoverpassController.ctrlPhoneNumber,
-      onEditingComplete: () {
-        FocusScope.of(context).unfocus();
-        // Lógica para validar el formulario
-      },
+      text: person?.numberPhone ?? '',
     );
    
     /* 📌 Input de dni */
-    Widget inputEmail = CustomTextField(
-      enabledfield: true,
+    Widget inputEmail = DisplayText(
       helperText: 'Correo electrónico',
-      textEditingController: recoverpassController.ctrlEmail,
-      onEditingComplete: () {
-        FocusScope.of(context).unfocus();
-        // Lógica para validar el formulario
-      },
+      text: person?.emailMain ?? '',
     );
 
  
@@ -85,7 +71,7 @@ class PersonalContact extends StatelessWidget {
                     ],
                   ),
                 ),
-                btnChangePass
+                // btnChangePass
                 // SizedBox(
                 //   height: 20.0, child: btnChangePass),
               ],

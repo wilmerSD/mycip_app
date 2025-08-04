@@ -1,3 +1,4 @@
+import 'package:cip_payment_app/app/providers/auth_provider.dart';
 import 'package:cip_payment_app/app/ui/views/advancepayment/advancepayment_controller.dart';
 import 'package:cip_payment_app/app/ui/views/certificateskill/certificateskill_controller.dart';
 import 'package:cip_payment_app/app/ui/views/home/home_controller.dart';
@@ -12,7 +13,7 @@ import 'package:cip_payment_app/app/ui/views/splash/splash_view.dart';
 import 'package:cip_payment_app/core/config/theme_app.dart';
 import 'package:cip_payment_app/preferences/shared_preferences.dart';
 import 'package:cip_payment_app/preferences/theme_provider.dart';
-import 'package:cip_payment_app/routes/app_routes_map.dart';
+import 'package:cip_payment_app/routes/go_router_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,7 +22,7 @@ import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding
       .ensureInitialized(); // Necesario para inicializar dependencias antes de runApp()
   await Firebase.initializeApp(
@@ -41,8 +42,7 @@ void main() async{
         ChangeNotifierProvider(create: (_) => RecoverPassController()),
         ChangeNotifierProvider(create: (_) => IepiController()),
         ChangeNotifierProvider(create: (_) => AdvancepaymentController()),
-        
-        
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(
             create: (_) =>
                 ThemeProvider(darkMode: PreferencesUser().themeBool)),
@@ -62,25 +62,25 @@ class MyApp extends StatelessWidget {
         designSize: const Size(390, 844) /* ScreenUtil.defaultSize */,
         minTextAdapt: true,
         splitScreenMode: true,
-        builder: (context, child) => MaterialApp(
-                localizationsDelegates: const [
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalWidgetsLocalizations.delegate,
-                  GlobalCupertinoLocalizations.delegate,
-                  DefaultWidgetsLocalizations.delegate,
-                ],
-                supportedLocales: const [
-                  Locale('es', 'ES'), // Español
-                  Locale('en', 'US'), // Inglés
-                ],
-                debugShowCheckedModeBanner: false,
-                title: 'Flutter Demo',
-                theme: ThemeApp(
-                        darkMode:
-                            Provider.of<ThemeProvider>(context, listen: true)
-                                .themeDark)
-                    .getTheme(),
-                routes: AppRoutes.routes,
-                home: const SplashView()));
+        builder: (context, child) => MaterialApp.router(
+              localizationsDelegates: const [
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+                DefaultWidgetsLocalizations.delegate,
+              ],
+              supportedLocales: const [
+                Locale('es', 'ES'), // Español
+                Locale('en', 'US'), // Inglés
+              ],
+              debugShowCheckedModeBanner: false,
+              title: 'Flutter Demo',
+              theme: ThemeApp(
+                      darkMode:
+                          Provider.of<ThemeProvider>(context, listen: true)
+                              .themeDark)
+                  .getTheme(),
+              routerConfig: appRouter, 
+            ));
   }
 }

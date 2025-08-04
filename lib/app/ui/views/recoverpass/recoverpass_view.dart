@@ -1,10 +1,11 @@
 import 'package:cip_payment_app/app/ui/components/btn_primary_ink.dart';
 import 'package:cip_payment_app/app/ui/components/field_form.dart';
 import 'package:cip_payment_app/app/ui/views/login/login_controller.dart';
-import 'package:cip_payment_app/core/helpers/navigator_view.dart';
 import 'package:cip_payment_app/core/theme/app_colors.dart';
 import 'package:cip_payment_app/core/theme/app_text_style.dart';
+import 'package:cip_payment_app/routes/app_routes_name.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:lottie/lottie.dart';
 
@@ -43,13 +44,13 @@ class RecoverpassView extends StatelessWidget {
       label: "Correo",
       hintText: "Ingresa tu usuario",
       textInputType: TextInputType.emailAddress,
-      textEditingController: loginController.ctrlEmail,
+      textEditingController: loginController.ctrlUserName,
     );
 
     Widget button = BtnPrimaryInk(
       text: "Enviar contraseña",
       onTap: () {
-        NavigatorView.goToHome(context);
+        
       },
       /*onTap: () =>  controller.validateForm(context) */
     );
@@ -137,10 +138,10 @@ class RecoverpassView extends StatelessWidget {
                   // emailUser,
                   //Boton
                   button,
-                  Spacer(),
+                  const Spacer(),
                   Center(
                     child: InkWell(
-                      onTap: () => NavigatorView.goToLogin(context),
+                      onTap: () => context.go(AppRoutesName.LOGIN),
                       child: Text('Regresar a  inicio de sesión',
                           style: AppTextStyle(context)
                               .bold14(color: AppColors.primaryConst)),

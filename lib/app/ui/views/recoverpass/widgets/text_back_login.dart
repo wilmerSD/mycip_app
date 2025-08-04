@@ -1,17 +1,17 @@
-import 'package:cip_payment_app/app/ui/views/recoverpass/recoverpass_controller.dart';
 import 'package:cip_payment_app/core/theme/app_colors.dart';
 import 'package:cip_payment_app/core/theme/app_text_style.dart';
+import 'package:cip_payment_app/routes/app_routes_name.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:go_router/go_router.dart';
 
 class TextBackLogin extends StatelessWidget {
   const TextBackLogin({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final recoverPassController =  Provider.of<RecoverPassController>(context);
+    
     return InkWell(
-      onTap: () => recoverPassController.goToLogin(context),
+      onTap: () => context.go(AppRoutesName.LOGIN),
       child: RichText(
         text: TextSpan(
           children: <TextSpan>[

@@ -2,17 +2,20 @@ import 'package:cip_payment_app/app/ui/components/btn_primary.dart';
 import 'package:cip_payment_app/app/ui/components/btn_primary_ink.dart';
 import 'package:cip_payment_app/app/ui/components/btn_secondary.dart';
 import 'package:cip_payment_app/app/ui/components/btn_third.dart';
+import 'package:cip_payment_app/app/ui/views/iepi/iepi_controller.dart';
 import 'package:cip_payment_app/app/ui/views/myprofile/widgets/custom_tittle_appbar.dart';
 import 'package:cip_payment_app/app/ui/views/recoverpass/widgets/leading.dart';
 import 'package:cip_payment_app/core/theme/app_colors.dart';
 import 'package:cip_payment_app/core/theme/app_text_style.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class IepiView extends StatelessWidget {
   const IepiView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final iepiController = Provider.of<IepiController>(context);
     return Scaffold(
         backgroundColor: AppColors.backgroundColor(context),
         appBar: AppBar(
@@ -38,7 +41,9 @@ class IepiView extends StatelessWidget {
                   'Curso de especialidad',
                   'Virtual',
                   'https://picsum.photos/id/237/400/200',
-                  () {},
+                  () {
+                    print('hola');
+                    iepiController.goToPrueba(context);},
                   () {}),
               SizedBox(height: 25.0,),
               containerCourse(
@@ -99,12 +104,13 @@ Widget containerCourse(BuildContext context, String tittle, String subtittle,
                 Text(modality,
                     style: AppTextStyle(context)
                         .bold14(fontWeight: FontWeight.w300)),
-                const Row(
+                Row(
                   spacing: 15.0,
                   children: [
                     Expanded(
                         child: BtnSecondary(
                       text: 'Mas información',
+                      onTap: onMoreinf,
                     )),
                     Expanded(
                         child: BtnThird(
