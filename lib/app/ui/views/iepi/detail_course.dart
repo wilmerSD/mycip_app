@@ -1,3 +1,4 @@
+import 'package:cip_payment_app/app/ui/components/btn_primary_ink.dart';
 import 'package:flutter/material.dart';
 import 'package:cip_payment_app/core/theme/app_text_style.dart';
 import 'package:cip_payment_app/core/theme/app_colors.dart';
@@ -182,24 +183,13 @@ class DetailCourse extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.primary(context),
-            padding: const EdgeInsets.symmetric(vertical: 14),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(6),
-            ),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+          child: BtnPrimaryInk(
+            text: 'Matricularme',
+            onTap: () {
+            },
+          )
           ),
-          onPressed: () {
-            // TODO: enroll action
-          },
-          child: Text(
-            'Matricularme',
-            style: AppTextStyle(context).bold16(color: Colors.white),
-          ),
-        ),
-      ),
     );
   }
 }

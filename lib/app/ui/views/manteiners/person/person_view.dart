@@ -5,7 +5,6 @@ import 'package:cip_payment_app/app/ui/views/manteiners/person/person_provider.d
 import 'package:cip_payment_app/app/ui/views/myprofile/widgets/custom_tittle_appbar.dart';
 import 'package:cip_payment_app/app/ui/views/recoverpass/widgets/leading.dart';
 import 'package:cip_payment_app/core/theme/app_colors.dart';
-import 'package:cip_payment_app/core/theme/app_text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -57,7 +56,7 @@ class PersonView extends StatelessWidget {
 }
 
 Widget _formPerson(BuildContext context, personProvider) {
-  // final personProvider = context.watch<PersonProvider>();
+  final personProvider = context.watch<PersonProvider>();
   return Container(
     width: 600,
     padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
@@ -67,7 +66,7 @@ Widget _formPerson(BuildContext context, personProvider) {
         CustomTextField(
           helperText: 'Dirección',
           textEditingController:
-              personProvider.dni, // context.read<PersonProvider>,
+              personProvider.address, // context.read<PersonProvider>,
           onEditingComplete: () {
             FocusScope.of(context).unfocus();
           },
@@ -75,7 +74,7 @@ Widget _formPerson(BuildContext context, personProvider) {
         CustomTextField(
           helperText: 'Estado civil',
           textEditingController:
-              personProvider.dni, // context.read<PersonProvider>,
+              personProvider.civilStatus, // context.read<PersonProvider>,
           onEditingComplete: () {
             FocusScope.of(context).unfocus();
           },
@@ -83,7 +82,7 @@ Widget _formPerson(BuildContext context, personProvider) {
         CustomTextField(
           helperText: 'Fecha de nacimiento',
           textEditingController:
-              personProvider.dni, // context.read<PersonProvider>,
+              personProvider.dateBirth, // context.read<PersonProvider>,
           onEditingComplete: () {
             FocusScope.of(context).unfocus();
           },
