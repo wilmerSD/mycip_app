@@ -1,4 +1,4 @@
-import 'package:cip_payment_app/app/ui/components/btn_primary_ink.dart';
+import 'package:cip_payment_app/app/ui/components/btn/btn_primary_ink.dart';
 import 'package:flutter/material.dart';
 import 'package:cip_payment_app/core/theme/app_text_style.dart';
 import 'package:cip_payment_app/core/theme/app_colors.dart';

@@ -1,9 +1,10 @@
-import 'package:cip_payment_app/app/ui/components/btn_primary_ink.dart';
+import 'package:cip_payment_app/app/ui/components/btn/btn_primary_ink.dart';
 import 'package:cip_payment_app/app/ui/components/field_form.dart';
-import 'package:cip_payment_app/app/ui/views/recoverpass/recoverpass_controller.dart';
-import 'package:cip_payment_app/app/ui/views/recoverpass/widgets/leading.dart';
+import 'package:cip_payment_app/app/ui/views/recoverpass/recoverpass_provider.dart';
+import 'package:cip_payment_app/app/ui/components/appbar/leading.dart';
 import 'package:cip_payment_app/app/ui/views/recoverpass/widgets/text_back_login.dart';
 import 'package:cip_payment_app/app/ui/views/recoverpass/widgets/text_tittle.dart';
+import 'package:cip_payment_app/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 class RecoverPassReset extends StatelessWidget {
@@ -11,7 +12,7 @@ class RecoverPassReset extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final recoverpassController = Provider.of<RecoverPassController>(context);
+    final recoverpassController = Provider.of<RecoverPassProvider>(context);
 
       /* 📌 Input de password */
       Widget inputPass = FieldForm(
@@ -59,21 +60,26 @@ class RecoverPassReset extends StatelessWidget {
           );
 
     return Scaffold(
-      appBar: AppBar(leading: const Leading(),),
+      backgroundColor: AppColors.backgroundColor(context),
+      appBar: AppBar(
+        backgroundColor: AppColors.backgroundColor(context),
+        leading: const Leading(),),
       body: 
-      Padding(
-        padding: const EdgeInsets.all(15),
-        child: Column(
-          spacing: 20.0,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TextTittle(tittle: 'Restablecer contraseña',subTittle: 'Por favor escribe algo que recuerdes',),
-            inputPass,
-            inputSecondPass,
-            btnChangePass,
-            Spacer(),
-            Center(child: TextBackLogin())
-        ],),
+      SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(15),
+          child: Column(
+            spacing: 20.0,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TextTittle(tittle: 'Restablecer contraseña',subTittle: 'Por favor escribe algo que recuerdes',),
+              inputPass,
+              inputSecondPass,
+              btnChangePass,
+              const Spacer(),
+              const Center(child: TextBackLogin())
+          ],),
+        ),
       )
     );
   }

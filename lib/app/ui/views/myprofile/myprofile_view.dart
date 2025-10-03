@@ -1,19 +1,17 @@
 import 'dart:io';
 import 'package:cip_payment_app/app/providers/auth_provider.dart';
+import 'package:cip_payment_app/app/routes/app_routes_name.dart';
 import 'package:cip_payment_app/app/ui/components/alert/alert_dialog_component.dart';
 import 'package:cip_payment_app/app/ui/components/alert/cupertino_alert_dialog_comp.dart';
-import 'package:cip_payment_app/app/ui/views/myprofile/myprofile_controller.dart';
-import 'package:cip_payment_app/core/helpers/helpers.dart';
+import 'package:cip_payment_app/app/ui/views/myprofile/myprofile_provider.dart';
 import 'package:cip_payment_app/core/theme/app_colors.dart';
 import 'package:cip_payment_app/core/theme/app_text_style.dart';
 import 'package:cip_payment_app/preferences/shared_preferences.dart';
 import 'package:cip_payment_app/preferences/theme_provider.dart';
-import 'package:cip_payment_app/routes/app_routes_name.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 
 class MyprofileView extends StatelessWidget {
   const MyprofileView({super.key});
@@ -21,16 +19,11 @@ class MyprofileView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final myprofileController =
-        Provider.of<MyprofileController>(context, listen: false);
+        Provider.of<MyprofileProvider>(context, listen: false);
     final authProvider = Provider.of<AuthProvider>(context);
     final person = authProvider.currentPerson;
     bool whatPlatformIs = false;
-    if (!kIsWeb) {
-      whatPlatformIs = Platform.isIOS;
-      // lógica específica para plataformas móviles o desktop
-    } else {
-      // lógica alternativa para web
-    }
+    whatPlatformIs = Platform.isIOS;
 
     final prefs = PreferencesUser();
 
@@ -95,7 +88,7 @@ class MyprofileView extends StatelessWidget {
     }, prefs.themeBool ? Icons.dark_mode_outlined : Icons.light_mode);
     Widget personalData = _customContainer(
         context,
-        CircleAvatar(
+        const CircleAvatar(
           backgroundColor: AppColors.red,
           child: Icon(Bootstrap.person, color: Colors.white),
         ),
@@ -104,7 +97,7 @@ class MyprofileView extends StatelessWidget {
     }, Icons.arrow_right);
     Widget personalContact = _customContainer(
         context,
-        CircleAvatar(
+        const CircleAvatar(
           backgroundColor: AppColors.red,
           child: Icon(
             Bootstrap.file_person,
@@ -117,7 +110,7 @@ class MyprofileView extends StatelessWidget {
 
     Widget personalColegiatura = _customContainer(
         context,
-        CircleAvatar(
+        const CircleAvatar(
           backgroundColor: AppColors.red,
           child: Icon(Bootstrap.award, color: Colors.white),
         ),
@@ -158,43 +151,52 @@ class MyprofileView extends StatelessWidget {
         Icons.arrow_forward_ios);
 
     return Scaffold(
-        appBar: AppBar(
-            backgroundColor: AppColors.primary(context),
-            // leading: const LeadingAppbar(),
-            title: Text("Perfil",
-                style: AppTextStyle(context).bold18(color: Colors.white))),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15.0),
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Column(
-                  spacing: 20.0,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    profilePhoto,
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 25.0,
-              ),
-              Column(
-                spacing: 12.0,
+            appBar: AppBar(
+              leading: InkWell(
+                onTap: () => Navigator.pop(context),
+                child: const Icon(Icons.arrow_back, color: Colors.white,)),
+                backgroundColor: AppColors.primary(context),
+                // leading: const LeadingAppbar(),
+                title: Text("Perfil",
+                    style: AppTextStyle(context).bold18(color: Colors.white))),
+            body: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15.0),
+              child: Row(
                 children: [
-                  personalData,
-                  personalContact,
-                  personalColegiatura,
-                  changePassword,
-                  darkMode,
-                  closeSesion
+                  Expanded(
+                    child: ListView(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Column(
+                            spacing: 20.0,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              profilePhoto,
+                            ],
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 25.0,
+                        ),
+                        personalData,
+                        const SizedBox(height: 12,),
+                        personalContact,
+                        const SizedBox(height: 12,),
+                        personalColegiatura,
+                        const SizedBox(height: 12,),
+                        changePassword,
+                        const SizedBox(height: 12,),
+                        darkMode,
+                        const SizedBox(height: 12,),
+                        closeSesion,
+                        const SizedBox(height: 12,),
+                      ],
+                    ),
+                  ),
                 ],
               ),
-              // const SizedBox(height: 25.0,)
-            ],
-          ),
-        ));
+            ));
   }
 }
 

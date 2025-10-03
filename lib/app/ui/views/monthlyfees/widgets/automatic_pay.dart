@@ -1,5 +1,5 @@
-import 'package:cip_payment_app/app/ui/components/btn_primary_ink.dart';
-import 'package:cip_payment_app/app/ui/views/monthlyfees/monthlyfees_controller.dart';
+import 'package:cip_payment_app/app/ui/components/btn/btn_primary_ink.dart';
+import 'package:cip_payment_app/app/ui/views/monthlyfees/monthlyfees_provider.dart';
 import 'package:cip_payment_app/core/theme/app_colors.dart';
 import 'package:cip_payment_app/core/theme/app_text_style.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +38,7 @@ class AutomaticPay extends StatelessWidget {
         );
 
     return ChangeNotifierProvider(
-        create: (_) => MonthlyfeesController(),
+        create: (_) => MonthlyfeesProvider(),
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           backgroundColor: AppColors.backgroundColor(context),

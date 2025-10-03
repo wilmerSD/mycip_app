@@ -39,13 +39,13 @@ class AlertDialogComponent extends StatelessWidget {
     return PopScope(
       //canPop: (isDismissibleDialog) ? null : () => Future.value(false),
       child: AlertDialog(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.popUpColor(context),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(kRadiusSmall),
         ),
         title: (headerTitle != null)
             ? Text(headerTitle!,
-                style: AppTextStyle(context).bold14(color: AppColors.primaryConst),
+                style: AppTextStyle(context).bold14(),
                 textAlign: TextAlign.center)
             : null,
         contentPadding: const EdgeInsets.all(15.0),
@@ -80,7 +80,7 @@ class AlertDialogComponent extends StatelessWidget {
                           ? Text(
                               title!,
                               style: AppTextStyle(context)
-                                  .bold14(color: AppColors.black),
+                                  .bold14(),
                             )
                           : Container(),
                       (title != null)

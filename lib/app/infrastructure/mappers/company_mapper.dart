@@ -1,0 +1,19 @@
+import 'package:cip_payment_app/app/domain/entities/company.dart';
+import 'package:cip_payment_app/app/infrastructure/models/company_model.dart';
+
+class CompanyMapper {
+  static Company companyResponseToEntity(CompanyModel company) =>
+  Company(
+    id: company.id ?? '',
+    address: company.address ?? '',
+    businessName: company.businessName ?? '',
+    createdAt: company.createdAt?.toDate() ?? DateTime.now(),
+    email: company.email ?? '',
+    personId: company.personId ?? '',
+    phone: company.phone,
+    ruc: company.ruc ?? '',
+    status: company.status ?? false,
+    tradeName: company.tradeName ?? '',
+    updatedAt: company.updatedAt?.toDate() ?? DateTime.now(),
+  );
+}

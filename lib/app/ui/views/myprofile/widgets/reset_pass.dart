@@ -1,9 +1,9 @@
-import 'package:cip_payment_app/app/ui/components/btn_primary_ink.dart';
+import 'package:cip_payment_app/app/ui/components/appbar/custom_appbar.dart';
+import 'package:cip_payment_app/app/ui/components/btn/btn_primary_ink.dart';
 import 'package:cip_payment_app/app/ui/components/field_form.dart';
-import 'package:cip_payment_app/app/ui/views/myprofile/myprofile_controller.dart';
-import 'package:cip_payment_app/app/ui/views/myprofile/widgets/custom_tittle_appbar.dart';
-import 'package:cip_payment_app/app/ui/views/recoverpass/widgets/leading.dart';
-import 'package:cip_payment_app/app/ui/views/recoverpass/widgets/text_tittle.dart';
+import 'package:cip_payment_app/app/ui/views/myprofile/myprofile_provider.dart';
+import 'package:cip_payment_app/app/ui/components/appbar/custom_tittle_appbar.dart';
+import 'package:cip_payment_app/app/ui/components/appbar/leading.dart';
 import 'package:cip_payment_app/core/theme/app_colors.dart';
 import 'package:cip_payment_app/core/theme/app_text_style.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +14,7 @@ class ResetPass extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final recoverpassController = Provider.of<MyprofileController>(context);
+    final recoverpassController = Provider.of<MyprofileProvider>(context);
 
     /* 📌 Input de password */
     Widget inputPass = FieldForm(
@@ -65,9 +65,8 @@ class ResetPass extends StatelessWidget {
     );
 
     return Scaffold(
-        appBar: AppBar(
-          leading: const Leading(),
-          title: const CustomTittleAppbar(tittle: 'Seguridad'),
+        appBar: const CustomAppBar(
+          title: 'Seguridad',
         ),
         body: SafeArea(
           child: Padding(

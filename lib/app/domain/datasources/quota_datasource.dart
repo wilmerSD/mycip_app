@@ -1,0 +1,17 @@
+import 'package:cip_payment_app/app/domain/entities/quota.dart';
+import 'package:cip_payment_app/app/infrastructure/models/quota_model.dart';
+
+abstract class QuotaDatasource {
+  Future<List<Quota>> fetchAllQuotas(); // Para el admin
+  Future<List<Quota>> fetchQuotasByPerson(String personId); // Para un usuario
+  Future<Quota?> createQuota(QuotaModel course);
+  Future<bool> generateQuotasForEligiblePersons({
+    required int feeMonth,
+    required int feeYear,
+    required double amount,
+  });
+  Future<bool> hasPendingQuotas(String personId);
+  
+  Future<List<Quota>> updateQuotas(List<QuotaModel> quotasToPay);
+  
+}

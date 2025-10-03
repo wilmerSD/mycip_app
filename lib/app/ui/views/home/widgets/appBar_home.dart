@@ -2,20 +2,21 @@ import 'package:cip_payment_app/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class AppBarHome extends StatelessWidget {
-  const AppBarHome({Key? key}) : super(key: key);
+  const AppBarHome({super.key});
 
   @override
   Widget build(BuildContext context) {
 
     return Container(
-        margin: const EdgeInsets.only(top: 60.0),
+        margin: const EdgeInsets.only(top: 30.0),
         child: Column(
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  height: 60.0,
+                  height: 45.0,
+                  width: 45.0,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: AppColors.backgroundColor(context),
@@ -33,9 +34,9 @@ class AppBarHome extends StatelessWidget {
                     /* onPressed: () {
                       controller.navigateToScreen();
                     }, */
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.menu,
-                      color: AppColors.primary(context),
+                      color: AppColors.granateConst,
                     ),
                   ),
                 ),

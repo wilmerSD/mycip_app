@@ -1,7 +1,8 @@
 import 'package:cip_payment_app/app/providers/auth_provider.dart';
+import 'package:cip_payment_app/app/ui/components/appbar/custom_appbar.dart';
 import 'package:cip_payment_app/app/ui/components/display_text.dart';
-import 'package:cip_payment_app/app/ui/views/myprofile/widgets/custom_tittle_appbar.dart';
-import 'package:cip_payment_app/app/ui/views/recoverpass/widgets/leading.dart';
+import 'package:cip_payment_app/app/ui/components/appbar/custom_tittle_appbar.dart';
+import 'package:cip_payment_app/app/ui/components/appbar/leading.dart';
 import 'package:cip_payment_app/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -39,9 +40,7 @@ class PersonalData extends StatelessWidget {
     );
 
     Widget inputCivilState = DisplayText(
-      helperText: 'Estado civil',
-     text: person?.civilStatus ?? ''
-    );
+        helperText: 'Estado civil', text: person?.civilStatus ?? '');
 
     Widget inputBirthDate = DisplayText(
       helperText: 'Fecha de nacimiento',
@@ -50,11 +49,8 @@ class PersonalData extends StatelessWidget {
 
     return Scaffold(
         backgroundColor: AppColors.backgroundColor(context),
-        appBar: AppBar(
-          backgroundColor: AppColors.backgroundColor(context),
-          surfaceTintColor: Colors.transparent,
-          leading: const Leading(),
-          title: const CustomTittleAppbar(tittle: 'Datos personales'),
+        appBar: const CustomAppBar(
+          title: 'Datos personales',
         ),
         body: Padding(
           padding: const EdgeInsets.all(15),

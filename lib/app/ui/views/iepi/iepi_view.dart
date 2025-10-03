@@ -1,11 +1,11 @@
-import 'package:cip_payment_app/app/ui/components/btn_secondary.dart';
-import 'package:cip_payment_app/app/ui/components/btn_third.dart';
-import 'package:cip_payment_app/app/ui/views/myprofile/widgets/custom_tittle_appbar.dart';
-import 'package:cip_payment_app/app/ui/views/recoverpass/widgets/leading.dart';
-import 'package:cip_payment_app/app/ui/views/iepi/iepi_controller.dart';
+import 'package:cip_payment_app/app/routes/app_routes_name.dart';
+import 'package:cip_payment_app/app/ui/components/btn/btn_secondary.dart';
+import 'package:cip_payment_app/app/ui/components/btn/btn_third.dart';
+import 'package:cip_payment_app/app/ui/components/appbar/custom_tittle_appbar.dart';
+import 'package:cip_payment_app/app/ui/components/appbar/leading.dart';
+import 'package:cip_payment_app/app/ui/views/iepi/iepi_provider.dart';
 import 'package:cip_payment_app/core/theme/app_colors.dart';
 import 'package:cip_payment_app/core/theme/app_text_style.dart';
-import 'package:cip_payment_app/routes/app_routes_name.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
@@ -15,7 +15,7 @@ class IepiView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final iepiController = Provider.of<IepiController>(context);
+    final iepiController = Provider.of<IepiProvider>(context);
 
     return Scaffold(
       backgroundColor: AppColors.backgroundColor(context),

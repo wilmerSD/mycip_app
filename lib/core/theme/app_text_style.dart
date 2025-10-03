@@ -55,7 +55,7 @@ class AppTextStyle {
           fontSize: 23.0,
           fontFamily: 'Montserrat');
   TextStyle bold22(
-          {Color color = Colors.black,
+          {Color? color,
           FontWeight fontWeight = FontWeight.w700}) =>
       Theme.of(context).textTheme.titleLarge!.copyWith(
           color: color,
@@ -96,7 +96,7 @@ class AppTextStyle {
           fontFamily: 'Montserrat');
 
   TextStyle bold17(
-          {Color? color = AppColors.grayDark,
+          {Color? color,
           FontWeight fontWeight = FontWeight.w700}) =>
       Theme.of(context).textTheme.bodyMedium!.copyWith(
           color: color,
@@ -105,7 +105,7 @@ class AppTextStyle {
           fontFamily: 'Montserrat');
 
   TextStyle bold16(
-          {Color? color = AppColors.grayDark,
+          {Color? color,
           FontWeight fontWeight = FontWeight.w700}) =>
       Theme.of(context).textTheme.bodyMedium!.copyWith(
           color: color,
@@ -114,7 +114,7 @@ class AppTextStyle {
           fontFamily: 'Montserrat');
 
   TextStyle bold15(
-          {Color? color = AppColors.grayDark,
+          {Color? color ,
           FontWeight fontWeight = FontWeight.w700}) =>
       Theme.of(context).textTheme.bodyMedium!.copyWith(
           color: color,
@@ -122,8 +122,8 @@ class AppTextStyle {
           fontSize: 15.0,
           fontFamily: 'Montserrat');
 
-  TextStyle bold14(
-          {Color? color = AppColors.grayDark,
+  TextStyle bold14( 
+          {Color? color,
           FontWeight fontWeight = FontWeight.w700}) =>
       Theme.of(context).textTheme.bodyMedium!.copyWith(
           color: color,
@@ -131,7 +131,7 @@ class AppTextStyle {
           fontSize: 14.0,
           fontFamily: 'Montserrat');
   TextStyle bold13(
-          {Color? color = AppColors.grayDark,
+          {Color? color,
           FontWeight fontWeight = FontWeight.w700}) =>
       Theme.of(context).textTheme.bodyMedium!.copyWith(
           color: color,
@@ -219,6 +219,10 @@ class AppTextStyle {
           fontSize: 16.0,
           fontFamily: 'Montserrat');
 
+  TextStyle regular14(
+          {Color? color = AppColors.grayBlue, double size = 14}) =>
+      Theme.of(context).textTheme.bodyMedium!.copyWith(
+          color: color, fontWeight: FontWeight.normal, fontSize: size);
   TextStyle extra40({
     Color? color = Colors.black,
   }) =>
@@ -228,4 +232,77 @@ class AppTextStyle {
             fontSize: 40.0,
             fontFamily: 'Montserrat',
           );
+
+  //Textos
+  TextStyle textGeneral({
+    Color? color
+  })=> Theme.of(context).textTheme.bodyLarge!.copyWith(
+    color: color ?? AppColors.textBasic(context),
+    fontWeight: FontWeight.w300,
+    fontSize: 15,
+    fontFamily: 'Montserrat'
+  );
+
+  TextStyle textCard({
+    Color? color,
+  })=>Theme.of(context).textTheme.bodyMedium!.copyWith(
+    color: color ?? AppColors.textCardColor(context),
+    fontWeight: FontWeight.w400,
+    fontSize: 17.0,
+    fontFamily: 'Montserrat'
+  );
+
+  TextStyle textHeaderRightMain({
+    Color? color,
+  })=>Theme.of(context).textTheme.bodyMedium!.copyWith(
+    color: color ?? AppColors.textBasic(context),
+    fontWeight: FontWeight.w700,
+    fontSize: 14.0,
+    fontFamily: 'Montserrat'
+  );
+
+  TextStyle textHeaderRightSec({
+    Color? color,
+  })=>Theme.of(context).textTheme.bodySmall!.copyWith(
+    color: color ?? AppColors.textBasic(context),
+    fontWeight: FontWeight.w100,
+    fontSize: 13.0,
+    fontFamily: 'Montserrat'
+  );
+
+  TextStyle textTittleContent({
+    Color? color,
+  })=>Theme.of(context).textTheme.bodyMedium!.copyWith(
+    color: color ?? AppColors.textTittleContent(context),
+    fontWeight: FontWeight.w700,
+    fontSize: 24.0,
+    fontFamily: 'Montserrat'
+  );
+
+  TextStyle textToast({
+    Color? color,
+  })=>Theme.of(context).textTheme.bodyMedium!.copyWith(
+    color: color ?? Colors.white,//AppColors.textTittleContent(context),
+    fontWeight: FontWeight.w400,
+    fontSize: 13.0,
+    fontFamily: 'Montserrat'
+  );
+
+  TextStyle textGeneralTerms({
+    Color? color,
+  })=>Theme.of(context).textTheme.bodyMedium!.copyWith(
+    color: color ?? Colors.white,
+    fontWeight: FontWeight.w300,
+    fontSize: 14.0,
+    fontFamily: 'Montserrat'
+  );
+
+    TextStyle textPayment(
+          {Color? color = AppColors.grayDark,
+          FontWeight fontWeight = FontWeight.normal}) =>
+      Theme.of(context).textTheme.bodyMedium!.copyWith(
+          // color: color,
+          fontWeight: fontWeight,
+          fontSize: 14.0,
+          fontFamily: 'Montserrat');
 }

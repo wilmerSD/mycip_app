@@ -1,12 +1,11 @@
-import 'package:cip_payment_app/app/ui/components/btn_primary_ink.dart';
+import 'package:cip_payment_app/app/ui/components/btn/btn_primary_ink.dart';
 import 'package:cip_payment_app/app/ui/components/field_form.dart';
-import 'package:cip_payment_app/app/ui/views/recoverpass/recoverpass_controller.dart';
-import 'package:cip_payment_app/app/ui/views/recoverpass/widgets/leading.dart';
+import 'package:cip_payment_app/app/ui/views/recoverpass/recoverpass_provider.dart';
+import 'package:cip_payment_app/app/ui/components/appbar/leading.dart';
 import 'package:cip_payment_app/app/ui/views/recoverpass/widgets/text_back_login.dart';
 import 'package:cip_payment_app/app/ui/views/recoverpass/widgets/text_tittle.dart';
 import 'package:cip_payment_app/core/theme/app_colors.dart';
 import 'package:cip_payment_app/core/theme/app_text_style.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:provider/provider.dart';
@@ -17,7 +16,7 @@ class RecoverPassCode extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final recoverpassController = Provider.of<RecoverPassController>(context);
+    final recoverpassController = Provider.of<RecoverPassProvider>(context);
 
     /* 📌 Input de código de verificación */
     Widget inputCode = FieldForm(
@@ -87,23 +86,28 @@ class RecoverPassCode extends StatelessWidget {
     );
 
     return Scaffold(
-      appBar: AppBar(leading: Leading()),
+      backgroundColor: AppColors.backgroundColor(context),
+      appBar: AppBar(
+        backgroundColor: AppColors.backgroundColor(context),
+        leading: const Leading()),
       body: Padding(
-        padding: EdgeInsets.all(15),
-        child: Column(
-          spacing: 20.0,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TextTittle(
-              tittle: 'Ingresar código',
-              subTittle:
-                  'Por favor ingrese el código que enviamos a su correo electrónico',
-            ),
-            codeVerification,
-            btnSendCodeVerification,
-            Spacer(),
-            Center(child: TextBackLogin()),
-          ],
+        padding: const EdgeInsets.all(15),
+        child: SafeArea(
+          child: Column(
+            spacing: 20.0,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TextTittle(
+                tittle: 'Ingresar código',
+                subTittle:
+                    'Por favor ingrese el código que enviamos a su correo electrónico',
+              ),
+              codeVerification,
+              btnSendCodeVerification,
+              const Spacer(),
+              const Center(child: TextBackLogin()),
+            ],
+          ),
         ),
       ),
     );

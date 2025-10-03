@@ -1,19 +1,41 @@
-import 'package:cip_payment_app/app/models/person_model.dart';
+import 'package:cip_payment_app/app/domain/entities/person.dart';
+import 'package:cip_payment_app/app/infrastructure/datasources/persondb_datasource.dart';
+import 'package:cip_payment_app/app/infrastructure/repositories/person_repository_impl.dart';
+import 'package:cip_payment_app/preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-
 class AuthProvider with ChangeNotifier {
-  PersonModel? _currentPerson;
+
+  bool _isLoading = true;
+  Person? _currentPerson;
   DateTime? _birthDate;
   DateTime? _entryDate;
+  bool get isLoggedIn => _currentPerson != null;
+  bool get isLoading => _isLoading;
   
   DateTime? get birthDate => _birthDate;
-  PersonModel? get currentPerson => _currentPerson;
+  Person? get currentPerson => _currentPerson;
 
-  void setPerson(PersonModel person) {
+  void setPerson(Person person) async{
     _currentPerson = person;
+    PreferencesUser.personId = person.id; // se guarda directo
+    PreferencesUser.mainEmail = person.emailMain; // se guarda directo
+    notifyListeners();
+  }
+  Future<void> loadPerson() async {
+    _isLoading = true;
+    final id = PreferencesUser.personId;
+    if (id.isNotEmpty) {
+      // _currentPerson = await PersonService().getPersonById(id);
+      _currentPerson = await PersonRepositoryImpl(PersondbDatasource()).getPersonById(id);
+    }
+    _isLoading = false;
+     notifyListeners();
+  }
+
+  void notifyChange() {
     notifyListeners();
   }
 
@@ -28,6 +50,7 @@ class AuthProvider with ChangeNotifier {
     _entryDate = date;
     notifyListeners();
   }
+
   int? get age {
     if (_birthDate == null) return null;
 
@@ -61,8 +84,14 @@ class AuthProvider with ChangeNotifier {
     return DateFormat('dd/MM/yyyy').format(_birthDate!);
   }
 
-  void logout() {
+  // void logout() {
+  //   _currentPerson = null;
+  //   notifyListeners();
+  // }
+
+   void logout() {
     _currentPerson = null;
+    PreferencesUser.personId = ''; // limpiar cache
     notifyListeners();
   }
 }

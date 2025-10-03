@@ -1,6 +1,6 @@
+import 'package:cip_payment_app/app/routes/app_routes_name.dart';
 import 'package:cip_payment_app/core/theme/app_colors.dart';
 import 'package:cip_payment_app/core/theme/app_text_style.dart';
-import 'package:cip_payment_app/routes/app_routes_name.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

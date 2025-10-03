@@ -1,11 +1,26 @@
-import 'dart:convert';
+import 'dart:math';
+
 import 'package:cip_payment_app/core/theme/app_colors.dart';
-import 'package:cip_payment_app/routes/app_routes_name.dart';
-import 'package:flutter/services.dart' show rootBundle;
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class Helpers {
+  static final List<String> months = [
+    "Enero",
+    "Febrero",
+    "Marzo",
+    "Abril",
+    "Mayo",
+    "Junio",
+    "Julio",
+    "Agosto",
+    "Septiembre",
+    "Octubre",
+    "Noviembre",
+    "Diciembre",
+  ];
+
   static String formatTime(String dateTimeString) {
     DateTime dateTime = DateTime.parse(dateTimeString);
     return DateFormat('HH:mm').format(dateTime);
@@ -39,17 +54,17 @@ class Helpers {
   /* 📌 Obtener iniciales de los nombres*/
   static String getInitial(String name) {
     if (name.isEmpty) return '';
-    
+
     List<String> parts = name.trim().split(' ');
     /* String initials = parts
         .where((part) => part.isNotEmpty) // Elimina strings vacíos
         .map((part) => part[0].toUpperCase()) // Toma la primera letra
         .join(); */
-     String initials = parts
-      .where((part) => part.isNotEmpty) // Filtrar vacíos primero
-      .take(2) // Solo las primeras dos palabras
-      .map((part) => part[0].toUpperCase())
-      .join();
+    String initials = parts
+        .where((part) => part.isNotEmpty) // Filtrar vacíos primero
+        .take(2) // Solo las primeras dos palabras
+        .map((part) => part[0].toUpperCase())
+        .join();
     return initials;
   }
 
@@ -111,17 +126,37 @@ class Helpers {
     return '${parts[2]}/${parts[1]}/${parts[0].substring(2)}';
   }
 
-  static Future<dynamic> loadJsonAssets(String fileName) async {
-    final response = await rootBundle.loadString("assets/json/$fileName");
-    return json.decode(response);
-  }
-
   static DateTime stringToDateTime(String dateTimeString) {
     try {
       final formatter = DateFormat('yyyy/MM/dd');
       return formatter.parse(dateTimeString);
     } catch (e) {
       return DateTime.now();
+    }
+  }
+
+  static String timestampToString(Timestamp? timeStamp) {
+    if(timeStamp == null) return '';
+    try {
+      DateTime date = timeStamp.toDate();
+      String formattedDate = DateFormat('yyyy/MM/dd').format(date);
+      return formattedDate;
+    } catch (e) {
+      return '';
+    }
+  }
+
+  static String timestampToMonthYear(Timestamp? timeStamp) {
+    if (timeStamp == null) return '';
+
+    try {
+      DateTime date = timeStamp.toDate();
+      String formattedDate = DateFormat("MMMM yyyy", 'es_ES').format(date);
+
+      // 🔹 Aseguramos que el mes empiece con mayúscula
+      return formattedDate[0].toUpperCase() + formattedDate.substring(1);
+    } catch (e) {
+      return '';
     }
   }
 
@@ -305,66 +340,17 @@ class Helpers {
     return formato.format(fecha);
   }
 
-  // static Future<void> getShowModalBS(
-  //   BuildContext context, {
-  //   required String title,
-  //   required Widget content,
-  // }) async {
-  //   await showModalBottomSheet(
-  //     backgroundColor: Colors.transparent,
-  //     isScrollControlled: true,
-  //     context: context,
-  //     builder: (context) {
-  //       return SingleChildScrollView(
-  //         child: Container(
-  //           padding: EdgeInsets.only(
-  //             bottom: MediaQuery.of(context).viewInsets.bottom,
-  //           ),
-  //           child: Column(
-  //             mainAxisSize: MainAxisSize.min,
-  //             children: [
-  //               Container(
-  //                 width: 50.w,
-  //                 height: 10.h,
-  //                 margin: EdgeInsets.only(bottom: 10.h),
-  //                 decoration: BoxDecoration(
-  //                   color: AppColors.backgroundColor(context),
-  //                   borderRadius: BorderRadius.circular(10.r),
-  //                 ),
-  //               ),
-  //               Container(
-  //                 padding: const EdgeInsets.symmetric(
-  //                   horizontal: 25.0,
-  //                   vertical: 15.0,
-  //                 ),
-  //                 decoration: BoxDecoration(
-  //                   color: AppColors.backgroundColor(context),
-  //                   borderRadius: BorderRadius.only(
-  //                     topLeft: Radius.circular(kRadiusNormal.r),
-  //                     topRight: Radius.circular(kRadiusNormal.r),
-  //                   ),
-  //                 ),
-  //                 child: Column(
-  //                   crossAxisAlignment: CrossAxisAlignment.start,
-  //                   children: [
-  //                     Container(
-  //                       margin: EdgeInsets.only(bottom: 10.h),
-  //                       child: Text(
-  //                         title,
-  //                         style: AppTextStyle(context).bold16(),
-  //                       ),
-  //                     ),
-  //                     content,
-  //                   ],
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
+  static Timestamp? stringToTimestamp(String dateString,
+      {String format = "dd-MM-yyyy"}) {
+    try {
+      final DateFormat formatter = DateFormat(format);
+      final DateTime parsedDate = formatter.parse(dateString);
+
+      return Timestamp.fromDate(parsedDate);
+    } catch (e) {
+      return null;
+    }
+  }
 
   /* 📌 Comparar que las contraseñas ingresadas sean iguales */
   static String? comparePassword(String firstPass, String secondPass) {
@@ -460,19 +446,69 @@ class Helpers {
     return formattedDateString;
   }
 
-
-
-
-  static void goToLoginRemoveUntil(BuildContext context) {
-    Navigator.pushNamedAndRemoveUntil(
-      context,
-      AppRoutesName.LOGIN,
-      (Route<dynamic> route) => false,
-    );
+  static int toCents(double soles, {bool truncate = false}) {
+    if (truncate) {
+      // Truncar a 2 decimales sin redondear
+      double truncated = (soles * 100).truncateToDouble() / 100;
+      return (truncated * 100).toInt();
+    } else {
+      // Redondear al entero más cercano
+      return (soles * 100).round();
+    }
   }
 
-  static void goToRecoverPass(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutesName.RECOVERPASS);
+  static String getNameMonth(int month) {
+    if (month < 1 || month > 12) return "";
+    List<String> months = [
+      "Enero",
+      "Febrero",
+      "Marzo",
+      "Abril",
+      "Mayo",
+      "Junio",
+      "Julio",
+      "Agosto",
+      "Septiembre",
+      "Octubre",
+      "Noviembre",
+      "Diciembre",
+    ];
+    return months[month - 1];
   }
 
+  static String formatCustomDate(int? timestampMs) {
+    final date = timestampMs != null
+        ? DateTime.fromMillisecondsSinceEpoch(timestampMs)
+        : DateTime.now();
+
+    final day = date.day;
+    final month = months[date.month - 1];
+    final year = date.year;
+
+    final hour = date.hour.toString().padLeft(2, '0');
+    final minute = date.minute.toString().padLeft(2, '0');
+
+    return "$day de $month de $year - $hour:$minute horas";
+  }
+
+  static String generateRandomOperationNumber({int length = 13}) {
+    final random = Random();
+    const chars = '0123456789';
+    return List.generate(
+      length,
+      (index) => chars[random.nextInt(chars.length)],
+    ).join();
+  }
+
+  static String typePay(int? type) {
+    if (type == null) return '';
+    switch (type) {
+      case 0:
+        return 'Boleta';
+      case 1:
+        return 'Factura';
+      default:
+        return 'Desconocido';
+    } 
+  }
 }

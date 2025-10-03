@@ -1,7 +1,7 @@
 import 'package:cip_payment_app/app/ui/components/alert/popup_general.dart';
-import 'package:cip_payment_app/app/ui/components/btn_primary_ink.dart';
+import 'package:cip_payment_app/app/ui/components/btn/btn_primary_ink.dart';
 import 'package:cip_payment_app/app/ui/components/custom_text_field.dart';
-import 'package:cip_payment_app/app/ui/views/advancepayment/advancepayment_controller.dart';
+import 'package:cip_payment_app/app/ui/views/advancepayment/advancepayment_provider.dart';
 import 'package:cip_payment_app/app/ui/views/monthlyfees/widgets/checkout_monthlyfees.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -11,7 +11,7 @@ const DetailAdvanceCuotas({ super.key });
   
   @override
   Widget build(BuildContext context){
-    final advancepayment = Provider.of<AdvancepaymentController>(context);
+    final advancepayment = Provider.of<AdvancepaymentProvider>(context);
     
     Widget subTotal= CustomTextField(
       enabledfield: true,

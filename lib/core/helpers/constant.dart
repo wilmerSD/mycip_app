@@ -2,6 +2,12 @@
 const kApiKey = "NPTx1LIEjVFe4dX2SlGAcB5hUVmloD8hxC0VYWVd";
 
 /// Usa [kSize]para definir el Size de: buttons, cards, containers, etc.
+const minWidthNormalLittleTable = 2150.0;
+const minWidthNormalTable = 1000.0;
+const minWidthSmallTable = 1500.0;
+const minWidthSmallLittleTables = 1400.0;
+const minWidthLittleTable = 300.0;
+
 const kSize = 15.0;
 const kSizeExtra = 205.0;
 const kSizeBigAmple = 489.0;
@@ -26,6 +32,10 @@ const kSizeNormalLittle = 18.0;
 const kSizeSmallLittle = 10.0;
 const kSizeLittle = 5.0;
 
+const kSizekSizeSmallBigWeb = 90.0;
+const kSizeSmallAmpleWeb = 600.0;
+const kSizeAmpleWeb = 265.0;
+
 /// Usa [kMarginApp] para definir el margen izquiero y derecho de la app
 const kMarginExtraBigApp = 73.0;
 const kMarginApp = 15.0;
@@ -49,6 +59,7 @@ const kPaddingAppLittleApp = 5.0;
 const kRadiusAmple = 75.0;
 const kRadiusLarge = 30.0;
 const kRadiusNormal = 25.0;
+const kRadiusBetweenMedionAndNormal = 20.0;
 const kRadiusMedium = 15.0;
 const kRadiusSmall = 10.0;
 const kRadiusLittle = 8.0;
@@ -105,3 +116,9 @@ const textconfirmText = "ACEPTAR";
 
 //MAXIMUN CHARACTERES IN TEXT FIELDS
 const reasonMax = 100;
+
+// TEXT BOTONS
+const textMonthlyfees = "Cuotas mensuales";
+const textCertificateskill = "Certificado de habilidad";
+const textProofnodebt = "Constancia de no adeudo";
+const textAdvancepayment = "Adelanto de cuotas";

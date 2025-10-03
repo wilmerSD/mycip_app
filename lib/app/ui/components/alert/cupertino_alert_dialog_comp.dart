@@ -26,7 +26,7 @@ class CupertinoAlertDialogComp extends StatelessWidget {
       title: Text(
         tittle,
         style: AppTextStyle(context).bold14(
-          color: Colors.black// AppColors.textBasic(context),
+          // color: Colors.black// AppColors.textBasic(context),
         ),
       ),
       content: content,

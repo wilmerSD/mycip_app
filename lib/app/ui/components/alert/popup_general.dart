@@ -3,7 +3,7 @@ import 'package:cip_payment_app/core/theme/app_text_style.dart';
 import 'package:flutter/material.dart';
 
 class PopupGeneral extends StatelessWidget {
-  final String title;
+  final String? title;
   final double borderRadius; // Nuevo parámetro para ajustar el radio
   final TextStyle? titleStyle; // Estilo del título
   final TextStyle? optionStyle; // Estilo de las opciones
@@ -13,7 +13,7 @@ class PopupGeneral extends StatelessWidget {
 
   const PopupGeneral({
     super.key,
-    required this.title,
+    this.title,
     required this.onTapButton,
     this.borderRadius = 8.0, // Valor predeterminado
     this.titleStyle,
@@ -25,16 +25,19 @@ class PopupGeneral extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: AppColors.backgroundColor(context),
-       insetPadding: const EdgeInsets.symmetric(horizontal: 20.0),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 10.0),
-      scrollable: scrollable,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(borderRadius),
-      ),
-      title: Text(title, style: titleStyle ?? AppTextStyle(context).bold26(
-                                          color: AppColors.primaryConst),),
-      content: content
-    );
+        backgroundColor: AppColors.backgroundColor(context),
+        insetPadding:
+            const EdgeInsets.symmetric(horizontal: 20.0, vertical: 30.0),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+        scrollable: scrollable,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(borderRadius),
+        ),
+        title: title == null ? Text(
+                title!,
+                style: titleStyle ??
+                    AppTextStyle(context).bold26(color: AppColors.primaryConst),
+              ): null,
+        content: content);
   }
 }

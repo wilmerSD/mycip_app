@@ -1,81 +1,73 @@
-import 'package:cip_payment_app/app/ui/components/btn_primary.dart';
-import 'package:cip_payment_app/app/ui/components/btn_primary_ink.dart';
-import 'package:cip_payment_app/app/ui/components/btn_secondary.dart';
+import 'package:cip_payment_app/app/ui/components/btn/btn_primary.dart';
+import 'package:cip_payment_app/app/ui/components/appbar/custom_appbar.dart';
+import 'package:cip_payment_app/app/ui/components/btn/btn_primary_ink.dart';
+import 'package:cip_payment_app/app/ui/components/field/read_only_field.dart';
+import 'package:cip_payment_app/app/ui/views/proofnodebt/proofnodebt_provider.dart';
+import 'package:cip_payment_app/core/helpers/constant.dart';
 import 'package:cip_payment_app/core/theme/app_colors.dart';
-import 'package:cip_payment_app/core/theme/app_text_style.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ProofnodebtView extends StatelessWidget {
-  const ProofnodebtView({Key? key}) : super(key: key);
+  const ProofnodebtView({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: AppColors.backgroundColor(context),
-        appBar: AppBar(
-          title: const Text('Constancia de no adeudo'),
+      backgroundColor: AppColors.backgroundColor(context),
+      appBar: const CustomAppBar(title: textProofnodebt,),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+          child: customPyBefore(context, textProofnodebt),
         ),
-        body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 15.0),
-          child: Column(
-            // mainAxisAlignment: MainAxisAlignment.end,
-            // crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              const Spacer(),
-              Container(
-                padding: EdgeInsets.all(15.0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                  color: AppColors.backgroundColor(context),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color.fromRGBO(0, 0, 0, 0.07),
-                      spreadRadius: 1,
-                      blurRadius: 5,
-                      offset: Offset(0, 1), // changes position of shadow
-                    ),
-                  ],
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  spacing: 15.0,
-                  children: [
-                    RichText(
-                      text: TextSpan(
-                        // text: 'Hello ',
-                        style: DefaultTextStyle.of(context).style,
-                        children: <TextSpan>[
-                          TextSpan(
-                              text: 'Para poder emitir su ',
-                              style: AppTextStyle(context).bold18(fontWeight: FontWeight.w300)),
-                          TextSpan(
-                              text: 'constancia de no adeudo ',
-                              style: AppTextStyle(context).bold18()),
-                          TextSpan(
-                              text: 'debe pagar su cuota pendiente de S/. 20',
-                              style: AppTextStyle(context).bold18(fontWeight: FontWeight.w300)),
-                        ],
-                      ),
-                    ),
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      spacing: 15.0,
-                      children: [
-                        Expanded(child: SizedBox()),
-                        Expanded(child: BtnSecondary(text: 'Volver',)),
-                        Expanded(
-                          child: SizedBox(
-                            height: 47.0,
-                            child:  BtnPrimary(text: 'Ir a pagar')),
-                        )
-                      ],
-                    )
-                  ],
-                ),
-              ),
-              const Spacer()
-            ],
-          ),
-        ));
+      ),
+    );
   }
+}
+
+Widget customPyBefore(BuildContext context, String text) {
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    final proofnodebtProvider = Provider.of<ProofnodebtProvider>(
+      context,
+      listen: false,
+    );
+    proofnodebtProvider.onInit(context);
+  });
+
+  return SizedBox(
+    // color: Colors.amber,
+    child: Column(
+      spacing: 20.0,
+      children: [
+        _textFieldCip(),
+        _textFieldCollege(),
+        _textFieldState(),
+        _textFieldEnabledUntil(),
+        const Spacer(),
+        _btnPay(),
+        const SizedBox()
+      ],
+    ),
+  );
+}
+
+Widget _textFieldCip() {
+  return const ReadOnlyField(label: 'Cip', value: '123342341413');
+}
+
+Widget _textFieldCollege() {
+  return const ReadOnlyField(label: 'Colegiado', value: '123342341413');
+}
+
+Widget _textFieldState() {
+  return const ReadOnlyField(label: 'Estado', value: '123342341413');
+}
+
+Widget _textFieldEnabledUntil() {
+  return const ReadOnlyField(label: 'Habilitado hasta', value: '123342341413');
+}
+
+Widget _btnPay() {
+  return const BtnPrimaryInk(text: 'Pagar');
 }

@@ -1,11 +1,11 @@
 import 'package:cip_payment_app/app/providers/auth_provider.dart';
-import 'package:cip_payment_app/app/ui/components/btn_primary_ink.dart';
-import 'package:cip_payment_app/app/ui/components/custom_text_field.dart';
+import 'package:cip_payment_app/app/ui/components/appbar/custom_appbar.dart';
+import 'package:cip_payment_app/app/ui/components/btn/btn_primary_ink.dart';
 import 'package:cip_payment_app/app/ui/components/display_text.dart';
-import 'package:cip_payment_app/app/ui/views/myprofile/myprofile_controller.dart';
-import 'package:cip_payment_app/app/ui/views/myprofile/widgets/custom_tittle_appbar.dart';
+import 'package:cip_payment_app/app/ui/views/myprofile/myprofile_provider.dart';
+import 'package:cip_payment_app/app/ui/components/appbar/custom_tittle_appbar.dart';
 import 'package:cip_payment_app/app/ui/views/myprofile/widgets/data_table_college.dart';
-import 'package:cip_payment_app/app/ui/views/recoverpass/widgets/leading.dart';
+import 'package:cip_payment_app/app/ui/components/appbar/leading.dart';
 import 'package:cip_payment_app/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -15,7 +15,7 @@ const PersonalCollege({ super.key });
 
   @override
   Widget build(BuildContext context) {
-    final recoverpassController = Provider.of<MyprofileController>(context);
+    final recoverpassController = Provider.of<MyprofileProvider>(context);
     final authProvider = Provider.of<AuthProvider>(context);
     final person = authProvider.currentPerson;
     
@@ -49,11 +49,8 @@ const PersonalCollege({ super.key });
 
     return Scaffold(
       backgroundColor: AppColors.backgroundColor(context),
-        appBar: AppBar(
-          backgroundColor: AppColors.backgroundColor(context),
-          surfaceTintColor:Colors.transparent, 
-          leading: const Leading(),
-          title: const CustomTittleAppbar(tittle: 'Colegiatura'),
+        appBar: const CustomAppBar(
+          title: 'Colegiatura',
         ),
         body: Padding(
           padding: const EdgeInsets.all(15),

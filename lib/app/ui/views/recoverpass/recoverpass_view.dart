@@ -1,13 +1,12 @@
-import 'package:cip_payment_app/app/ui/components/btn_primary_ink.dart';
+import 'package:cip_payment_app/app/routes/app_routes_name.dart';
+import 'package:cip_payment_app/app/ui/components/btn/btn_primary_ink.dart';
 import 'package:cip_payment_app/app/ui/components/field_form.dart';
-import 'package:cip_payment_app/app/ui/views/login/login_controller.dart';
+import 'package:cip_payment_app/app/ui/views/login/login_provider.dart';
 import 'package:cip_payment_app/core/theme/app_colors.dart';
 import 'package:cip_payment_app/core/theme/app_text_style.dart';
-import 'package:cip_payment_app/routes/app_routes_name.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:lottie/lottie.dart';
 
 class RecoverpassView extends StatelessWidget {
   const RecoverpassView({super.key});
@@ -15,7 +14,7 @@ class RecoverpassView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Ya que se está utilizando Provider, no necesitas definirlo de nuevo aquí.
-    final loginController = Provider.of<LoginController>(context);
+    final loginController = Provider.of<LoginProvider>(context);
     Widget imageLogo = Container(
       width: 100.0,
       height: 100.0,
