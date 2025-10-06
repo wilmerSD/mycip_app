@@ -1,7 +1,8 @@
 import 'package:cip_payment_app/app/ui/components/appbar/custom_appbar.dart';
 import 'package:cip_payment_app/app/ui/components/btn/btn_primary_ink.dart';
 import 'package:cip_payment_app/app/ui/components/custom_data_right.dart';
-import 'package:cip_payment_app/app/ui/components/custom_text_field.dart';
+import 'package:cip_payment_app/app/ui/components/field/custom_text_field.dart';
+import 'package:cip_payment_app/app/ui/components/field/read_only_field.dart';
 import 'package:cip_payment_app/app/ui/views/advancepayment/advancepayment_provider.dart';
 import 'package:cip_payment_app/core/helpers/constant.dart';
 import 'package:cip_payment_app/core/theme/app_colors.dart';
@@ -77,31 +78,25 @@ class AdvancepaymentView extends StatelessWidget {
 
 Widget valueOfQuota(BuildContext context) {
   final advancepayment = Provider.of<AdvancepaymentProvider>(context);
-  return CustomTextField(
-    enabledfield: true,
-    helperText: 'Valor de la cuota',
-    textInputType: TextInputType.emailAddress,
-    textEditingController: advancepayment.ctrlValueOfQuota,
+  return ReadOnlyField(
+    label: 'Valor de la cuota',
+    value: advancepayment.ctrlValueOfQuota,
   );
 }
 
 Widget discuount(BuildContext context) {
   final advancepayment = Provider.of<AdvancepaymentProvider>(context);
-  return CustomTextField(
-    enabledfield: true,
-    helperText: 'Descuento',
-    textInputType: TextInputType.emailAddress,
-    textEditingController: advancepayment.ctrlPercentDiscount,
+  return ReadOnlyField(
+    label: 'Descuento',
+    value: advancepayment.ctrlPercentDiscount,
   );
 }
 
 Widget enabledUntilAdvancedPay(BuildContext context) {
   final advancepayment = Provider.of<AdvancepaymentProvider>(context);
-  return CustomTextField(
-    enabledfield: true,
-    helperText: "Habilitado hasta",
-    textInputType: TextInputType.emailAddress,
-    textEditingController: advancepayment.ctrlEnabledUntil,
+  return ReadOnlyField(
+    label: "Habilitado hasta",
+    value: advancepayment.ctrlEnabledUntil
   );
 }
 
@@ -116,31 +111,25 @@ Widget numberQuotas(BuildContext context) {
 
 Widget wouldBeEnabledUntil(BuildContext context) {
   final advancepayment = Provider.of<AdvancepaymentProvider>(context);
-  return CustomTextField(
-    enabledfield: true,
-    helperText: "Tu habilitación cubre hasta",
-    textInputType: TextInputType.emailAddress,
-    textEditingController: advancepayment.ctrlEnabledUntil,
+  return ReadOnlyField(
+    label: "Tu habilitación cubre hasta",
+    value: advancepayment.ctrlEnabledUntil,
   );
 }
 
 Widget subTotal(BuildContext context) {
   final advancepayment = Provider.of<AdvancepaymentProvider>(context);
-  return CustomTextField(
-    enabledfield: true,
-    helperText: "Sub total",
-    textInputType: TextInputType.emailAddress,
-    textEditingController: advancepayment.ctrlSubTotal,
+  return ReadOnlyField(
+    label: "Sub total",
+    value: advancepayment.ctrlSubTotal,
   );
 }
 
 Widget saveMoney(BuildContext context) {
   final advancepayment = Provider.of<AdvancepaymentProvider>(context);
-  return CustomTextField(
-    enabledfield: true,
-    helperText: "Ahorras",
-    textInputType: TextInputType.emailAddress,
-    textEditingController: advancepayment.ctrlDiscount,
+  return ReadOnlyField(
+    label: "Ahorras",
+    value: advancepayment.ctrlDiscount,
   );
 }
 

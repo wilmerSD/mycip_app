@@ -30,3 +30,12 @@ enum ReceiptType {
   final int code;
   const ReceiptType(this.code);
 }
+
+enum PlatformPayment {
+  app(0),
+  web(0), 
+  caja(1);
+
+  final int code;
+  const PlatformPayment(this.code);
+}

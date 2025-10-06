@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 
 class FieldForm extends StatelessWidget {
   const FieldForm(
-      {Key? key,
+      {super.key,
       required this.label,
       this.hintText = "",
       this.privateText = false,
@@ -21,8 +21,7 @@ class FieldForm extends StatelessWidget {
       this.textInputType = TextInputType.text,
       this.autofocus = false,
       this.maxLength,
-      this.inputFormats})
-      : super(key: key);
+      this.inputFormats});
   final String label;
   final String hintText;
   final bool privateText;

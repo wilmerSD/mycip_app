@@ -1,12 +1,12 @@
-import 'package:cip_payment_app/app/ui/components/alert/popup_general.dart';
+/* import 'package:cip_payment_app/app/ui/components/alert/popup_general.dart';
 import 'package:cip_payment_app/app/ui/components/btn/btn_primary_ink.dart';
-import 'package:cip_payment_app/app/ui/components/custom_text_field.dart';
+import 'package:cip_payment_app/app/ui/components/field/custom_text_field.dart';
 import 'package:cip_payment_app/app/ui/views/advancepayment/advancepayment_provider.dart';
 import 'package:cip_payment_app/app/ui/views/monthlyfees/widgets/checkout_monthlyfees.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class DetailAdvanceCuotas extends StatelessWidget {
+class DetailAdvanceCuotassss extends StatelessWidget {
 const DetailAdvanceCuotas({ super.key });
   
   @override
@@ -17,7 +17,7 @@ const DetailAdvanceCuotas({ super.key });
       enabledfield: true,
       helperText: 'Sub total',
       textInputType: TextInputType.emailAddress,
-      textEditingController: advancepayment.ctrlSubTotal,
+      textEditingController: advancepayment.ctrlQuantityCuotas,
     );
 
     Widget discount = CustomTextField(
@@ -63,4 +63,4 @@ const DetailAdvanceCuotas({ super.key });
       ),
     );
   }
-}
+} */

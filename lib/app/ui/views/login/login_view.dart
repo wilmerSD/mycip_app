@@ -2,7 +2,7 @@ import 'package:cip_payment_app/app/routes/app_routes_name.dart';
 import 'package:cip_payment_app/app/ui/components/alert/popup_general.dart';
 import 'package:cip_payment_app/app/ui/components/btn/btn_primary_ink.dart';
 import 'package:cip_payment_app/app/ui/components/custom_container.dart';
-import 'package:cip_payment_app/app/ui/components/field_form.dart';
+import 'package:cip_payment_app/app/ui/components/field/field_form.dart';
 import 'package:cip_payment_app/app/ui/components/terms_and_conditions.dart';
 import 'package:cip_payment_app/app/ui/views/login/login_provider.dart';
 import 'package:cip_payment_app/app/ui/views/login/logo.dart';

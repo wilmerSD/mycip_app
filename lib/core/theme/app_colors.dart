@@ -8,6 +8,7 @@ class AppColors {
         ? const Color.fromRGBO(28, 28, 28, 1) //dark
         : const Color.fromRGBO(255, 255, 255, 1); //light
   }
+
   static Color primary(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark
         ? const Color.fromRGBO(227, 30, 36, 1) //dark
@@ -28,9 +29,9 @@ class AppColors {
 
   static Color textQuaternaryBasic(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark
-          ? const Color.fromRGBO(230, 230, 230, 1) //dark
+        ? const Color.fromRGBO(230, 230, 230, 1) //dark
         : const Color.fromRGBO(109, 108, 108, 1); //light
-  } 
+  }
 
   static Color textCardColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark
@@ -47,26 +48,39 @@ class AppColors {
   static Color shadowAppBarColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark
         ? const Color.fromRGBO(70, 70, 70, 1) //dark
-        :const Color.fromRGBO(239, 239, 239, 1); //light
+        : const Color.fromRGBO(239, 239, 239, 1); //light
   }
 
-    static Color cardColor(BuildContext context) {
+  static Color cardColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark
         ? const Color.fromRGBO(58, 58, 62, 1) //dark
         : const Color.fromRGBO(255, 255, 255, 1); //light
   }
 
-    static Color popUpColor(BuildContext context) {
+  static Color popUpColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark
         ? const Color.fromRGBO(66, 66, 66, 1) //dark
         : const Color.fromRGBO(255, 255, 255, 1); //light
   }
 
-    static Color fillTextColor(BuildContext context) {
+  static Color fillTextColor(BuildContext context) {
     return Theme.of(context).brightness == Brightness.dark
-        ? const Color.fromRGBO(113, 113, 113, 1) //dark
+        ? const Color.fromRGBO(113, 113, 113, 0.5) //dark
         : const Color.fromRGBO(246, 247, 249, 1); //light
   }
+
+  static Color textSpecialColor(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark
+        ? const Color.fromRGBO(163, 163, 138, 1)
+        : const Color.fromRGBO(125, 126, 138, 1);
+  }
+
+    static Color drawerColor(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark
+        ? const Color.fromRGBO(84, 18, 20, 1) //dark
+        : const Color.fromRGBO(205, 46, 46, 1); //light
+  }
+
 
   static const Color primaryConst = Color.fromRGBO(227, 30, 36, 1);
   static const Color secondConst = Color.fromRGBO(215, 181, 109, 1);
@@ -76,7 +90,7 @@ class AppColors {
   static const Color textDataTableBasic = Color.fromRGBO(36, 36, 36, 1);
   static const Color inputcolors = Color.fromRGBO(99, 99, 105, 1.0);
   static const Color grayDesactivate = Color.fromRGBO(135, 135, 135, 1);
-  
+
   static const Color warningColor = Color.fromRGBO(242, 140, 3, 1.0);
   static const Color red = Color.fromRGBO(231, 44, 49, 1.0);
   static const Color orange = Color.fromRGBO(242, 140, 3, 1.0);

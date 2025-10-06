@@ -65,7 +65,7 @@ class DisplayText extends StatelessWidget {
                 color: AppColors.grayLight,
               ),
               borderRadius: BorderRadius.circular(kRadiusExtraLittle),
-              color: const Color.fromRGBO(246, 247, 249, 1),
+              color: AppColors.fillTextColor(context),
             ),
             child: Text(
               text,

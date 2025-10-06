@@ -6,7 +6,6 @@ import 'package:cip_payment_app/core/helpers/constant.dart';
 import 'package:cip_payment_app/core/helpers/custom_snackbar.dart';
 import 'package:cip_payment_app/preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class AdvancepaymentProvider with ChangeNotifier{
 
@@ -15,13 +14,15 @@ class AdvancepaymentProvider with ChangeNotifier{
   bool haveQuotasPending = true;
   final String symbolMoney = 'S/. ';
 
-  TextEditingController ctrlValueOfQuota = TextEditingController(text:'S/. 30.0');
-  TextEditingController ctrlPercentDiscount = TextEditingController(text:'5%');
+  String ctrlValueOfQuota =  'S/. 30.0';
+  String ctrlPercentDiscount = '5%';
+  String ctrlEnabledUntil = 'Noviembre del 2024';
+  String ctrlSubTotal = 'S/. 270';
+  String ctrlDiscount = 'S/. 30';
+  
   TextEditingController ctrlLastPay = TextEditingController(text:'Agosto de 2024');
   TextEditingController ctrlQuantityCuotas = TextEditingController(text:'12');
-  TextEditingController ctrlEnabledUntil = TextEditingController(text:'Noviembre del 2024');
-  TextEditingController ctrlSubTotal = TextEditingController(text:'S/. 270');
-  TextEditingController ctrlDiscount = TextEditingController(text:'S/. 30');
+  
   TextEditingController ctrlTotal = TextEditingController(text:'S/. 240');
 
 
@@ -71,8 +72,8 @@ class AdvancepaymentProvider with ChangeNotifier{
     discount = subTotal * 0.05;
     totalToPay = subTotal - discount;
 
-    ctrlDiscount.text = symbolMoney+discount.toString();
-    ctrlSubTotal.text = symbolMoney+subTotal.toString();
+    ctrlDiscount = symbolMoney+discount.toString();
+    ctrlSubTotal = symbolMoney+subTotal.toString();
     notifyListeners();
     }
 }

@@ -1,6 +1,6 @@
 import 'package:cip_payment_app/app/providers/bill_provider.dart';
 import 'package:cip_payment_app/app/ui/components/btn/btn_primary_ink.dart';
-import 'package:cip_payment_app/app/ui/components/custom_text_field.dart';
+import 'package:cip_payment_app/app/ui/components/field/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -30,9 +30,6 @@ class CompanyForm extends StatelessWidget {
           BtnPrimaryInk(
             text: textRuc,
             onTap: () {
-              
-              // isNewModal ?
-              // Navigator.pop(context): null;
               isCreate
                   ? context.read<BillProvider>().registerRuc(context)
                   : context.read<BillProvider>().updateRuc(context);
@@ -49,7 +46,10 @@ class CompanyForm extends StatelessWidget {
 Widget _inputRuc(BuildContext context) {
   return CustomTextField(
     helperText: 'Ruc',
+    textInputType: TextInputType.number,
+    maxLength: 11,
     textEditingController: context.read<BillProvider>().ctrlRuc,
+
     onEditingComplete: () {
       FocusScope.of(context).unfocus();
       // Lógica para validar el formulario
@@ -60,6 +60,7 @@ Widget _inputRuc(BuildContext context) {
 Widget _inputCompanyName(BuildContext context) {
   return CustomTextField(
     helperText: 'Razón social',
+    textInputType: TextInputType.name,
     textEditingController: context.read<BillProvider>().ctrlCompanyName,
     onEditingComplete: () {
       FocusScope.of(context).unfocus();
@@ -83,6 +84,7 @@ Widget _inputEmail(BuildContext context) {
   return CustomTextField(
     helperText: 'Email',
     textEditingController: context.read<BillProvider>().ctrlEmail,
+    textInputType: TextInputType.emailAddress,
     onEditingComplete: () {
       FocusScope.of(context).unfocus();
       // Lógica para validar el formulario
@@ -93,6 +95,7 @@ Widget _inputEmail(BuildContext context) {
 Widget _inputPhone(BuildContext context) {
   return CustomTextField(
     helperText: 'Telefono',
+    textInputType: TextInputType.number,
     textEditingController: context.read<BillProvider>().ctrlPhoneNumber,
     onEditingComplete: () {
       FocusScope.of(context).unfocus();

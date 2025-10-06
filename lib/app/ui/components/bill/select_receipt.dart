@@ -2,6 +2,7 @@ import 'package:cip_payment_app/app/providers/bill_provider.dart';
 import 'package:cip_payment_app/app/ui/components/bill/company_form.dart';
 import 'package:cip_payment_app/app/ui/components/bill/fields_bill.dart';
 import 'package:cip_payment_app/app/ui/components/btn/btn_primary_ink.dart';
+import 'package:cip_payment_app/app/ui/components/btn/btn_rounded.dart';
 import 'package:cip_payment_app/app/ui/components/modal_new_note.dart';
 import 'package:cip_payment_app/core/theme/app_colors.dart';
 import 'package:cip_payment_app/core/theme/app_text_style.dart';
@@ -51,7 +52,7 @@ class SelectReceipt extends StatelessWidget {
                                 '¿Necesitas factura?',
                                 style: AppTextStyle(context).bold15(),
                               ),
-                              _customBtn(context, () {
+                              BtnRounded(null, 'Solicitar', () {
                                 // print(context.read<BillProvider>().listCompanies.length);
                                 // ModalUtils.getShowModalBS(
                                 //   context,
@@ -74,6 +75,7 @@ class SelectReceipt extends StatelessWidget {
                                 //   ),
                                 //   title: 'Detalle de factura',
                                 // );
+                                // Navigator.of(context).pop();
                                 context
                                         .read<BillProvider>()
                                         .listCompanies
@@ -111,20 +113,4 @@ class SelectReceipt extends StatelessWidget {
       }),
     );
   }
-}
-
-Widget _customBtn(BuildContext context, Function onTap) {
-  return InkWell(
-    onTap: () => onTap(),
-    child: Container(
-      padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 7.0),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(width: 1, color: AppColors.primaryConst)),
-      child: Text(
-        'Solicitar',
-        style: AppTextStyle(context).bold14(color: AppColors.primaryConst),
-      ),
-    ),
-  );
 }

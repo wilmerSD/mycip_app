@@ -96,11 +96,7 @@ class MonthlyfeesPay extends StatelessWidget {
                                     mainText: 'Pagar S/. ${provider.totalSelected}',
                                     textBtn: 'Pagar S/. ${provider.totalSelected}',
                                     textPopUp: '',
-                                    content: Container(
-                                      color: Colors.amber,
-                                      height: 20,
-                                      width: 20,
-                                    ),
+                                    content: const SizedBox(),
                                     onTap: () {
                                       context
                                           .read<MonthlyfeesProvider>()

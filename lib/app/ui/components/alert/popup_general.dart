@@ -28,7 +28,7 @@ class PopupGeneral extends StatelessWidget {
         backgroundColor: AppColors.backgroundColor(context),
         insetPadding:
             const EdgeInsets.symmetric(horizontal: 20.0, vertical: 30.0),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
         scrollable: scrollable,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(borderRadius),

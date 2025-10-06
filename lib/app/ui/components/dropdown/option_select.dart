@@ -1,4 +1,5 @@
 import 'package:cip_payment_app/core/theme/app_colors.dart';
+import 'package:cip_payment_app/core/theme/app_text_style.dart';
 import 'package:flutter/material.dart';
 
 class OptionSelect extends StatelessWidget {
@@ -6,10 +7,11 @@ class OptionSelect extends StatelessWidget {
   final String? nameOption;
   @override
   Widget build(BuildContext context) {
-    return Text(nameOption ?? "",
-        style: const TextStyle(
-          fontSize: 14,
-          color: AppColors.grayDark,
-        ));
+    return Text(
+      nameOption ?? "",
+      style: AppTextStyle(
+        context,
+      ).semi14(color: AppColors.textQuaternaryBasic(context)),
+    );
   }
 }

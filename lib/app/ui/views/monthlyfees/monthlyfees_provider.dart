@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:cip_payment_app/app/domain/entities/deviceinfo.dart';
 import 'package:cip_payment_app/app/domain/entities/enums.dart';
 import 'package:cip_payment_app/app/domain/entities/quota.dart';
 import 'package:cip_payment_app/app/domain/entities/storepay.dart'
@@ -11,6 +12,7 @@ import 'package:cip_payment_app/app/infrastructure/models/quota_model.dart';
 import 'package:cip_payment_app/app/infrastructure/models/response/payment_quota_model.dart';
 import 'package:cip_payment_app/app/infrastructure/repositories/payment_repository_impl.dart';
 import 'package:cip_payment_app/app/infrastructure/repositories/quota_repository_impl.dart';
+import 'package:cip_payment_app/app/providers/infodevice_provider.dart';
 import 'package:cip_payment_app/app/ui/components/alert/popup_checkout.dart';
 import 'package:cip_payment_app/app/ui/components/payment/payment_bad.dart';
 import 'package:cip_payment_app/app/ui/components/payment/payment_good.dart';
@@ -18,12 +20,13 @@ import 'package:cip_payment_app/app/ui/components/toast/toast.dart';
 import 'package:cip_payment_app/app/ui/views/monthlyfees/widgets/culqi_checkout.dart';
 import 'package:cip_payment_app/core/config/environment.dart';
 import 'package:cip_payment_app/core/helpers/constant.dart';
+import 'package:cip_payment_app/core/helpers/custom_snackbar.dart';
 import 'package:cip_payment_app/core/helpers/generate_receipt.dart';
 import 'package:cip_payment_app/core/helpers/helpers.dart';
 import 'package:cip_payment_app/preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:printing/printing.dart';
+import 'package:provider/provider.dart';
 
 class MonthlyfeesProvider with ChangeNotifier {
   final QuotaRepositoryImpl quotaRepositoryImpl = QuotaRepositoryImpl(
@@ -35,6 +38,7 @@ class MonthlyfeesProvider with ChangeNotifier {
 
   Future<void> onInit(BuildContext context) async {
     selectTab(0);
+    getInfoDevice(context);
     await getDataPerson(context);
     fetchPendingPay(context);
     await getHistoryPayment(context);
@@ -46,12 +50,13 @@ class MonthlyfeesProvider with ChangeNotifier {
     print(personId);
     print(mainEmail);
   }
-
+  String rucId = '';
   String mainEmail = '';
   String personId = '';
   String variablePrueba = 'hola id';
-  int _selectedIndex = 0;
+  
   final PageController pageController = PageController();
+  int _selectedIndex = 0;
   int get selectedIndex => _selectedIndex;
   double amoutToPay = 0;
 
@@ -179,7 +184,7 @@ class MonthlyfeesProvider with ChangeNotifier {
     _selectedIndex = index;
     pageController.animateToPage(
       index,
-      duration: Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 200),
       curve: Curves.easeInOut,
     );
     notifyListeners();
@@ -264,24 +269,30 @@ class MonthlyfeesProvider with ChangeNotifier {
     print(personId);
     try {
       final response =
-          await paymentRepositoryImpl.historyPaymentQuotas(personId);
+          await paymentRepositoryImpl.historyPaymentQuotas(personId, PaymentType.monthlyFees.code);
       if (response == null) {
         return;
       }
       paymentHistoryQuotas.addAll(response);
-      print(paymentHistoryQuotas.length);
-      print(paymentHistoryQuotas[0].receiptType);
+      paymentHistoryQuotas.sort((a, b) => (b.feeMonth ?? 0).compareTo(a.feeMonth ?? 0));
+      
     } catch (e) {
-      showToastGlobal(context, 1, "error", kmessageErrorGeneral);
+      CustomSnackbar.showSnackBarCustom(
+        context,
+        title: 'Error',
+        message: kmessageErrorGeneral,
+        type: 2,
+        time: 2,
+      );
       debugPrint(e.toString());
     } finally {
-      print('get Historial1');
       isGettinHistory = false;
       notifyListeners();
     }
   }
 
   Future<void> openCheckout(BuildContext context) async {
+    // Navigator.of(context).pop();
     debugPrint(totalSelected.toString());
     final int amountRound = Helpers.toCents(totalSelected);
     final token = await showDialog(
@@ -297,11 +308,11 @@ class MonthlyfeesProvider with ChangeNotifier {
             ),
           );
         });
-    print("TOKEN RECIBIDO: $token");
+    // print("TOKEN RECIBIDO: $token");
     if (token != null) {
       showDialog(
         context: context,
-        barrierDismissible: false, // no permite cerrar tocando afuera
+        barrierDismissible: false, 
         builder: (BuildContext context) {
           return const Center(child: CircularProgressIndicator());
         },
@@ -317,6 +328,7 @@ class MonthlyfeesProvider with ChangeNotifier {
       if (payCompleted != null) {
         if (payCompleted.succces) {
           showDialog(
+            barrierDismissible: false,
             context: context,
             builder: (BuildContext context) {
               return PopupCheckout(
@@ -325,33 +337,36 @@ class MonthlyfeesProvider with ChangeNotifier {
                 scrollable: false,
                 content: PaymentGood(
                   payCompleted.creationDate ?? 0,
-                  Helpers.formatCustomDate(payCompleted.creationDate),
-                  payCompleted.amount!.toDouble(),
+                  totalSelected,
                   textMonthlyfees,
                 ),
               );
             },
           );
+          if (deviceInfo != null){
+
+          }
           List<PaymentQuotaModel> paymentQuotaModels = listQuotas
               .where((q) => q.isSelected) // 1. Solo las cuotas seleccionadas
               .map(
                 (q) => PaymentQuotaModel(
                   creationDatePay: Timestamp.fromDate(DateTime.now()),
-                  deviceInfoPay: '',
-                  ipAddressPay: '',
-                  locationCityPay: '',
-                  locationCountryPay: '',
-                  locationPay: LocationPay(latitude: 0, longitude: 0),
-                  paymentDate: Timestamp.fromDate(DateTime.now()),
+                  deviceInfoPay: deviceInfo?.nameDevice ?? '',
+                  ipAddressPay: deviceInfo?.ip ?? '',
+                  locationCityPay: deviceInfo?.nameCity ?? '',
+                  locationCountryPay: deviceInfo?.nameCountry ?? '',
+                  locationPay: GeoPoint( deviceInfo?.latitude ?? 0.0, deviceInfo?.longitude ?? 0),
                   paymentState: true,
                   paymentValue: q.amount?.toDouble() ?? 0.0,
                   personId: personId,
-                  platformPayment: '',
+                  platformPayment: PlatformPayment.app.name,
                   quantityPayment: q.amount,
                   receiptType: ReceiptType.bill.code,
                   typePay: PaymentType.monthlyFees.code,
                   paymentChannel: PaymentChannel.online.code,
-                  rucId: '',
+                  rucId: rucId,
+                  feeMonth: q.feeMonth ?? 0,
+                  feeYear: q.feeYear ?? 0,
                 ),
               )
               .toList();
@@ -373,6 +388,7 @@ class MonthlyfeesProvider with ChangeNotifier {
         } else {
           showDialog(
             context: context,
+            barrierDismissible: false,
             builder: (BuildContext context) {
               return PopupCheckout(
                 title: '',
@@ -409,27 +425,35 @@ class MonthlyfeesProvider with ChangeNotifier {
         total: subtotal);
   }
 
+  
+  DeviceInfo? deviceInfo;
+  void getInfoDevice(context) async{
+    deviceInfo = await Provider.of<InfodeviceProvider>(context, listen: false).deviceInfo();
+    print(deviceInfo);
+  }
   void prueba(BuildContext context) async {
-    showDialog(
+    print('object');
+    print(rucId);
+  /*   showDialog(
       context: context,
       builder: (BuildContext context) {
         return PopupCheckout(
           title: '',
           onTapButton: () {},
           scrollable: false,
-          content: PaymentGood(
+          content: const PaymentGood(
             0,
-            '',
-            1312312,
+            30,
             textMonthlyfees,
           ),
         );
       },
-    );
+    ); */
+     
   }
   // void prueba(){
   //   for ( var quota in listQuotas){
-  //     print(quota.id);
+  //     print(quota.id); 
   //   }
   // }
 }

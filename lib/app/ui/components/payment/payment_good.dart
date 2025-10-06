@@ -1,13 +1,18 @@
+import 'package:cip_payment_app/app/providers/auth_provider.dart';
+import 'package:cip_payment_app/app/routes/app_routes_name.dart';
 import 'package:cip_payment_app/app/ui/components/btn/btn_primary.dart';
 import 'package:cip_payment_app/app/ui/components/btn/btn_rounded.dart';
+import 'package:cip_payment_app/app/ui/components/payment/payment_good_pdf.dart';
+import 'package:cip_payment_app/core/helpers/helpers.dart';
 import 'package:cip_payment_app/core/theme/app_text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 class PaymentGood extends StatelessWidget {
   const PaymentGood(
     this.operationId,
-    this.dateTime,
     this.amount,
     this.concept, {
     super.key,
@@ -16,22 +21,27 @@ class PaymentGood extends StatelessWidget {
   final double amount;
   final String concept;
   final int operationId;
-  final String dateTime;
 
   @override
   Widget build(BuildContext context) {
     final colorTheme = Theme.of(context).colorScheme;
-
+    final auth = context.read<AuthProvider>().currentPerson;
+    final name = auth?.namePerson ?? '';
+    final maternalSurname = auth?.motherSurname ?? '';
+    final paternalSurname = auth?.paternalSurname ?? '';
+    
+    final dni = auth?.dni ?? '';
+    final fullName = "$name $paternalSurname $maternalSurname";
     Color colorText = const Color.fromRGBO(90, 97, 111, 1);
     return SizedBox(
-      height: 564.0,
+      // height: 530.0,
       child: Container(
         padding: const EdgeInsets.all(20.0),
         width: 440.0,
         // height: 550,
-        margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+        // margin: const EdgeInsets.symmetric(vertical: 10.0),
         decoration: BoxDecoration(
-          color: colorTheme.onInverseSurface,
+          // color:  colorTheme.onInverseSurface,
           borderRadius: BorderRadius.circular(10.0),
         ),
         child: Column(
@@ -74,7 +84,7 @@ class PaymentGood extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 15.0,
+                spacing: 10.0,
                 children: [
                   Row(
                     children: [
@@ -88,7 +98,21 @@ class PaymentGood extends StatelessWidget {
                       ),
                       Expanded(
                         // flex: 2,
-                        child: BtnRounded(Bootstrap.share, 'Compartir', () {}),
+                        child: BtnRounded(Bootstrap.share, 'Compartir', () async{
+                          final igv = amount * 0.18;
+                           final file = await generatePdfToShare(
+                              receiptNumber: operationId.toString(),
+                              date: Helpers.formatCustomDate(operationId), // tu helper
+                              name: fullName, 
+                              dni: dni,
+                              subtotal: amount - igv,
+                              igv: igv,
+                              total: amount,
+                            );
+                              
+                          SharePlus.instance.share(ShareParams(files: [XFile(file.path)] ));
+
+                        }),
                       ),
                     ],
                   ),
@@ -106,22 +130,21 @@ class PaymentGood extends StatelessWidget {
                     children: [Text('Igv'), Text('18%')],
                   ),
                   Divider(color: colorText, thickness: 0.5),
-                  const Center(
+                  Center(
                     child: Column(
                       children: [
-                        Text('11 de diciembre de 2025 - 14:29 horas'),
-                        Text('Operación 177796497'),
+                        Text(Helpers.formatCustomDate(operationId)),
+                        Text('Operación $operationId'),
                       ],
                     ),
                   ),
                 ],
               ),
             ),
-             BtnPrimary(
+            BtnPrimary(
                 text: 'Finalizar',
-                onTap: () => Navigator.of(context).pop(),
-              ),
-            
+                onTap: () => Navigator.of(context)
+                    .popUntil(ModalRoute.withName(AppRoutesName.MONTHLYFEES))),
           ],
         ),
       ),

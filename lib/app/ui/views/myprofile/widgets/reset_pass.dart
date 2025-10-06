@@ -1,9 +1,7 @@
 import 'package:cip_payment_app/app/ui/components/appbar/custom_appbar.dart';
 import 'package:cip_payment_app/app/ui/components/btn/btn_primary_ink.dart';
-import 'package:cip_payment_app/app/ui/components/field_form.dart';
+import 'package:cip_payment_app/app/ui/components/field/field_form.dart';
 import 'package:cip_payment_app/app/ui/views/myprofile/myprofile_provider.dart';
-import 'package:cip_payment_app/app/ui/components/appbar/custom_tittle_appbar.dart';
-import 'package:cip_payment_app/app/ui/components/appbar/leading.dart';
 import 'package:cip_payment_app/core/theme/app_colors.dart';
 import 'package:cip_payment_app/core/theme/app_text_style.dart';
 import 'package:flutter/material.dart';
@@ -65,6 +63,7 @@ class ResetPass extends StatelessWidget {
     );
 
     return Scaffold(
+      backgroundColor: AppColors.backgroundColor(context),
         appBar: const CustomAppBar(
           title: 'Seguridad',
         ),
@@ -91,7 +90,7 @@ class ResetPass extends StatelessWidget {
                       const SizedBox(
                         height: 8.0,
                       ),
-                      Text('Por favor escribe algo que recuerdes'),
+                      const Text('Por favor escribe algo que recuerdes'),
                       const SizedBox(
                         height: 20.0,
                       ),

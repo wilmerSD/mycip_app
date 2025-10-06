@@ -1,6 +1,6 @@
 import 'package:cip_payment_app/app/routes/app_routes_name.dart';
 import 'package:cip_payment_app/app/ui/components/btn/btn_primary_ink.dart';
-import 'package:cip_payment_app/app/ui/components/field_form.dart';
+import 'package:cip_payment_app/app/ui/components/field/field_form.dart';
 import 'package:cip_payment_app/app/ui/views/login/login_provider.dart';
 import 'package:cip_payment_app/core/theme/app_colors.dart';
 import 'package:cip_payment_app/core/theme/app_text_style.dart';

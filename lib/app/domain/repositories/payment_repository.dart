@@ -14,5 +14,5 @@ abstract class PaymentRepository {
   });
   Future<Payment?>  payCulqi(String token, int amount, String email);
   Future<List<Quota>?> payQuotas(List<PaymentQuotaModel> paymentQuotaModel);
-  Future<List<Storepay>?> historyPaymentQuotas(String personId);
+  Future<List<Storepay>?> historyPaymentQuotas(String personId, int typePay);
 }

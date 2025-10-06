@@ -1,7 +1,5 @@
 import 'package:cip_payment_app/app/providers/auth_provider.dart';
 import 'package:cip_payment_app/app/routes/app_routes_name.dart';
-import 'package:cip_payment_app/app/ui/components/endpay.dart/pay_bad.dart';
-import 'package:cip_payment_app/app/ui/components/endpay.dart/pay_success.dart';
 import 'package:cip_payment_app/app/ui/components/payment/payment_bad.dart';
 import 'package:cip_payment_app/app/ui/components/payment/payment_good.dart';
 import 'package:cip_payment_app/app/ui/views/advancepayment/advancepayment_view.dart';
@@ -90,32 +88,6 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: AppRoutesName.ADVANCEPAYMENT,
       builder: (context, state) => const AdvancepaymentView(),
-    ),
-
-   GoRoute(
-      path: AppRoutesName.PAYMENTGOOD,
-      builder: (context, state) {
-        final extra = state.extra as Map<String, dynamic>?;
-        final double amount = extra?['amount'] as double? ?? 0;
-        final String title = extra?['title'] as String? ?? '';
-        final int operationId = extra?['operationId'] as int? ?? 0;
-        final String dateTime = extra?['dateTime'] as String? ?? '';
-        return PaymentGood(operationId, dateTime, amount, title);
-      },
-    ),
-    // GoRoute(
-    //   path: AppRoutesName.PAYBAD,
-    //   builder: (context, state) => const ,
-    // ),
-    GoRoute(
-      path: AppRoutesName.PAYMENTBAD,
-      builder: (context, state) {
-        final extra = state.extra as Map<String, dynamic>?;
-        final int operationId = extra?['operationId'] as int? ?? 0;
-        final String dateTime = extra?['dateTime'] as String? ?? '';
-        final String detailError = extra?['detailError'] as String? ?? '';
-        return PaymentBad(operationId.toString(), dateTime, detailError);
-      },
     ),
     //Vista de pago realizado
   /*   GoRoute(

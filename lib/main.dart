@@ -1,5 +1,5 @@
 import 'package:cip_payment_app/app/providers/auth_provider.dart';
-import 'package:cip_payment_app/app/providers/bill_provider.dart';
+import 'package:cip_payment_app/app/providers/infodevice_provider.dart';
 import 'package:cip_payment_app/app/providers/reciept_provider.dart';
 import 'package:cip_payment_app/app/routes/go_router_app.dart';
 import 'package:cip_payment_app/app/ui/views/advancepayment/advancepayment_provider.dart';
@@ -43,6 +43,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => AdvancepaymentProvider()),
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => RecieptProvider()),
+        ChangeNotifierProvider(create: (_) => InfodeviceProvider()),
         // ChangeNotifierProvider(create: (_) => BillProvider()),
         ChangeNotifierProvider(
             create: (_) =>

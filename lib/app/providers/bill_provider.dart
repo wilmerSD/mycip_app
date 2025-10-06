@@ -58,6 +58,16 @@ class BillProvider with ChangeNotifier {
   bool isSaving = false;
   Future<void> registerRuc(BuildContext context) async {
     isSaving = true;
+    if(ctrlRuc.text.isEmpty){
+       CustomSnackbar.showSnackBarCustom(
+        context,
+        title: 'Validar',
+        message: 'Ingresar ruc',
+        type: 2,
+        time: 2,
+      );
+      return;
+    }
     try {
       final response = await invoiceRepositoryImpl.createRuc(CompanyModel(
         address: ctrlAddress.text,

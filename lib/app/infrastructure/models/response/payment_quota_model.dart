@@ -6,8 +6,7 @@ class PaymentQuotaModel {
     final String? ipAddressPay;
     final String? locationCityPay;
     final String? locationCountryPay;
-    final LocationPay? locationPay;
-    final Timestamp? paymentDate;
+    final GeoPoint? locationPay;
     final bool? paymentState;
     final double? paymentValue;
     final String? personId;
@@ -19,6 +18,7 @@ class PaymentQuotaModel {
     final String? rucId;
     final int? feeMonth;
     final int? feeYear;
+    final String? specialtyId;
 
     PaymentQuotaModel({
         this.creationDatePay,
@@ -27,7 +27,6 @@ class PaymentQuotaModel {
         this.locationCityPay,
         this.locationCountryPay,
         this.locationPay,
-        this.paymentDate,
         this.paymentState,
         this.paymentValue,
         this.personId,
@@ -39,6 +38,7 @@ class PaymentQuotaModel {
         this.rucId,
         this.feeMonth,
         this.feeYear,
+        this.specialtyId,
     });
 
     factory PaymentQuotaModel.fromJson(Map<String, dynamic> json) => PaymentQuotaModel(
@@ -47,8 +47,7 @@ class PaymentQuotaModel {
         ipAddressPay: json["ipAddressPay"],
         locationCityPay: json["locationCityPay"],
         locationCountryPay: json["locationCountryPay"],
-        locationPay: json["locationPay"] == null ? null : LocationPay.fromJson(json["locationPay"]),
-        paymentDate: json["paymentDate"],
+        locationPay: json['locationPay'] != null ? json['locationPay'] as GeoPoint : null,
         paymentState: json["paymentState"],
         paymentValue: json["paymentValue"]?.toDouble(),
         personId: json["personId"],
@@ -60,7 +59,7 @@ class PaymentQuotaModel {
         rucId: json["rucId"],
         feeMonth: json["feeMonth"],
         feeYear: json["feeYear"],
-       
+        specialtyId: json["specialtyId"]
     );
 
     Map<String, dynamic> toJson() => {
@@ -69,8 +68,7 @@ class PaymentQuotaModel {
         "ipAddressPay": ipAddressPay,
         "locationCityPay": locationCityPay,
         "locationCountryPay": locationCountryPay,
-        "locationPay": locationPay?.toJson(),
-        "paymentDate": paymentDate,
+        "locationPay": locationPay,
         "paymentState": paymentState,
         "paymentValue": paymentValue,
         "personId": personId,
@@ -82,25 +80,6 @@ class PaymentQuotaModel {
         "rucId": rucId,
         "feeMonth": feeMonth,
         "feeYear": feeYear,
-    };
-}
-
-class LocationPay {
-    final int? latitude;
-    final int? longitude;
-
-    LocationPay({
-        this.latitude,
-        this.longitude,
-    });
-
-    factory LocationPay.fromJson(Map<String, dynamic> json) => LocationPay(
-        latitude: json["latitude"],
-        longitude: json["longitude"],
-    );
-
-    Map<String, dynamic> toJson() => {
-        "latitude": latitude,
-        "longitude": longitude,
+        "specialtyId": specialtyId,
     };
 }

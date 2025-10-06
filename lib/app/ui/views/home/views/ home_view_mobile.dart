@@ -24,14 +24,14 @@ class HomeViewMobile extends StatelessWidget {
     final size = MediaQuery.sizeOf(context);
     final colorTheme = Theme.of(context).colorScheme;
     return Scaffold(
-        // appBar: AppBar(),
+        backgroundColor: AppColors.backgroundColor(context),
         drawer: const DrawerMenuApp(),
         body: Builder(
           builder: (context) => SafeArea(
             child: Stack(
               children: [
-                Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 15),
                     child: Column(
                       children: [
                         // Container(
@@ -79,12 +79,13 @@ class HomeViewMobile extends StatelessWidget {
                 Positioned(
                     top: 300.0,
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                      // color: Colors.amber,
+                      // padding: const EdgeInsets.symmetric(horizontal: 20.0),
                       width: size.width,
                       child: Column(
                         children: [
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               OptionTypePay(
@@ -96,8 +97,7 @@ class HomeViewMobile extends StatelessWidget {
                                   colorIcon: const Color.fromRGBO(108, 14, 16, 1),
                                   ontap: () {
                                     context.push(AppRoutesName.MONTHLYFEES);
-                                  }, whatPlatformIs: 0,
-                                  
+                                  }, whatPlatformIs: 0,  
                                   ),
                               OptionTypePay(
                                   text: 'Certificado de habilidad',
@@ -116,7 +116,7 @@ class HomeViewMobile extends StatelessWidget {
                             height: 20.0,
                           ),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               OptionTypePay(

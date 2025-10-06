@@ -23,7 +23,7 @@ class ReadOnlyField extends StatelessWidget {
         InputDecorator(
           // fillColor
           decoration: InputDecoration(
-            fillColor: AppColors.fillTextColor(context),// const Color.fromRGBO(246, 247, 249, 1),
+            fillColor: /* Colors.transparent, */AppColors.fillTextColor(context),
             counterText: "",
             filled: true,
             isDense: true,

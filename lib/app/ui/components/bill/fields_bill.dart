@@ -1,9 +1,10 @@
-import 'package:animate_do/animate_do.dart';
 import 'package:cip_payment_app/app/providers/bill_provider.dart';
 import 'package:cip_payment_app/app/ui/components/bill/company_form.dart';
 import 'package:cip_payment_app/app/ui/components/btn/btn_primary_ink.dart';
 import 'package:cip_payment_app/app/ui/components/btn/btn_rounded.dart';
 import 'package:cip_payment_app/app/ui/components/modal_new_note.dart';
+import 'package:cip_payment_app/app/ui/views/certificateskill/certificateskill_provider.dart';
+import 'package:cip_payment_app/app/ui/views/monthlyfees/monthlyfees_provider.dart';
 import 'package:cip_payment_app/core/theme/app_colors.dart';
 import 'package:cip_payment_app/core/theme/app_text_style.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,23 @@ class FieldsBill extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print('Raiz field bill');
-    return SafeArea(child: _payView(context, textBtn, onTap));
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final companies = context.read<BillProvider>().listCompanies;
+      if (companies.isNotEmpty) {
+        final firstCompany = companies.first;
+        // Asignar al MonthlyfeesProvider
+        context.read<MonthlyfeesProvider>().rucId = firstCompany.id ?? '';
+        context.read<CertificateSkillProvider>().rucId = firstCompany.id ?? '';
+        // Seleccionar en el billProvider
+        context.read<BillProvider>().selectCompany(firstCompany.id ?? '');
+      }
+    });
+    return Builder(
+      builder: (context){
+        print('raiz fields bill 2');
+        return SafeArea(child: _payView(context, textBtn, onTap));
+      }
+    );
   }
 }
 
@@ -72,8 +89,8 @@ Widget _payView(
                 context,
                 company.businessName ?? '',
                 () {
+                  context.read<MonthlyfeesProvider>().rucId = company.id ?? '';
                   billProvider.selectCompany(company.id ?? ''); // 👈 selecciona
-                  print('tratando de elimnar');
                 },
                 company.ruc ?? '',
                 company.address ?? '',

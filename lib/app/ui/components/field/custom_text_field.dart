@@ -22,7 +22,8 @@ class CustomTextField extends StatelessWidget {
       this.autofocus = false,
       this.maxLength,
       this.inputFormats,
-      this.helperText});
+      this.helperText
+      });
   final String? label;
   final String hintText;
   final bool privateText;
@@ -63,10 +64,10 @@ class CustomTextField extends StatelessWidget {
           onEditingComplete: onEditingComplete,
           maxLength: maxLength,
           textCapitalization: textCapitalization ?? TextCapitalization.none,
-          style: AppTextStyle(context).semi14(color: AppColors.textQuaternaryBasic(context)),
+          style: AppTextStyle(context).semi14(color: AppColors.textBasic(context)),
           obscureText: privateText,
           decoration: InputDecoration(
-            fillColor: const Color.fromRGBO(246, 247, 249, 1),//AppColors.red,
+            fillColor: Colors.transparent,
             counterText: "",
             filled: true,
             isDense: true,

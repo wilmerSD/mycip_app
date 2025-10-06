@@ -1,10 +1,8 @@
 import 'package:cip_payment_app/app/providers/auth_provider.dart';
 import 'package:cip_payment_app/app/ui/components/appbar/custom_appbar.dart';
 import 'package:cip_payment_app/app/ui/components/btn/btn_primary_ink.dart';
-import 'package:cip_payment_app/app/ui/components/display_text.dart';
+import 'package:cip_payment_app/app/ui/components/field/display_text.dart';
 import 'package:cip_payment_app/app/ui/views/myprofile/myprofile_provider.dart';
-import 'package:cip_payment_app/app/ui/components/appbar/custom_tittle_appbar.dart';
-import 'package:cip_payment_app/app/ui/components/appbar/leading.dart';
 import 'package:cip_payment_app/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

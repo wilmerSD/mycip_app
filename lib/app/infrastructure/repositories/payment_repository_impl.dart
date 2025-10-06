@@ -39,8 +39,8 @@ class PaymentRepositoryImpl extends PaymentRepository {
   }
   
   @override
-  Future<List<Storepay>?> historyPaymentQuotas(String personId) {
-     return datasource.historyPaymentQuotas(personId);
+  Future<List<Storepay>?> historyPaymentQuotas(String personId, int typePay) {
+     return datasource.historyPaymentQuotas(personId, typePay);
   }
 
   // @override

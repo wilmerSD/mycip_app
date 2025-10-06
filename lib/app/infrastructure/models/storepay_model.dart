@@ -6,8 +6,7 @@ class StorepayModel {
   final String? ipAddressPay;
   final String? locationCityPay;
   final String? locationCountryPay;
-  final LocationPay? locationPay;
-  final Timestamp? paymentDate;
+  final GeoPoint? locationPay;
   final bool? paymentState;
   final double? paymentValue;
   final String? personId;
@@ -19,7 +18,7 @@ class StorepayModel {
   final String? rucId;
   final int? feeMonth;
   final int? feeYear;
-
+  final String? specialtyId;
   StorepayModel({
     this.creationDatePay,
     this.deviceInfoPay,
@@ -27,7 +26,6 @@ class StorepayModel {
     this.locationCityPay,
     this.locationCountryPay,
     this.locationPay,
-    this.paymentDate,
     this.paymentState,
     this.paymentValue,
     this.personId,
@@ -39,6 +37,7 @@ class StorepayModel {
     this.rucId,
     this.feeMonth,
     this.feeYear,
+    this.specialtyId,
   });
 
   factory StorepayModel.fromJson(Map<String, dynamic> json) => StorepayModel(
@@ -47,8 +46,7 @@ class StorepayModel {
         ipAddressPay: json["ipAddressPay"],
         locationCityPay: json["locationCityPay"],
         locationCountryPay: json["locationCountryPay"],
-        locationPay: json["locationPay"] == null ? null : LocationPay.fromJson(json["locationPay"]),
-        paymentDate: json["paymentDate"],
+        locationPay: json['locationPay'] != null ? json['locationPay'] as GeoPoint : null,
         paymentState: json["paymentState"],
         paymentValue: json["paymentValue"]?.toDouble(),
         personId: json["personId"],
@@ -60,6 +58,7 @@ class StorepayModel {
         rucId: json["rucId"],
         feeMonth: json["feeMonth"],
         feeYear: json["feeYear"],
+        specialtyId: json["specialtyId"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -68,8 +67,7 @@ class StorepayModel {
         "ipAddressPay": ipAddressPay,
         "locationCityPay": locationCityPay,
         "locationCountryPay": locationCountryPay,
-        "locationPay": locationPay?.toJson(),
-        "paymentDate": paymentDate,
+        "locationPay": locationPay,
         "paymentState": paymentState,
         "paymentValue": paymentValue,
         "personId": personId,
@@ -81,25 +79,6 @@ class StorepayModel {
         "rucId": rucId,
         "feeMonth": feeMonth,
         "feeYear": feeYear,
-      };
-}
-
-class LocationPay {
-  final double? latitude;
-  final double? longitude;
-
-  LocationPay({
-    this.latitude,
-    this.longitude,
-  });
-
-  factory LocationPay.fromJson(Map<String, dynamic> json) => LocationPay(
-        latitude: json["_latitude"],
-        longitude: json["_longitude"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "_latitude": latitude,
-        "_longitude": longitude,
+        "specialtyId": specialtyId,
       };
 }

@@ -7,35 +7,29 @@ import 'package:lottie/lottie.dart';
 
 class WarningPay extends StatelessWidget {
   const WarningPay(this.text, {super.key});
-
   final String text;
   @override
-  Widget build(BuildContext context) {
-    final Color colorText = const Color.fromRGBO(90, 97, 111, 1);
-    return Container(
-      width: 450.0,
-      padding: const EdgeInsets.all(20.0),
-      child: Column(
-        spacing: 20.0,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            height: 140.0,
-            width: 140.0,
-            child: Lottie.asset('assets/warning_animation.json'),
-          ),
-          Text(
-            text,
-            style: AppTextStyle(context).bold22(fontWeight: FontWeight.w100),
-          ),
-          const SizedBox(height: 60.0),
-          BtnPrimary(
-            text: 'Ir a pagar',
-            onTap: () => context.go(AppRoutesName.MONTHLYFEES),
-          ),
-          const SizedBox(),
-        ],
-      ),
+  Widget build(BuildContext context) { 
+    return Column(
+      spacing: 20.0,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          height: 140.0,
+          width: 140.0,
+          child: Lottie.asset('assets/warning_animation.json'),
+        ),
+        Text(
+          text,
+          style: AppTextStyle(context).bold20(fontWeight: FontWeight.w300, ),
+        ),
+        const SizedBox(height: 35.0),
+        BtnPrimary(
+          text: 'Ir a pagar',
+          onTap: () => context.push(AppRoutesName.MONTHLYFEES),
+        ),
+        // const SizedBox(),
+      ],
     );
   }
 }

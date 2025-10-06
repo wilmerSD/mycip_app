@@ -22,18 +22,18 @@ class MyprofileProvider with ChangeNotifier {
 
   TextEditingController ctrlPassword = TextEditingController();
   TextEditingController ctrlPasswordToConfirm = TextEditingController();
-  TextEditingController ctrlFullName = TextEditingController(text: 'Jospe Guevara Martine');
-  TextEditingController ctrlDni = TextEditingController(text: '23438734');
-  TextEditingController ctrlAge = TextEditingController(text: '26');
-  TextEditingController ctrlGender = TextEditingController(text: 'Masculino');
-  TextEditingController ctrlCivilState = TextEditingController(text: 'Soltero');
-  TextEditingController ctrlBirthdate = TextEditingController(text: '23/07/1999');
-  TextEditingController ctrlAddress = TextEditingController(text: 'Av. Faucet 213');
-  TextEditingController ctrlPhoneNumber = TextEditingController(text: '972 345 231');
-  TextEditingController ctrlEmail = TextEditingController(text: 'software@gmail.com');
-  TextEditingController ctrlCipNumber = TextEditingController(text: '2889349');
-  TextEditingController ctrlEntryDate = TextEditingController(text: '23/07/2020');
-  TextEditingController ctrlQuantityAge = TextEditingController(text: '05');
+  // TextEditingController ctrlFullName = TextEditingController(text: 'Jospe Guevara Martine');
+  // TextEditingController ctrlDni = TextEditingController(text: '23438734');
+  // TextEditingController ctrlAge = TextEditingController(text: '26');
+  // TextEditingController ctrlGender = TextEditingController(text: 'Masculino');
+  // TextEditingController ctrlCivilState = TextEditingController(text: 'Soltero');
+  // TextEditingController ctrlBirthdate = TextEditingController(text: '23/07/1999');
+  // TextEditingController ctrlAddress = TextEditingController(text: 'Av. Faucet 213');
+  // TextEditingController ctrlPhoneNumber = TextEditingController(text: '972 345 231');
+  // TextEditingController ctrlEmail = TextEditingController(text: 'software@gmail.com');
+  // TextEditingController ctrlCipNumber = TextEditingController(text: '2889349');
+  // TextEditingController ctrlEntryDate = TextEditingController(text: '23/07/2020');
+  // TextEditingController ctrlQuantityAge = TextEditingController(text: '05');
 
    set isLoading(bool value) {
     _isLoading = value;

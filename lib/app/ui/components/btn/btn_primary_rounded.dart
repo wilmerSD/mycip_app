@@ -11,7 +11,7 @@ class BtnPrimaryRounded extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      splashColor: AppColors.primaryConst.withOpacity(0.1),
+      splashColor: AppColors.primaryConst.withValues(),
       // focusColor: AppColors.primaryConst,
       onTap: () => onTap,
       child: Container(

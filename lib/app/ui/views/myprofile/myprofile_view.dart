@@ -151,6 +151,7 @@ class MyprofileView extends StatelessWidget {
         Icons.arrow_forward_ios);
 
     return Scaffold(
+      backgroundColor: AppColors.backgroundColor(context),
             appBar: AppBar(
               leading: InkWell(
                 onTap: () => Navigator.pop(context),

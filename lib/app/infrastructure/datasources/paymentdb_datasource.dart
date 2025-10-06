@@ -115,17 +115,17 @@ class PaymentdbDatasource extends PaymentDatasource {
   }
 
     @override
-  Future<List<Storepay>?> historyPaymentQuotas(String personId) async {
+  Future<List<Storepay>?> historyPaymentQuotas(String personId, int typePay) async {
     try {
       final snapshot = await firestoredb
           .collection('Payment')
           .where('personId', isEqualTo: personId)
-          .where('receiptType', isEqualTo: 0)
+          .where('typePay', isEqualTo: typePay)
           .get();
       
       final paymentQuotaResponse = snapshot.docs.map((doc) {
         final data = doc.data();
-        return StorepayModel.fromJson(data);
+        return PaymentQuotaModel.fromJson(data);
       }).toList();
       // print(paymentQuotaResponse);
       final paymentQuotas = paymentQuotaResponse

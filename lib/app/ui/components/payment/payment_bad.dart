@@ -21,20 +21,17 @@ class PaymentBad extends StatelessWidget {
 
     Color colorText = const Color.fromRGBO(90, 97, 111, 1);
     return SizedBox(
-      height: 500,
+      // height: 500,
       child: Container(
         padding: const EdgeInsets.all(20.0),
-        margin: const EdgeInsetsGeometry.symmetric(
-          horizontal: 10.0, vertical: 10.0
-        ),
-        width: 420.0,
-        height: 600.0,
+        width: 440.0,
+        // height: 600.0,
         decoration: BoxDecoration(
-          color: colorTheme.onInverseSurface,
           borderRadius: BorderRadius.circular(10.0),
         ),
         child: Column(
           spacing: 15.0,
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
@@ -62,44 +59,42 @@ class PaymentBad extends StatelessWidget {
               'Lo sentimos, ocurrio un errror',
               style: AppTextStyle(context).bold15(color: colorTheme.primary),
             ),
-            Expanded(
-              child: Container(
-                padding: EdgeInsets.all(20.0),
-                decoration: BoxDecoration(
-                  color: Colors.transparent,
-                  border: Border.all(width: 0.5, color: colorText),
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  spacing: 10.0,
-                  children: [
-                    Text(
-                      detailError,
-                      style: AppTextStyle(context).textPayment(),
+            Container(
+              padding: const EdgeInsets.all(20.0),
+              decoration: BoxDecoration(
+                color: Colors.transparent,
+                border: Border.all(width: 0.5, color: colorText),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: 10.0,
+                children: [
+                  Text(
+                    detailError,
+                    style: AppTextStyle(context).textPayment(),
+                  ),
+                  const SizedBox(),
+                  Divider(color: colorText, thickness: 0.5),
+                 
+                  Center(
+                    child: Column(
+                      children: [
+                        Text(
+                          dateTime,
+                          style: AppTextStyle(context).textPayment(),
+                        ),
+                        Text(
+                          'Operación $operationId',
+                          style: AppTextStyle(context).textPayment(),
+                        ),
+                      ],
                     ),
-                    const Spacer(),
-                    Divider(color: colorText, thickness: 0.5),
-                   
-                    Center(
-                      child: Column(
-                        children: [
-                          Text(
-                            dateTime,
-                            style: AppTextStyle(context).textPayment(),
-                          ),
-                          Text(
-                            'Operación $operationId',
-                            style: AppTextStyle(context).textPayment(),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-            // Spacer(),
             BtnPrimary(
               text: 'Volver',
               onTap: () => Navigator.of(context).pop(),

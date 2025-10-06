@@ -63,7 +63,7 @@ class AppTextStyle {
           fontSize: 22.0,
           fontFamily: 'Montserrat');
   TextStyle bold21(
-          {Color color = Colors.black,
+          {Color? color,
           FontWeight fontWeight = FontWeight.w700}) =>
       Theme.of(context).textTheme.titleLarge!.copyWith(
           color: color,
@@ -71,7 +71,7 @@ class AppTextStyle {
           fontSize: 21.0,
           fontFamily: 'Montserrat');
   TextStyle bold20(
-          {Color color = Colors.black,
+          {Color? color,
           FontWeight fontWeight = FontWeight.w700}) =>
       Theme.of(context).textTheme.titleLarge!.copyWith(
           color: color,

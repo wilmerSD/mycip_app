@@ -16,6 +16,7 @@ const BtnRounded(
   @override
   Widget build(BuildContext context){
     return InkWell(
+      borderRadius: BorderRadius.circular(20),
     onTap: () => onTap(),
     child: Container(
       padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 7.0),

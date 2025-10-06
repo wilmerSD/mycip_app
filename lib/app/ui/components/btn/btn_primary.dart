@@ -27,20 +27,11 @@ class BtnPrimary extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: AppColors.primaryGradient,
         borderRadius: BorderRadius.circular(10.0),
-        boxShadow: showBoxShadow
-            ? [
-                BoxShadow(
-                  color: AppColors.red.withOpacity(0.25),
-                  spreadRadius: 5,
-                  blurRadius: 20,
-                  offset: const Offset(0, 4),
-                ),
-              ]
-            : [],
       ),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
+          borderRadius: BorderRadius.circular(10.0),
           onTap: onTap,
           child: Center(
             child: Row(
