@@ -67,7 +67,7 @@ class LoginProvider with ChangeNotifier {
       return;
     }
     final person = await personRepositoryImpl.getPersonById(user.personId!);
-
+    // prn
       Provider.of<AuthProvider>(context, listen: false).setPerson(person!);
       Provider.of<AuthProvider>(context, listen: false)
           .setBirthDate(person.dateBirth);

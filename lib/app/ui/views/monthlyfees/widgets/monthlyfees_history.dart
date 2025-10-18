@@ -18,51 +18,51 @@ class MonthlyfeesHistory extends StatelessWidget {
     final dni = auth?.dni ?? '';
     final fullName = "$name $paternalSurname $maternalSurname";
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15.0),
-      child: context.read<MonthlyfeesProvider>().paymentHistoryQuotas.isEmpty
-          ? const NohistoryView()
-          : ListView(
-              children: [
-                Consumer<MonthlyfeesProvider>(
-                  builder: (context, provider, _) {
-                    return SingleChildScrollView(
-                      child: Wrap(
-                        spacing: 30.0,
-                        runSpacing: 10.0,
-                        children: List.generate(
-                            provider.paymentHistoryQuotas.length, (
-                          index,
-                        ) {
-                          final payment = provider.paymentHistoryQuotas[index];
-
-                          final paymentDate = payment.creationDatePay;
-                          final paymentDateStr =
-                              Helpers.timestampToString(paymentDate);
-                          final amount =
-                              payment.paymentValue?.toDouble() ?? 0.0;
-
-                          return PaymentTile(
-                              '${Helpers.getNameMonth(payment.feeMonth ?? 0)} ${payment.feeYear}',
-                              Helpers.typePay(payment.receiptType), () {
-
-                            provider.getReceipt(
-                              paymentDate?.seconds.toString() ?? '',
-                              paymentDateStr,
-                              fullName,
-                              dni,
-                              amount,
-                            );
-
-                          }, 'S/.$amount', 'Pagado el $paymentDateStr', false);
-                        }),
-                      ),
-                    );
-                  },
-                ),
-              ],
-            ),
-    );
+    return context.read<MonthlyfeesProvider>().paymentHistoryQuotas.isEmpty
+        ? const NohistoryView()
+        : ListView(
+            children: [
+              Consumer<MonthlyfeesProvider>(
+                builder: (context, provider, _) {
+                  return SingleChildScrollView(
+                    child: Wrap(
+                      spacing: 30.0,
+                      runSpacing: 10.0,
+                      children: List.generate(
+                          provider.paymentHistoryQuotas.length, (
+                        index,
+                      ) {
+                        final payment = provider.paymentHistoryQuotas[index];
+    
+                        final paymentDate = payment.creationDatePay;
+                        final paymentDateStr =
+                            Helpers.timestampToString(paymentDate);
+                        final amount =
+                            payment.paymentValue?.toDouble() ?? 0.0;
+                            print('imprimiendo paymentid');
+                            print(payment.id);
+                        provider.getPaymentFeesByPaymentId(payment.id ?? '');
+                        return PaymentTile(
+                            Helpers.formatDateFromTimestamp(paymentDate),
+                            Helpers.typePay(payment.receiptType), () {
+                          print(provider.listQuotasPayment.length);
+                          provider.getReceipt(
+                            paymentDate?.seconds.toString() ?? '',
+                            paymentDateStr,
+                            fullName,
+                            dni,
+                            amount,
+                            provider.listQuotasPayment
+                          );
+    
+                        }, 'S/.$amount', 'Pagado el $paymentDateStr', false);
+                      }),
+                    ),
+                  );
+                },
+              ),
+            ],
+          );
   }
 }
 

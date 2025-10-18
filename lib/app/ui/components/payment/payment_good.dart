@@ -14,13 +14,15 @@ class PaymentGood extends StatelessWidget {
   const PaymentGood(
     this.operationId,
     this.amount,
-    this.concept, {
+    this.concept,
+    this.typePay, {
     super.key,
   });
 
   final double amount;
   final String concept;
   final int operationId;
+  final int typePay;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +31,7 @@ class PaymentGood extends StatelessWidget {
     final name = auth?.namePerson ?? '';
     final maternalSurname = auth?.motherSurname ?? '';
     final paternalSurname = auth?.paternalSurname ?? '';
-    
+
     final dni = auth?.dni ?? '';
     final fullName = "$name $paternalSurname $maternalSurname";
     Color colorText = const Color.fromRGBO(90, 97, 111, 1);
@@ -98,20 +100,23 @@ class PaymentGood extends StatelessWidget {
                       ),
                       Expanded(
                         // flex: 2,
-                        child: BtnRounded(Bootstrap.share, 'Compartir', () async{
+                        child:
+                            BtnRounded(Bootstrap.share, 'Compartir', () async {
                           final igv = amount * 0.18;
-                           final file = await generatePdfToShare(
-                              receiptNumber: operationId.toString(),
-                              date: Helpers.formatCustomDate(operationId), // tu helper
-                              name: fullName, 
-                              dni: dni,
-                              subtotal: amount - igv,
-                              igv: igv,
-                              total: amount,
-                            );
-                              
-                          SharePlus.instance.share(ShareParams(files: [XFile(file.path)] ));
+                          final file = await generatePdfToShare(
+                            receiptNumber: operationId.toString(),
+                            date: Helpers.formatCustomDate(
+                                operationId), // tu helper
+                            name: fullName,
+                            dni: dni,
+                            subtotal: amount - igv,
+                            igv: igv,
+                            total: amount,
+                            typePay: concept,
+                          );
 
+                          SharePlus.instance
+                              .share(ShareParams(files: [XFile(file.path)]));
                         }),
                       ),
                     ],
@@ -143,8 +148,24 @@ class PaymentGood extends StatelessWidget {
             ),
             BtnPrimary(
                 text: 'Finalizar',
-                onTap: () => Navigator.of(context)
-                    .popUntil(ModalRoute.withName(AppRoutesName.MONTHLYFEES))),
+                onTap: () {
+                  switch (typePay) {
+                    case 0:
+                      Navigator.of(context).popUntil(
+                          ModalRoute.withName(AppRoutesName.MONTHLYFEES));
+                      break;
+                    case 1:
+                      Navigator.of(context).popUntil(
+                          ModalRoute.withName(AppRoutesName.CERTIFICATESKILL));
+                    case 2:
+                      Navigator.of(context).popUntil(
+                          ModalRoute.withName(AppRoutesName.PROOFNODEBT));
+                    case 3:
+                      Navigator.of(context).popUntil(
+                          ModalRoute.withName(AppRoutesName.ADVANCEPAYMENT));
+                      break;
+                  }
+                }),
           ],
         ),
       ),

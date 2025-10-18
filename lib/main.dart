@@ -7,6 +7,7 @@ import 'package:cip_payment_app/app/ui/views/certificateskill/certificateskill_p
 import 'package:cip_payment_app/app/ui/views/iepi/iepi_provider.dart';
 import 'package:cip_payment_app/app/ui/views/monthlyfees/monthlyfees_provider.dart';
 import 'package:cip_payment_app/app/ui/views/myprofile/myprofile_provider.dart';
+import 'package:cip_payment_app/app/ui/views/proofnodebt/proofnodebt_provider.dart';
 import 'package:cip_payment_app/app/ui/views/recoverpass/recoverpass_provider.dart';
 import 'package:cip_payment_app/core/config/theme_app.dart';
 import 'package:cip_payment_app/preferences/shared_preferences.dart';
@@ -44,7 +45,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => RecieptProvider()),
         ChangeNotifierProvider(create: (_) => InfodeviceProvider()),
-        // ChangeNotifierProvider(create: (_) => BillProvider()),
+        ChangeNotifierProvider(create: (_) => ProofnodebtProvider()),
         ChangeNotifierProvider(
             create: (_) =>
                 ThemeProvider(darkMode: PreferencesUser().themeBool)),

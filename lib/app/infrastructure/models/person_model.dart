@@ -74,6 +74,7 @@ class PersonModel {
       ruc: data['ruc'] ?? '',
       statePerson: data['statePerson'] ?? false,
       isAdmin: data['isAdmin'] ?? false,
+      stateCollegiate: data['stateCollegiate'] ?? false,
     );
   }
 

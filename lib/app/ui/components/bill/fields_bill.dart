@@ -1,3 +1,4 @@
+import 'package:cip_payment_app/app/domain/entities/enums.dart';
 import 'package:cip_payment_app/app/providers/bill_provider.dart';
 import 'package:cip_payment_app/app/ui/components/bill/company_form.dart';
 import 'package:cip_payment_app/app/ui/components/btn/btn_primary_ink.dart';
@@ -5,6 +6,7 @@ import 'package:cip_payment_app/app/ui/components/btn/btn_rounded.dart';
 import 'package:cip_payment_app/app/ui/components/modal_new_note.dart';
 import 'package:cip_payment_app/app/ui/views/certificateskill/certificateskill_provider.dart';
 import 'package:cip_payment_app/app/ui/views/monthlyfees/monthlyfees_provider.dart';
+import 'package:cip_payment_app/app/ui/views/proofnodebt/proofnodebt_provider.dart';
 import 'package:cip_payment_app/core/theme/app_colors.dart';
 import 'package:cip_payment_app/core/theme/app_text_style.dart';
 import 'package:flutter/material.dart';
@@ -90,6 +92,8 @@ Widget _payView(
                 company.businessName ?? '',
                 () {
                   context.read<MonthlyfeesProvider>().rucId = company.id ?? '';
+                  context.read<CertificateSkillProvider>().rucId =  company.id ?? '';
+                  context.read<ProofnodebtProvider>().rucId =  company.id ?? '';
                   billProvider.selectCompany(company.id ?? ''); // 👈 selecciona
                 },
                 company.ruc ?? '',
@@ -120,7 +124,15 @@ Widget _payView(
         const SizedBox(
           height: 10.0,
         ),
-        BtnPrimaryInk(text: textBtn, onTap: onTap),
+        BtnPrimaryInk(
+          text: textBtn, 
+          onTap:(){
+            context.read<MonthlyfeesProvider>().receiptType = ReceiptType.invoice.code;
+            context.read<CertificateSkillProvider>().receiptType  = ReceiptType.invoice.code;
+            context.read<ProofnodebtProvider>().receiptType  = ReceiptType.invoice.code;
+            
+            onTap();
+          } ),
         const SizedBox(),
       ],
     ),
@@ -141,7 +153,7 @@ Widget _customContainer(
     borderRadius: BorderRadius.circular(10.0),
     child: Container(
       // height: 70.0,
-      padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
+      padding: const EdgeInsets.only(left: 15.0, top: 15.0, bottom: 15.0),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.0),
           color: const Color.fromARGB(92, 249, 249, 250),
@@ -169,24 +181,27 @@ Widget _customContainer(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             // crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(textThird),
-              Row(
-                children: [
-                  IconButton(
-                      onPressed: onEdit,
+              Expanded(child: Text(textThird, overflow:TextOverflow.ellipsis )),
+              Container(
+                // color: Colors.amber,
+                child: Row(
+                  children: [
+                    IconButton(
+                        onPressed: onEdit,
+                        icon: const Icon(
+                          Iconsax.edit_outline,
+                          size: 20.0,
+                        )),
+                    IconButton(
                       icon: const Icon(
-                        Iconsax.edit_outline,
+                        Iconsax.trash_outline,
+                        color: Colors.red,
                         size: 20.0,
-                      )),
-                  IconButton(
-                    icon: const Icon(
-                      Iconsax.trash_outline,
-                      color: Colors.red,
-                      size: 20.0,
+                      ),
+                      onPressed: onDelete,
                     ),
-                    onPressed: onDelete,
-                  ),
-                ],
+                  ],
+                ),
               )
             ],
           )

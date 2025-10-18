@@ -135,16 +135,25 @@ class Helpers {
     }
   }
 
-  static String timestampToString(Timestamp? timeStamp) {
+  static String timestampToString(Timestamp? timeStamp) {//11/09/2025
     if(timeStamp == null) return '';
     try {
       DateTime date = timeStamp.toDate();
-      String formattedDate = DateFormat('yyyy/MM/dd').format(date);
+      String formattedDate = DateFormat('dd/MM/yyyy').format(date);
       return formattedDate;
     } catch (e) {
       return '';
     }
   }
+  static String formatDateFromTimestamp(Timestamp? timestamp) { //11 de Agosto de 2025
+  if(timestamp == null) return '';
+  DateTime date = timestamp.toDate();
+  final day = date.day;
+  final month = months[date.month - 1];
+  final year = date.year;
+
+  return '$day de $month de $year';
+}
 
   static String timestampToMonthYear(Timestamp? timeStamp) {
     if (timeStamp == null) return '';
@@ -457,7 +466,8 @@ class Helpers {
     }
   }
 
-  static String getNameMonth(int month) {
+  static String getNameMonth(int? month) {
+    if( month == null ) return '-';
     if (month < 1 || month > 12) return "";
     List<String> months = [
       "Enero",

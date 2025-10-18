@@ -1,15 +1,12 @@
-import 'dart:convert';
-import 'dart:io';
 import 'package:cip_payment_app/app/domain/entities/deviceinfo.dart';
 import 'package:cip_payment_app/app/domain/entities/enums.dart';
 import 'package:cip_payment_app/app/domain/entities/quota.dart';
-import 'package:cip_payment_app/app/domain/entities/storepay.dart'
-    hide LocationPay;
+import 'package:cip_payment_app/app/domain/entities/storepay.dart';
 import 'package:cip_payment_app/app/domain/entities/token.dart';
 import 'package:cip_payment_app/app/infrastructure/datasources/paymentdb_datasource.dart';
 import 'package:cip_payment_app/app/infrastructure/datasources/quotadb_datasource.dart';
 import 'package:cip_payment_app/app/infrastructure/models/quota_model.dart';
-import 'package:cip_payment_app/app/infrastructure/models/response/payment_quota_model.dart';
+import 'package:cip_payment_app/app/infrastructure/models/response/payment_model.dart';
 import 'package:cip_payment_app/app/infrastructure/repositories/payment_repository_impl.dart';
 import 'package:cip_payment_app/app/infrastructure/repositories/quota_repository_impl.dart';
 import 'package:cip_payment_app/app/providers/infodevice_provider.dart';
@@ -36,6 +33,19 @@ class MonthlyfeesProvider with ChangeNotifier {
     PaymentdbDatasource(),
   );
 
+  String rucId = '';
+  String mainEmail = '';
+  String personId = '';
+  int receiptType = 0; //0 boleta, 1: facura
+
+  final PageController pageController = PageController();
+  int _selectedIndex = 0;
+  int get selectedIndex => _selectedIndex;
+  double amoutToPay = 0;
+  List<Storepay> paymentHistoryQuotas = [];
+  bool isGettinHistory = false;
+  Token tokenCreate = Token();
+
   Future<void> onInit(BuildContext context) async {
     selectTab(0);
     getInfoDevice(context);
@@ -47,137 +57,6 @@ class MonthlyfeesProvider with ChangeNotifier {
   Future<void> getDataPerson(BuildContext context) async {
     personId = PreferencesUser.personId;
     mainEmail = PreferencesUser.mainEmail;
-    print(personId);
-    print(mainEmail);
-  }
-  String rucId = '';
-  String mainEmail = '';
-  String personId = '';
-  String variablePrueba = 'hola id';
-  
-  final PageController pageController = PageController();
-  int _selectedIndex = 0;
-  int get selectedIndex => _selectedIndex;
-  double amoutToPay = 0;
-
-  TextEditingController ctrlCardNumber = TextEditingController(
-    text: '4111111111111111',
-  );
-  TextEditingController ctrlCvv = TextEditingController(text: '123');
-  TextEditingController ctrlExpirationMonth = TextEditingController(text: '12');
-  TextEditingController ctrlExpirationYear = TextEditingController(
-    text: '2030',
-  );
-  TextEditingController ctrlEmail = TextEditingController(
-    text: 'review@culqi.com',
-  );
-  List<Storepay> paymentHistoryQuotas = [];
-  bool isGettinHistory = false;
-  double amount = 1000.0;
-  Token tokenCreate = Token();
-
-  //Crea el token y envia solicitud de pago createToken
-  Future<void> payMonthlyFees() async {
-    final response = await paymentRepositoryImpl.createTokenCulqi(
-      cardNumber: ctrlCardNumber.text,
-      cvv: ctrlCvv.text,
-      expirationMonth: ctrlExpirationMonth.text,
-      expirationYear: ctrlExpirationYear.text,
-      email: ctrlEmail.text,
-    );
-
-    if (response != null) {
-      debugPrint(response.toString());
-      tokenCreate = response;
-      paymentRepositoryImpl.payCulqi(
-        tokenCreate.id!,
-        Helpers.toCents(amount),
-        ctrlEmail.text,
-      ); // Enviar este token a tu backend para crear el cargo
-    } else {
-      // Mostrar error al usuario
-    }
-  }
-
-  //Pagar v1 pagar
-  // Future<void> payMonthlyFeesv1(BuildContext context) async {
-  //   await generateReceipt(
-  //     receiptNumber: 'prueba',
-  //     date: '07/09/25',
-  //     name: 'JOSE WILMER SANCHEZ DIAZ',
-  //     dni: '70833688',
-  //     subtotal: 25,
-  //     igv: 12,
-  //     total: 280,
-  //   );
-  //   debugPrint('tratando de generar recibo');
-  //   final token = await paymentRepositoryImpl.createTokenCulqi(
-  //     cardNumber: ctrlCardNumber.text,
-  //     cvv: ctrlCvv.text,
-  //     expirationMonth: ctrlExpirationMonth.text,
-  //     expirationYear: ctrlExpirationYear.text,
-  //     email: ctrlEmail.text,
-  //   );
-  //   if (token != null) {
-  //     final response = await paymentRepositoryImpl.payCulqi(
-  //       token.id!,
-  //       Helpers.toCents(amount),
-  //       ctrlEmail.text,
-  //     ); // Enviar este token a tu backend para crear el cargo
-  //     if (response != null) {
-  //       //TODO verificar si el pago fue exitoso o no
-  //       Navigator.pop(context);
-  //       CustomSnackbar.showSnackBarCustom(
-  //         context,
-  //         title: 'Éxito',
-  //         message: 'El pago se realizo correctamente',
-  //         type: 3,
-  //         time: 2,
-  //       );
-  //     } else {
-  //       CustomSnackbar.showSnackBarCustom(
-  //         context,
-  //         title: 'Validar',
-  //         message: 'Ups...Ocurrio un error, intente nuevamente',
-  //         type: 2,
-  //         time: 2,
-  //       );
-  //     }
-  //   }
-  // }
-
-  Future<String?> crearTokenCulqi() async {
-    final uri = Uri.parse("https://api.culqi.com/v2/tokens");
-    final client = HttpClient();
-
-    final req = await client.postUrl(uri);
-    req.headers.set('Content-Type', 'application/json');
-    req.headers.set('Authorization', 'Bearer pk_test_sKWDD6bVub17VOqt');
-
-    req.add(
-      utf8.encode(
-        json.encode({
-          "card_number": ctrlCardNumber.text,
-          "cvv": ctrlCvv.text,
-          "expiration_month": ctrlExpirationMonth.text,
-          "expiration_year": ctrlExpirationYear.text,
-          "email": ctrlEmail.text,
-        }),
-      ),
-    );
-
-    final res = await req.close();
-    final body = await res.transform(utf8.decoder).join();
-    client.close();
-
-    if (res.statusCode == 201) {
-      final data = json.decode(body);
-      print(data['id']);
-      return data['id'];
-    } else {
-      print("Error creando token (HttpClient): $body");
-      return null;
-    }
   }
 
   void selectTab(int index) {
@@ -203,7 +82,6 @@ class MonthlyfeesProvider with ChangeNotifier {
 
   List<Quota> listQuotas = [];
   bool isGettingPendingPay = true;
-
   Future<void> fetchPendingPay(BuildContext context) async {
     debugPrint('get cuotas pendientes');
     isGettingPendingPay = true;
@@ -241,11 +119,6 @@ class MonthlyfeesProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  //   double get totalSelected {
-  //   return listQuotas
-  //       .where((q) => q.isSelected)
-  //       .fold(0.0, (sum, q) => sum + q.amount );
-  // }
   double get totalSelected {
     return listQuotas
         .where((q) => q.isSelected)
@@ -268,13 +141,14 @@ class MonthlyfeesProvider with ChangeNotifier {
     isGettinHistory = true;
     print(personId);
     try {
-      final response =
-          await paymentRepositoryImpl.historyPaymentQuotas(personId, PaymentType.monthlyFees.code);
+      final response = await paymentRepositoryImpl.historyPaymentQuotas(
+          personId, PaymentType.monthlyFees.code);
       if (response == null) {
         return;
       }
       paymentHistoryQuotas.addAll(response);
-      paymentHistoryQuotas.sort((a, b) => (b.feeMonth ?? 0).compareTo(a.feeMonth ?? 0));
+      paymentHistoryQuotas
+          .sort((a, b) => (b.feeMonth ?? 0).compareTo(a.feeMonth ?? 0));
       
     } catch (e) {
       CustomSnackbar.showSnackBarCustom(
@@ -293,148 +167,167 @@ class MonthlyfeesProvider with ChangeNotifier {
 
   Future<void> openCheckout(BuildContext context) async {
     // Navigator.of(context).pop();
-    debugPrint(totalSelected.toString());
-    final int amountRound = Helpers.toCents(totalSelected);
-    final token = await showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return PopupCheckout(
-            onTapButton: () {},
-            content: CulqiCheckout(
-              publicKey: Environment.publicKeyCulqi,
-              amount: amountRound,
-              currency: 'PEN',
-              email: 'culqitest@gmail.com',
-            ),
-          );
-        });
-    // print("TOKEN RECIBIDO: $token");
-    if (token != null) {
-      showDialog(
-        context: context,
-        barrierDismissible: false, 
-        builder: (BuildContext context) {
-          return const Center(child: CircularProgressIndicator());
-        },
-      );
+    // debugPrint(totalSelected.toString());
+    try {
+      final int amountRound = Helpers.toCents(totalSelected);
+      final token = await showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return PopupCheckout(
+              onTapButton: () {},
+              content: CulqiCheckout(
+                publicKey: Environment.publicKeyCulqi,
+                amount: amountRound,
+                currency: 'PEN',
+                email: 'culqitest@gmail.com',
+              ),
+            );
+          });
+      // print("TOKEN RECIBIDO: $token");
+      if (token != null) {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return const Center(child: CircularProgressIndicator());
+          },
+        );
 
-      debugPrint(token);
-      final payCompleted = await paymentRepositoryImpl.payCulqi(
-        token,
-        amountRound,
-        mainEmail,
-      );
-      Navigator.of(context).pop(); // cierra el loader
-      if (payCompleted != null) {
-        if (payCompleted.succces) {
-          showDialog(
-            barrierDismissible: false,
-            context: context,
-            builder: (BuildContext context) {
-              return PopupCheckout(
-                title: '',
-                onTapButton: () {},
-                scrollable: false,
-                content: PaymentGood(
-                  payCompleted.creationDate ?? 0,
-                  totalSelected,
-                  textMonthlyfees,
-                ),
-              );
-            },
-          );
-          if (deviceInfo != null){
+        debugPrint(token);
+        final payCompleted = await paymentRepositoryImpl.payCulqi(
+          token,
+          amountRound,
+          mainEmail,
+        );
+        Navigator.of(context).pop(); // cierra el loader
+        if (payCompleted != null) {
+          if (payCompleted.succces) {
+            showDialog(
+              barrierDismissible: false,
+              context: context,
+              builder: (BuildContext context) {
+                return PopupCheckout(
+                  title: '',
+                  onTapButton: () {},
+                  scrollable: false,
+                  content: PaymentGood(
+                    payCompleted.creationDate ?? 0,
+                    totalSelected,
+                    textMonthlyfees,
+                    PaymentType.monthlyFees.code,
+                  ),
+                );
+              },
+            );
+            final payment = PaymentModel(
+              creationDatePay: Timestamp.fromDate(DateTime.now()),
+              deviceInfoPay: deviceInfo?.nameDevice ?? '',
+              ipAddressPay: deviceInfo?.ip ?? '',
+              locationCityPay: deviceInfo?.nameCity ?? '',
+              locationCountryPay: deviceInfo?.nameCountry ?? '',
+              locationPay: GeoPoint(
+                  deviceInfo?.latitude ?? 0.0, deviceInfo?.longitude ?? 0),
+              paymentState: true,
+              paymentValue: totalSelected,
+              personId: personId,
+              platformPayment: PlatformPayment.app.name,
+              quantityPayment: 1,
+              receiptType: receiptType, //ReceiptType.bill.code,
+              typePay: PaymentType.monthlyFees.code,
+              paymentChannel: PaymentChannel.online.code,
+              rucId: rucId,
+              feeMonth: 0, //ya no aplica porque se sabra de la tabla intermedia
+              feeYear: 0, //ya no aplica porque se sabra de la tabla intermedia
+              specialtyId: '',
+            );
 
+            List<QuotaModel> quotaModel = listQuotas
+                .where((q) => q.isSelected) // 1. Solo las cuotas seleccionadas
+                .map(
+                  (q) => QuotaModel(
+                    id: q.id ?? '',
+                    personId: q.personId ?? '',
+                    amount: q.amount ?? 0,
+                    isSelected: q.isSelected,
+                  ),
+                )
+                .toList();
+
+            final paymentMade = await paymentRepositoryImpl.payment(payment);
+            await paymentRepositoryImpl.paymentFeeDetail(
+                quotaModel, paymentMade?.id ?? '');
+            await quotaRepositoryImpl.updateQuotas(quotaModel);
+            fetchPendingPay(context);
+            getHistoryPayment(context);
+          } else {
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context) {
+                return PopupCheckout(
+                  title: '',
+                  onTapButton: () {},
+                  scrollable: false,
+                  content: PaymentBad(
+                    Helpers.generateRandomOperationNumber(),
+                    Helpers.formatCustomDate(payCompleted.creationDate),
+                    payCompleted.userMessage ?? '',
+                  ),
+                );
+              },
+            );
           }
-          List<PaymentQuotaModel> paymentQuotaModels = listQuotas
-              .where((q) => q.isSelected) // 1. Solo las cuotas seleccionadas
-              .map(
-                (q) => PaymentQuotaModel(
-                  creationDatePay: Timestamp.fromDate(DateTime.now()),
-                  deviceInfoPay: deviceInfo?.nameDevice ?? '',
-                  ipAddressPay: deviceInfo?.ip ?? '',
-                  locationCityPay: deviceInfo?.nameCity ?? '',
-                  locationCountryPay: deviceInfo?.nameCountry ?? '',
-                  locationPay: GeoPoint( deviceInfo?.latitude ?? 0.0, deviceInfo?.longitude ?? 0),
-                  paymentState: true,
-                  paymentValue: q.amount?.toDouble() ?? 0.0,
-                  personId: personId,
-                  platformPayment: PlatformPayment.app.name,
-                  quantityPayment: q.amount,
-                  receiptType: ReceiptType.bill.code,
-                  typePay: PaymentType.monthlyFees.code,
-                  paymentChannel: PaymentChannel.online.code,
-                  rucId: rucId,
-                  feeMonth: q.feeMonth ?? 0,
-                  feeYear: q.feeYear ?? 0,
-                ),
-              )
-              .toList();
-          await paymentRepositoryImpl.payQuotas(paymentQuotaModels);
-
-          List<QuotaModel> quotaModel = listQuotas
-              .where((q) => q.isSelected) // 1. Solo las cuotas seleccionadas
-              .map(
-                (q) => QuotaModel(
-                  id: q.id ?? '',
-                  personId: q.personId ?? '',
-                  isSelected: q.isSelected,
-                ),
-              )
-              .toList();
-
-          await quotaRepositoryImpl.updateQuotas(quotaModel);
-          fetchPendingPay(context);
-        } else {
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (BuildContext context) {
-              return PopupCheckout(
-                title: '',
-                onTapButton: () {},
-                scrollable: false,
-                content: PaymentBad(
-                  Helpers.generateRandomOperationNumber(),
-                  Helpers.formatCustomDate(payCompleted.creationDate),
-                  payCompleted.userMessage ?? '',
-                ),
-              );
-            },
-          );
         }
       }
+    } catch (e) {
+    } finally {
+      cleanVariables();
     }
   }
+  List<Quota> listQuotasPayment = [];
+  Future<void> getPaymentFeesByPaymentId(String paymentId) async{
+    listQuotasPayment.clear();
+    try{
+      final response = await paymentRepositoryImpl.getPaymentFeesByPaymentId(paymentId);
+      print(listQuotasPayment.length);
+      listQuotasPayment.addAll(response);
+    }catch(e){
+      debugPrint(e.toString());
+    }finally{
 
+    }
+
+  }
   Future<void> getReceipt(
     String receiptNumber,
     String date,
     String name,
     String dni,
     double subtotal,
+    List<Quota> quota,
   ) async {
-    final igv =subtotal * 0.18;
+    final igv = subtotal * 0.18;
     await generateReceipt(
-        receiptNumber: receiptNumber,
-        date: date,
-        name: name,
-        dni: dni,
-        subtotal: subtotal - igv,
-        igv: igv,
-        total: subtotal);
+      receiptNumber: receiptNumber,
+      date: date,
+      name: name,
+      dni: dni,
+      subtotal: subtotal - igv,
+      igv: igv,
+      total: subtotal,
+      typePay: textMonthlyfees,
+      storepay: quota,
+    );
   }
 
-  
   DeviceInfo? deviceInfo;
-  void getInfoDevice(context) async{
-    deviceInfo = await Provider.of<InfodeviceProvider>(context, listen: false).deviceInfo();
-    print(deviceInfo);
+  void getInfoDevice(context) async {
+    deviceInfo = await Provider.of<InfodeviceProvider>(context, listen: false)
+        .deviceInfo();
   }
+
   void prueba(BuildContext context) async {
-    print('object');
-    print(rucId);
-  /*   showDialog(
+    /*   showDialog(
       context: context,
       builder: (BuildContext context) {
         return PopupCheckout(
@@ -449,11 +342,10 @@ class MonthlyfeesProvider with ChangeNotifier {
         );
       },
     ); */
-     
   }
-  // void prueba(){
-  //   for ( var quota in listQuotas){
-  //     print(quota.id); 
-  //   }
-  // }
+
+  void cleanVariables() {
+    rucId = '';
+    receiptType = 0;
+  }
 }

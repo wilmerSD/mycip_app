@@ -15,107 +15,97 @@ class MonthlyfeesPay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // final monthlyfeesProvider = Provider.of<MonthlyfeesProvider>(context);
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: context.watch<MonthlyfeesProvider>().isGettingPendingPay
-            ? const Center(child: CircularProgressIndicator())
-            : context.read<MonthlyfeesProvider>().listQuotas.isEmpty
-                ? const NodebtView()
-                : Column(
-                    spacing: 10.0,
+    return context.watch<MonthlyfeesProvider>().isGettingPendingPay
+        ? const Center(child: CircularProgressIndicator())
+        : context.read<MonthlyfeesProvider>().listQuotas.isEmpty
+            ? const NodebtView()
+            : Column(
+                spacing: 10.0,
+                children: [
+                  Row(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 0),
-                        child: Row(
-                          children: [
-                            Consumer<MonthlyfeesProvider>(
-                              builder: (context, provider, _) {
-                                return Checkbox(
-                                  value: provider.allSelected,
-                                  onChanged: (bool? value) {
-                                    provider.toggleSelectAll();
-                                  },
-                                );
-                              },
-                            ),
-                            Text(
-                              'Seleccionar todo',
-                              style: AppTextStyle(context).bold13(),
-                            ),
-                          ],
-                        ),
-                      ),
                       Consumer<MonthlyfeesProvider>(
                         builder: (context, provider, _) {
-                          return Expanded(
-                            child: SingleChildScrollView(
-                              child: Wrap(
-                                spacing: 30.0,
-                                runSpacing: 10.0,
-                                children:
-                                    List.generate(provider.listQuotas.length, (
-                                  index,
-                                ) {
-                                  final fee = provider.listQuotas[index];
-                                  return _customContainer(
-                                    context,
-                                    Checkbox(
-                                      value: fee.isSelected,
-                                      onChanged: (value) {
-                                        provider.togglePaid(
-                                            index, value ?? false);
-                                      },
-                                    ),
-                                    'Cuota ordinaria',
-                                    () {
-                                      provider.togglePaid(
-                                          index, !fee.isSelected);
-                                    },
-                                    '${Helpers.getNameMonth(fee.feeMonth ?? 0)} ${fee.feeYear}',
-                                    'S/ ${fee.amount}',
-                                  );
-                                }),
-                              ),
-                            ),
+                          return Checkbox(
+                            value: provider.allSelected,
+                            onChanged: (bool? value) {
+                              provider.toggleSelectAll();
+                            },
                           );
                         },
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 0),
-                        child: Consumer<MonthlyfeesProvider>(
-                          builder: (context, provider, _) {
-                            return BtnPrimaryInk(
-                              withIconProgress: false,
-                              loading: provider.totalSelected == 0,
-                              text: 'Pagar S/. ${provider.totalSelected}',
-                              onTap: () {
-                                ModalUtils.getShowModalBS(
-                                  context,
-                                  content: SelectReceipt(
-                                    mainText: 'Pagar S/. ${provider.totalSelected}',
-                                    textBtn: 'Pagar S/. ${provider.totalSelected}',
-                                    textPopUp: '',
-                                    content: const SizedBox(),
-                                    onTap: () {
-                                      context
-                                          .read<MonthlyfeesProvider>()
-                                          .openCheckout(context);
-                                    },
-                                  ),
-                                  title: 'Detalle de pago',
-                                );
-                              },
-                            );
-                          },
-                        ),
-                      ),
-                      const SizedBox(
+                      Text(
+                        'Seleccionar todo',
+                        style: AppTextStyle(context).bold13(),
                       ),
                     ],
                   ),
-      ),
-    );
+                  Consumer<MonthlyfeesProvider>(
+                    builder: (context, provider, _) {
+                      return Expanded(
+                        child: SingleChildScrollView(
+                          child: Wrap(
+                            spacing: 30.0,
+                            runSpacing: 10.0,
+                            children:
+                                List.generate(provider.listQuotas.length, (
+                              index,
+                            ) {
+                              final fee = provider.listQuotas[index];
+                              return _customContainer(
+                                context,
+                                Checkbox(
+                                  value: fee.isSelected,
+                                  onChanged: (value) {
+                                    provider.togglePaid(
+                                        index, value ?? false);
+                                  },
+                                ),
+                                'Cuota ordinaria',
+                                () {
+                                  provider.togglePaid(
+                                      index, !fee.isSelected);
+                                },
+                                '${Helpers.getNameMonth(fee.feeMonth ?? 0)} ${fee.feeYear}',
+                                'S/ ${fee.amount}',
+                              );
+                            }),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 0),
+                    child: Consumer<MonthlyfeesProvider>(
+                      builder: (context, provider, _) {
+                        return BtnPrimaryInk(
+                          withIconProgress: false,
+                          loading: provider.totalSelected == 0,
+                          text: 'Pagar S/. ${provider.totalSelected}',
+                          onTap: () {
+                            ModalUtils.getShowModalBS(
+                              context,
+                              content: SelectReceipt(
+                                mainText: 'Pagar S/. ${provider.totalSelected}',
+                                textBtn: 'Pagar S/. ${provider.totalSelected}',
+                                textPopUp: '',
+                                content: const SizedBox(),
+                                onTap: () {
+                                  context
+                                      .read<MonthlyfeesProvider>()
+                                      .openCheckout(context);
+                                },
+                              ),
+                              title: 'Detalle de pago',
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              );
   }
 }
 

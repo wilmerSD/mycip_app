@@ -10,6 +10,7 @@ import 'package:cip_payment_app/app/ui/components/field/read_only_field.dart';
 import 'package:cip_payment_app/app/ui/components/modal_new_note.dart';
 import 'package:cip_payment_app/app/ui/views/certificateskill/certificateskill_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class CertificateskillPay extends StatelessWidget {
@@ -34,11 +35,11 @@ class CertificateskillPay extends StatelessWidget {
               const SizedBox(
                 height: 15.0,
               ),
-              inputStateCertificate(context, person?.stateCollegiate ?? false),
+              inputStateCertificate(context),
               const SizedBox(
                 height: 15.0,
               ),
-              inputEnabledCertificate(context, '12/12/2025'),
+              inputEnabledCertificate(context),
               const SizedBox(
                 height: 15.0,
               ),
@@ -46,14 +47,14 @@ class CertificateskillPay extends StatelessWidget {
               const SizedBox(
                 height: 15.0,
               ),
-              inputSpecialtyCertificate(context, ''),
+              inputSpecialtyCertificate(context),
               const SizedBox(
                 height: 15.0,
               ),
             ],
           ),
         ),
-        customBtnPay(context),
+        customBtnPay(context,),
       ],
     );
   }
@@ -73,9 +74,11 @@ Widget inputEmailCertificate(BuildContext context, String value) {
   );
 }
 
-Widget inputStateCertificate(BuildContext context, bool value) {
+Widget inputStateCertificate(BuildContext context) {
+  final certificateSkill = Provider.of<CertificateSkillProvider>(context);
+
   String valueText = 'Deshabilitado';
-  if (value) {
+  if (certificateSkill.stateCollegiate) {
     valueText = 'Habilitado';
   }
   return ReadOnlyField(
@@ -84,14 +87,15 @@ Widget inputStateCertificate(BuildContext context, bool value) {
   );
 }
 
-Widget inputEnabledCertificate(BuildContext context, String value) {
+Widget inputEnabledCertificate(BuildContext context) {
+  final certificateSkill = Provider.of<CertificateSkillProvider>(context);
   return ReadOnlyField(
     label: "Habilitado hasta",
-    value: value,
+    value: certificateSkill.enabledUntil,
   );
 }
 
-Widget inputSpecialtyCertificate(BuildContext context, String value) {
+Widget inputSpecialtyCertificate(BuildContext context) {
   final certificateSkill = Provider.of<CertificateSkillProvider>(context);
   return Select(
     isActive: false,
@@ -126,6 +130,9 @@ Widget quantityCertificates(BuildContext context) {
     textInputType: TextInputType.number,
     helperText: 'Cantidad',
     textEditingController: certificateSkill.quantityCertificate,
+    inputFormats: [
+    FilteringTextInputFormatter.digitsOnly, // ✅ Solo permite números
+  ],
     onChanged: (p0) {
       certificateSkill.updateAmount();
     },
@@ -133,19 +140,19 @@ Widget quantityCertificates(BuildContext context) {
 }
 
 Widget customBtnPay(BuildContext context) {
-  
+   
   return Consumer<CertificateSkillProvider>(builder: (context, provider, _) {
     return BtnPrimaryInk(
       withIconProgress: false,
-      loading: provider.haveQuotasPending || provider.amountToPay == 0,
-      text: 'Pagar ${provider.amountToPay}',
+      loading: provider.haveQuotasPending || provider.amountToPay == 0 || provider.listSpecialities.isEmpty || provider.stateCollegiate == false,
+      text: 'Pagar S/. ${provider.amountToPay}',
       onTap: () {
         // provider.prueba();
         ModalUtils.getShowModalBS(
           context,
           content: SelectReceipt(
             mainText: 'Pagar S/. ${provider.amountToPay}',
-            textBtn: 'Continuar',
+            textBtn: 'Pagar S/. ${provider.amountToPay}',
             textPopUp: 'Pagar certificado de habilidad',
             content: const SizedBox(),
             onTap: () {
@@ -158,3 +165,4 @@ Widget customBtnPay(BuildContext context) {
     );
   });
 }
+//

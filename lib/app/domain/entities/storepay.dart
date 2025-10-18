@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Storepay {
+    final String? id;
     final Timestamp? creationDatePay;
     final String? locationCityPay;
     final String? locationCountryPay;
@@ -19,6 +20,7 @@ class Storepay {
     final String? specialtyId;
 
     Storepay({
+        this.id,
         this.creationDatePay,
         this.locationCityPay,
         this.locationCountryPay,

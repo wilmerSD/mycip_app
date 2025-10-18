@@ -11,6 +11,7 @@ Future<File> generatePdfToShare({
   required double subtotal,
   required double igv,
   required double total,
+  required String typePay,
 }) async {
   final pdf = pw.Document();
 
@@ -76,7 +77,7 @@ Future<File> generatePdfToShare({
               pw.Row(
                   mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                   children: [
-                    pw.Text("Adelanto de cuotas "),
+                    pw.Text(typePay),
                     pw.Text("$total"),
                   ]),
 

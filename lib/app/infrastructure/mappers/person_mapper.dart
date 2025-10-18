@@ -22,5 +22,6 @@ class PersonMapper {
     personId: persondb.personId,
     ruc: persondb.ruc,
     statePerson: persondb.statePerson,
+    stateCollegiate: persondb.stateCollegiate,
   );
 }

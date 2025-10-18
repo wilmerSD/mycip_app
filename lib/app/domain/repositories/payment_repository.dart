@@ -1,8 +1,10 @@
+import 'package:cip_payment_app/app/domain/entities/culqipayment.dart';
 import 'package:cip_payment_app/app/domain/entities/payment.dart';
 import 'package:cip_payment_app/app/domain/entities/quota.dart';
 import 'package:cip_payment_app/app/domain/entities/storepay.dart';
 import 'package:cip_payment_app/app/domain/entities/token.dart';
-import 'package:cip_payment_app/app/infrastructure/models/response/payment_quota_model.dart';
+import 'package:cip_payment_app/app/infrastructure/models/quota_model.dart';
+import 'package:cip_payment_app/app/infrastructure/models/response/payment_model.dart';
 
 abstract class PaymentRepository {
   Future<Token?> createTokenCulqi({
@@ -12,7 +14,10 @@ abstract class PaymentRepository {
     required String expirationYear,
     required String email,
   });
-  Future<Payment?>  payCulqi(String token, int amount, String email);
-  Future<List<Quota>?> payQuotas(List<PaymentQuotaModel> paymentQuotaModel);
+  Future<Culqipayment?>  payCulqi(String token, int amount, String email);
+  Future<List<Quota>?> payQuotas(List<PaymentModel> paymentQuotaModel);
+  Future<Payment?> payment(PaymentModel payment);
+  Future<bool> paymentFeeDetail(List<QuotaModel> quotasToPay, String paymentId);
   Future<List<Storepay>?> historyPaymentQuotas(String personId, int typePay);
+  Future<List<Quota>> getPaymentFeesByPaymentId(String paymentId);
 }

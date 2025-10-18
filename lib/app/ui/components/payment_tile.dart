@@ -1,3 +1,4 @@
+import 'package:cip_payment_app/app/domain/entities/speciality.dart';
 import 'package:cip_payment_app/app/ui/components/payment/popup_download_option.dart';
 import 'package:cip_payment_app/core/theme/app_colors.dart';
 import 'package:cip_payment_app/core/theme/app_text_style.dart';
@@ -11,15 +12,31 @@ class PaymentTile extends StatelessWidget {
   final String textSecond;
   final String textThird;
   final bool popup;
+  final String? receiptNumber;
+  final String? date;
+  final String? name;
+  final String? dni;
+  final double? subtotal;
+  final String? typePay;
+  final Speciality? speciality;
+  final String? enabledUntil;
 
   const PaymentTile(
     this.title,
     this.text,
     this.ontap,
     this.textSecond,
-    this.textThird, 
-    this.popup,{
+    this.textThird,
+    this.popup, {
     super.key,
+    this.receiptNumber,
+    this.date,
+    this.name,
+    this.dni,
+    this.subtotal,
+    this.speciality,
+    this.typePay,
+    this.enabledUntil,
   });
 
   @override
@@ -74,22 +91,16 @@ class PaymentTile extends StatelessWidget {
                           color: AppColors.textBasic(context)))
                 ],
               ),
-              popup ? 
-              const PopupDownloadOption(
-                'receiptNumber',
-                'date',
-                'name',
-                'dni',
-                20.3
-              ): 
-              IconButton(
-                onPressed:
-                 ontap,
-                icon: const Icon(
-                  Bootstrap.download,
-                  color: AppColors.secondConst,
-                ),
-              )
+              popup
+                  ? PopupDownloadOption(receiptNumber ?? '', date ?? '',
+                      name ?? '', dni ?? '', subtotal ?? 0, typePay ?? '', speciality, enabledUntil)
+                  : IconButton(
+                      onPressed: ontap,
+                      icon: const Icon(
+                        Bootstrap.download,
+                        color: AppColors.secondConst,
+                      ),
+                    )
             ],
           ),
         ),

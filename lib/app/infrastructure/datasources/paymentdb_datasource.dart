@@ -1,8 +1,10 @@
 import 'package:cip_payment_app/app/domain/datasources/payment_datasource.dart';
+import 'package:cip_payment_app/app/domain/entities/culqipayment.dart';
 import 'package:cip_payment_app/app/domain/entities/payment.dart';
 import 'package:cip_payment_app/app/domain/entities/quota.dart';
 import 'package:cip_payment_app/app/domain/entities/storepay.dart';
 import 'package:cip_payment_app/app/domain/entities/token.dart';
+import 'package:cip_payment_app/app/infrastructure/mappers/culqipayment_mapper.dart';
 import 'package:cip_payment_app/app/infrastructure/mappers/payment_mapper.dart';
 import 'package:cip_payment_app/app/infrastructure/mappers/quota_mapper.dart';
 import 'package:cip_payment_app/app/infrastructure/mappers/storepay_mapper.dart';
@@ -10,8 +12,7 @@ import 'package:cip_payment_app/app/infrastructure/mappers/token_mapper.dart';
 import 'package:cip_payment_app/app/infrastructure/models/culqi/culqi_payment_response.dart';
 import 'package:cip_payment_app/app/infrastructure/models/culqi/culqi_token_response.dart';
 import 'package:cip_payment_app/app/infrastructure/models/quota_model.dart';
-import 'package:cip_payment_app/app/infrastructure/models/response/payment_quota_model.dart';
-import 'package:cip_payment_app/app/infrastructure/models/storepay_model.dart';
+import 'package:cip_payment_app/app/infrastructure/models/response/payment_model.dart';
 import 'package:cip_payment_app/core/config/environment.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,8 @@ import 'dart:convert';
 
 class PaymentdbDatasource extends PaymentDatasource {
   final FirebaseFirestore firestoredb = FirebaseFirestore.instance;
-  
+  // final String linkBack = 'http://192.168.100.92:8080';
+  final String linkBack = 'https://cip-payment-culqi.onrender.com';
   @override
   Future<Token?> createTokenCulqi({
     required String cardNumber,
@@ -68,10 +70,10 @@ class PaymentdbDatasource extends PaymentDatasource {
   }
 
   @override
-  Future<Payment?> payCulqi(String token, int amount, String email) async {
+  Future<Culqipayment?> payCulqi(String token, int amount, String email) async {
     //TODO envolver con try catch para ver el posible error
     final response = await http.post(
-      Uri.parse("http://192.168.100.89:8080/pago"),
+      Uri.parse("$linkBack/pago"),
       headers: {"Content-Type": "application/json"},
       body: jsonEncode({
         "token": token,
@@ -81,12 +83,12 @@ class PaymentdbDatasource extends PaymentDatasource {
     );
     final data = jsonDecode(response.body);
     final paymentResponse = CulqiPaymentResponse.fromJson(data);
-    final payment = PaymentMapper.paymentResponseToEntity(paymentResponse);
+    final payment = CulqiPaymentMapper.paymentResponseToEntity(paymentResponse);
     return payment;
   }
 
-   @override
-  Future<List<Quota>?> payQuotas(List<PaymentQuotaModel> quotasToPay) async {
+  @override
+  Future<List<Quota>?> payQuotas(List<PaymentModel> quotasToPay) async {
     try {
       final List<Quota> paidQuotas = [];
 
@@ -114,18 +116,94 @@ class PaymentdbDatasource extends PaymentDatasource {
     }
   }
 
-    @override
-  Future<List<Storepay>?> historyPaymentQuotas(String personId, int typePay) async {
+  @override
+  Future<Payment?> payment(PaymentModel payment) async {
+    try {
+      final docRef = await FirebaseFirestore.instance
+          .collection('Payment')
+          .add(payment.toJson());
+
+      // Agregamos el id al documento
+      await docRef.update({'id': docRef.id});
+
+      final snapshot = await docRef.get();
+      final data = snapshot.data() as Map<String, dynamic>;
+
+      final paymentResponse = PaymentModel.fromJson(data);
+      final paymentEntity =
+          PaymentMapper.storepayResponseToEntity(paymentResponse);
+
+      debugPrint('✅ Pago registrado correctamente con ID: ${docRef.id}');
+      return paymentEntity;
+    } catch (e) {
+      debugPrint('❌ Error al crear pago: $e');
+      return null;
+    }
+  }
+
+  @override
+  Future<bool> paymentFeeDetail(
+      List<QuotaModel> quotasToPay, String paymentId) async {
+    try {
+      final List<Quota> paidQuotas = [];
+
+      for (final quota in quotasToPay) {
+        final paymentFeeData = {
+          'paymentId': paymentId,
+          'quotaId': quota.id,
+          'amountPaid': quota.amount, // o el monto exacto pagado
+          'createdAt': FieldValue.serverTimestamp(),
+        };
+
+        final docRef = await FirebaseFirestore.instance
+            .collection('PaymentFee')
+            .add(paymentFeeData);
+
+        await docRef.update({'id': docRef.id});
+
+        paidQuotas.add(QuotaMapper.quotaResponseToEntity(quota));
+      }
+
+      debugPrint(
+          '✅ ${paidQuotas.length} cuotas registradas correctamente en PaymentFee');
+      return true;
+    } catch (e) {
+      debugPrint('❌ Error al registrar PaymentFee: $e');
+      return false;
+    }
+  }
+  @override
+  Future<List<Quota>> getPaymentFeesByPaymentId(String paymentId) async {
+    try {
+      final query = await firestoredb
+          .collection('PaymentFee')
+          .where('paymentId', isEqualTo: paymentId)
+          .get();
+
+      return query.docs.map((doc) {
+        final data = doc.data();
+        final quotaModel = QuotaModel.fromFirestore(data);
+        return QuotaMapper.quotaResponseToEntity(quotaModel);
+      }).toList();
+    } catch (e) {
+      debugPrint('❌ Error al obtener cuotas del pago: $e');
+      return [];
+    }
+  }
+
+  @override
+  Future<List<Storepay>?> historyPaymentQuotas(
+      String personId, int typePay) async {
     try {
       final snapshot = await firestoredb
           .collection('Payment')
           .where('personId', isEqualTo: personId)
           .where('typePay', isEqualTo: typePay)
           .get();
-      
+
       final paymentQuotaResponse = snapshot.docs.map((doc) {
         final data = doc.data();
-        return PaymentQuotaModel.fromJson(data);
+        return PaymentModel.fromJson(data);
       }).toList();
       // print(paymentQuotaResponse);
       final paymentQuotas = paymentQuotaResponse
@@ -135,6 +213,6 @@ class PaymentdbDatasource extends PaymentDatasource {
     } catch (e) {
       debugPrint("Error al obtener las cuotas pendientes de la persona : $e");
       return [];
-    } 
+    }
   }
 }

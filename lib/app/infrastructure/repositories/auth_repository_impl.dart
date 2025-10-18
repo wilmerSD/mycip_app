@@ -10,5 +10,23 @@ class AuthRepositoryImpl extends AuthRepository{
   Future<User?> loginUser({required String email,required String password}) {
     return datasource.loginUser(email, password);
   }
+  
+  @override
+  Future<bool> requestPasswordReset(String email) {
+    // TODO: implement requestPasswordReset
+    throw UnimplementedError();
+  }
+  
+  @override
+  Future<bool> resetPassword(String email, String newPassword) {
+    // TODO: implement resetPassword
+    throw UnimplementedError();
+  }
+  
+  @override
+  Future<bool> verifyResetCode(String email, String code) {
+    // TODO: implement verifyResetCode
+    throw UnimplementedError();
+  }
 
 }

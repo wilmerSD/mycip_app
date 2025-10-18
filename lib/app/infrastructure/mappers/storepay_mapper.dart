@@ -1,8 +1,8 @@
 import 'package:cip_payment_app/app/domain/entities/storepay.dart';
-import 'package:cip_payment_app/app/infrastructure/models/response/payment_quota_model.dart';
+import 'package:cip_payment_app/app/infrastructure/models/response/payment_model.dart';
 
 class StorepayMapper {
-  static Storepay storepayResponseToEntity(PaymentQuotaModel storepay) =>
+  static Storepay storepayResponseToEntity(PaymentModel storepay) =>
   Storepay(
     creationDatePay: storepay.creationDatePay,
     locationCityPay: storepay.locationCityPay ?? '',

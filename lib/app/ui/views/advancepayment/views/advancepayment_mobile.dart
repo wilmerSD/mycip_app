@@ -1,16 +1,15 @@
 import 'package:cip_payment_app/app/ui/components/custom_tab_switch.dart';
-import 'package:cip_payment_app/app/ui/views/certificateskill/certificateskill_provider.dart';
-import 'package:cip_payment_app/app/ui/views/certificateskill/widgets/certificateskill_history.dart';
-import 'package:cip_payment_app/app/ui/views/certificateskill/widgets/certificateskill_pay.dart';
+import 'package:cip_payment_app/app/ui/views/advancepayment/advancepayment_provider.dart';
+import 'package:cip_payment_app/app/ui/views/advancepayment/widgets/advancepayment_history.dart';
+import 'package:cip_payment_app/app/ui/views/advancepayment/widgets/advancepayment_pay.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class CertificateskillViewMobile extends StatelessWidget {
-  const CertificateskillViewMobile({super.key});
-
-  @override
+class AdvancepaymentMobile extends StatelessWidget {
+  const AdvancepaymentMobile({super.key});
+    @override
   Widget build(BuildContext context) {
-    print('Certificado de habilidad mobile');
+    
     return Column(
       spacing: 10.0,
       children: [
@@ -21,12 +20,12 @@ class CertificateskillViewMobile extends StatelessWidget {
           child: Padding(
                   padding:const EdgeInsetsGeometry.all(15),
             child: PageView(
-              controller: context.read<CertificateSkillProvider>().pageController,
+              controller: context.read<AdvancepaymentProvider>().pageController,
               onPageChanged: (index) =>
-                  context.read<CertificateSkillProvider>().onPageChanged(index),
+                  context.read<AdvancepaymentProvider>().onPageChanged(index),
               children: const [
-                CertificateskillPay(),
-                CertificateskillHistory(),
+                AdvancepaymentPay(),
+                AdvancepaymentHistory(),
               ],
             ),
           ),
@@ -37,7 +36,7 @@ class CertificateskillViewMobile extends StatelessWidget {
 }
 
 Widget optionsCertificateSkill() {
-  return Consumer<CertificateSkillProvider>(
+  return Consumer<AdvancepaymentProvider>(
     builder: (context, provider, _) {
       return CustomTabSwitch(
         tabs: const ['Pagar', 'Historial'],
@@ -47,3 +46,4 @@ Widget optionsCertificateSkill() {
     },
   );
 }
+ 

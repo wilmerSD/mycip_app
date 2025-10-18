@@ -1,10 +1,12 @@
 import 'package:cip_payment_app/app/domain/datasources/payment_datasource.dart';
+import 'package:cip_payment_app/app/domain/entities/culqipayment.dart';
 import 'package:cip_payment_app/app/domain/entities/payment.dart';
 import 'package:cip_payment_app/app/domain/entities/quota.dart';
 import 'package:cip_payment_app/app/domain/entities/storepay.dart';
 import 'package:cip_payment_app/app/domain/entities/token.dart';
 import 'package:cip_payment_app/app/domain/repositories/payment_repository.dart';
-import 'package:cip_payment_app/app/infrastructure/models/response/payment_quota_model.dart';
+import 'package:cip_payment_app/app/infrastructure/models/quota_model.dart';
+import 'package:cip_payment_app/app/infrastructure/models/response/payment_model.dart';
 
 class PaymentRepositoryImpl extends PaymentRepository {
   final PaymentDatasource datasource;
@@ -29,18 +31,31 @@ class PaymentRepositoryImpl extends PaymentRepository {
   }
 
   @override
-  Future<Payment?> payCulqi(String token, int amount, String email) {
+  Future<Culqipayment?> payCulqi(String token, int amount, String email) {
     return datasource.payCulqi(token, amount, email);
   }
 
   @override
-  Future<List<Quota>?> payQuotas(List<PaymentQuotaModel> paymentQuotaModel) {
+  Future<List<Quota>?> payQuotas(List<PaymentModel> paymentQuotaModel) {
     return datasource.payQuotas(paymentQuotaModel);
+  }
+
+  @override
+  Future<Payment?> payment(PaymentModel payment) {
+    return datasource.payment(payment);
+  }
+  @override
+  Future<bool> paymentFeeDetail(List<QuotaModel> quotasToPay, String paymentId) {
+    return datasource.paymentFeeDetail(quotasToPay, paymentId);
   }
   
   @override
   Future<List<Storepay>?> historyPaymentQuotas(String personId, int typePay) {
      return datasource.historyPaymentQuotas(personId, typePay);
+  }
+  @override
+  Future<List<Quota>> getPaymentFeesByPaymentId(String paymentId) {
+    return datasource.getPaymentFeesByPaymentId(paymentId);
   }
 
   // @override

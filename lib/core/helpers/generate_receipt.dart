@@ -1,3 +1,5 @@
+import 'package:cip_payment_app/app/domain/entities/quota.dart';
+import 'package:cip_payment_app/core/helpers/helpers.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
@@ -10,8 +12,12 @@ Future<void> generateReceipt({
   required double subtotal,
   required double igv,
   required double total,
+  required String typePay,
+  List<Quota>? storepay,
 }) async {
   print('tratando de imprimir');
+  print(storepay?.length);
+  print('tratando de imprimir1');
   // final logo = await PdfAssets.getLogo();
   final pdf = pw.Document();
   final textVertical =
@@ -80,10 +86,36 @@ Future<void> generateReceipt({
                 pw.Row(
                     mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                     children: [
-                      pw.Text("Adelanto de cuotas "),
+                      pw.Text(typePay),
                       pw.Text("$total"),
                     ]),
+                    pw.Container(
+                        color: PdfColors.red,
+                        height: 20.0,
+                        width: 20.0,
+                      ),
+                storepay == null
+                    ? pw.Container(
+                        color: PdfColors.red,
+                        height: 20.0,
+                        width: 20.0,
+                      )
+                    : pw.Column(
+                        children: List.generate(
+                          storepay.length,
+                          (index) {
+                            final quota = storepay[index];
+                            return pw.Container(
+                              color: PdfColors.red,
+                              height: 20.0,
+                              width: 20.0,
+                            );
 
+                            // return pw.Text(
+                            //     'Cuota ${Helpers.getNameMonth(quota.feeMonth)} - Monto: ${quota.feeYear}');
+                          },
+                        ),
+                      ),
                 pw.Spacer(),
 
                 // Totales abajo a la derecha
@@ -92,11 +124,11 @@ Future<void> generateReceipt({
                   crossAxisAlignment: pw.CrossAxisAlignment.end,
                   children: [
                     pw.Column(
-                      crossAxisAlignment: pw.CrossAxisAlignment.start,
-                      children: [
-                      pw.Text('Consejo Departamental de Lambayeque'),
-                      pw.Text('R.U.C: 20138086438'),
-                    ]),
+                        crossAxisAlignment: pw.CrossAxisAlignment.start,
+                        children: [
+                          pw.Text('Consejo Departamental de Lambayeque'),
+                          pw.Text('R.U.C: 20138086438'),
+                        ]),
                     pw.Column(
                       crossAxisAlignment: pw.CrossAxisAlignment.end,
                       children: [

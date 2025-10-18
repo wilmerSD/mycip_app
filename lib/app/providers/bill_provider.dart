@@ -26,7 +26,6 @@ class BillProvider with ChangeNotifier {
   String personId = '';
   String mainEmail = '';
   String companyIdToEdit = '';
-
   bool isGettingRucs = true;
   List<Company> listCompanies = [];
   Future<void> onInit(BuildContext context) async {

@@ -51,5 +51,11 @@
 			<key>NSAllowsArbitraryLoads</key>
 			<true/>
 		</dict>
+	<!-- 👇 Agrega aquí los permisos de ubicación -->
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Esta aplicación necesita acceder a tu ubicación mientras la usas.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Esta aplicación necesita acceder a tu ubicación incluso en segundo plano.</string>
+	<!-- 👆 Hasta aquí -->
 </dict>
 </plist>
