@@ -1,10 +1,12 @@
 import 'package:cip_payment_app/app/domain/entities/deviceinfo.dart';
 import 'package:cip_payment_app/app/domain/entities/enums.dart';
+import 'package:cip_payment_app/app/domain/entities/payment.dart';
+import 'package:cip_payment_app/app/domain/entities/quota.dart';
 import 'package:cip_payment_app/app/domain/entities/speciality.dart';
-import 'package:cip_payment_app/app/domain/entities/storepay.dart';
 import 'package:cip_payment_app/app/infrastructure/datasources/paymentdb_datasource.dart';
 import 'package:cip_payment_app/app/infrastructure/datasources/quotadb_datasource.dart';
 import 'package:cip_payment_app/app/infrastructure/datasources/specialitydb_datasource.dart';
+import 'package:cip_payment_app/app/infrastructure/models/quota_model.dart';
 import 'package:cip_payment_app/app/infrastructure/models/response/payment_model.dart';
 import 'package:cip_payment_app/app/infrastructure/models/select_model.dart';
 import 'package:cip_payment_app/app/infrastructure/repositories/payment_repository_impl.dart';
@@ -34,12 +36,6 @@ class CertificateSkillProvider with ChangeNotifier {
   final SpecialityRepositoryImpl specialityRepositoryImpl =
       SpecialityRepositoryImpl(SpecialitydbDatasource());
 
-  String ctrlNumberCip = '972 243 232';
-  String ctrlColegiado = 'José Guevara Martinez';
-  String ctrlState = 'Activo';
-  String ctrlEnabledUntil = '31 de Agosto del 2025';
-  String ctrlNumberCertf = '01';
-  String ctrlSpecialty = 'Ing. De Sistemas e informática';
   double valueCertificate = 15;
   String rucId = '';
   bool stateCollegiate = false;
@@ -62,7 +58,7 @@ class CertificateSkillProvider with ChangeNotifier {
     mainEmail = PreferencesUser.mainEmail;
     getSpecilaities(personId);
     hasQuotasPending(context);
-    getHistoryQuotasPayment(context);
+    fetchLastQuotaByPerson();
     getHistoryPayment(context);
   }
 
@@ -153,7 +149,7 @@ class CertificateSkillProvider with ChangeNotifier {
                 );
               },
             );
-            //TODO: GUARDAR EN LA TABLA DE PAYMENT EL PAGO REALIZADO
+
             final cuantityCert = int.parse(quantityCertificate.text);
             List<PaymentModel> paymentQuotaModels =
                 List.generate(cuantityCert, (index) {
@@ -179,7 +175,43 @@ class CertificateSkillProvider with ChangeNotifier {
                 specialtyId: currectSpecialty.id,
               );
             });
+            /* PaymentModel paymentModel = PaymentModel(
+              creationDatePay: Timestamp.fromDate(DateTime.now()),
+              deviceInfoPay: deviceInfo?.nameDevice ?? '',
+              ipAddressPay: deviceInfo?.ip ?? '',
+              locationCityPay: deviceInfo?.nameCity ?? '',
+              locationCountryPay: deviceInfo?.nameCountry ?? '',
+              locationPay: GeoPoint(
+                  deviceInfo?.latitude ?? 0.0, deviceInfo?.longitude ?? 0.0),
+              paymentState: true,
+              paymentValue: valueCertificate * cuantityCert, // el monto del certificado
+              personId: personId,
+              platformPayment: PlatformPayment.app.name,
+              quantityPayment: 1, // cada uno representa un certificado
+              receiptType: receiptType, //ReceiptType.bill.code,
+              typePay: PaymentType.certificateskill.code,
+              paymentChannel: PaymentChannel.online.code,
+              rucId: rucId,
+              feeMonth: 0,
+              feeYear: 0,
+              specialtyId: currectSpecialty.id,
+            ); */
+
+            /* List<QuotaModel> paymentDetail =
+                List.generate(cuantityCert, (index) {
+              return QuotaModel(
+                id: currectSpecialty.id,
+                personId: personId,
+                amount: valueCertificate.toInt(),
+                isSelected: false,
+              );
+            }); */
+
             await paymentRepositoryImpl.payQuotas(paymentQuotaModels);
+           /*  final paymentMade = await paymentRepositoryImpl
+                .payment(paymentModel); //Guardo en la tabla payment
+            await paymentRepositoryImpl.paymentDetail(paymentDetail,
+                paymentMade?.id ?? '', PaymentType.certificateskill.code); */
           } else {
             showDialog(
               context: context,
@@ -207,7 +239,7 @@ class CertificateSkillProvider with ChangeNotifier {
   }
 
   bool isGettinHistory = false;
-  List<Storepay> paymentHistory = [];
+  List<Payment> paymentHistory = [];
 
   Future<void> getHistoryPayment(BuildContext context) async {
     paymentHistory.clear();
@@ -237,32 +269,17 @@ class CertificateSkillProvider with ChangeNotifier {
     }
   }
 
-  List<Storepay> paymentHistoryQuotas = [];
   String enabledUntil = '-';
-  Future<void> getHistoryQuotasPayment(BuildContext context) async {
-    paymentHistoryQuotas.clear();
+  Future<void> fetchLastQuotaByPerson() async {
     try {
-      final response = await paymentRepositoryImpl.historyPaymentQuotas(
-          personId, PaymentType.monthlyFees.code);
-      if (response == null || response.isEmpty) {
+      final response =
+          await quotaRepositoryImpl.fetchLastQuotaByPerson(personId);
+      if (response == null) {
         return;
       }
-      paymentHistoryQuotas.addAll(response);
-      paymentHistoryQuotas
-          .sort((a, b) => (b.feeMonth ?? 0).compareTo(a.feeMonth ?? 0));
-      print(paymentHistoryQuotas.length);
-      final mayor = paymentHistoryQuotas.first;
-      print(mayor);
       enabledUntil =
-          '${Helpers.getNameMonth(mayor.feeMonth ?? 0)} del ${mayor.feeYear}';
+          '${Helpers.getNameMonth(response.feeMonth ?? 0)} del ${response.feeYear}';
     } catch (e) {
-      CustomSnackbar.showSnackBarCustom(
-        context,
-        title: 'Error',
-        message: kmessageErrorGeneral,
-        type: 2,
-        time: 2,
-      );
       debugPrint(e.toString());
     } finally {
       notifyListeners();
@@ -285,13 +302,14 @@ class CertificateSkillProvider with ChangeNotifier {
     }
     notifyListeners();
   }
+
   // Speciality specialityToCertificate = Speciality();
   Speciality getSpecialityToCertificate(String specialityId) {
-      final specialityToCertificate = listSpecialities.firstWhere(
-        (item) => item.id == specialityId,
-      );
-      return specialityToCertificate;
-    }
+    final specialityToCertificate = listSpecialities.firstWhere(
+      (item) => item.id == specialityId,
+    );
+    return specialityToCertificate;
+  }
 
   Future<void> getReceipt(
     String receiptNumber,

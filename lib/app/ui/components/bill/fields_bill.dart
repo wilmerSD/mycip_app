@@ -4,6 +4,7 @@ import 'package:cip_payment_app/app/ui/components/bill/company_form.dart';
 import 'package:cip_payment_app/app/ui/components/btn/btn_primary_ink.dart';
 import 'package:cip_payment_app/app/ui/components/btn/btn_rounded.dart';
 import 'package:cip_payment_app/app/ui/components/modal_new_note.dart';
+import 'package:cip_payment_app/app/ui/views/advancepayment/advancepayment_provider.dart';
 import 'package:cip_payment_app/app/ui/views/certificateskill/certificateskill_provider.dart';
 import 'package:cip_payment_app/app/ui/views/monthlyfees/monthlyfees_provider.dart';
 import 'package:cip_payment_app/app/ui/views/proofnodebt/proofnodebt_provider.dart';
@@ -36,6 +37,9 @@ class FieldsBill extends StatelessWidget {
         // Asignar al MonthlyfeesProvider
         context.read<MonthlyfeesProvider>().rucId = firstCompany.id ?? '';
         context.read<CertificateSkillProvider>().rucId = firstCompany.id ?? '';
+        context.read<ProofnodebtProvider>().rucId = firstCompany.id ?? '';
+        context.read<AdvancepaymentProvider>().rucId = firstCompany.id ?? '';
+        
         // Seleccionar en el billProvider
         context.read<BillProvider>().selectCompany(firstCompany.id ?? '');
       }
@@ -94,6 +98,7 @@ Widget _payView(
                   context.read<MonthlyfeesProvider>().rucId = company.id ?? '';
                   context.read<CertificateSkillProvider>().rucId =  company.id ?? '';
                   context.read<ProofnodebtProvider>().rucId =  company.id ?? '';
+                  context.read<AdvancepaymentProvider>().rucId = company.id ?? '';
                   billProvider.selectCompany(company.id ?? ''); // 👈 selecciona
                 },
                 company.ruc ?? '',
@@ -130,7 +135,7 @@ Widget _payView(
             context.read<MonthlyfeesProvider>().receiptType = ReceiptType.invoice.code;
             context.read<CertificateSkillProvider>().receiptType  = ReceiptType.invoice.code;
             context.read<ProofnodebtProvider>().receiptType  = ReceiptType.invoice.code;
-            
+            context.read<AdvancepaymentProvider>().receiptType  = ReceiptType.invoice.code;
             onTap();
           } ),
         const SizedBox(),

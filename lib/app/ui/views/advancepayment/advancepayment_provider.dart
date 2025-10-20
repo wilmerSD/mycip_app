@@ -1,16 +1,18 @@
-import 'dart:ffi';
-
 import 'package:cip_payment_app/app/domain/entities/deviceinfo.dart';
 import 'package:cip_payment_app/app/domain/entities/enums.dart';
-import 'package:cip_payment_app/app/domain/entities/storepay.dart';
+import 'package:cip_payment_app/app/domain/entities/payment.dart';
+import 'package:cip_payment_app/app/domain/entities/person.dart';
 import 'package:cip_payment_app/app/infrastructure/datasources/paymentdb_datasource.dart';
 import 'package:cip_payment_app/app/infrastructure/datasources/quotadb_datasource.dart';
+import 'package:cip_payment_app/app/infrastructure/models/quota_model.dart';
 import 'package:cip_payment_app/app/infrastructure/models/response/payment_model.dart';
 import 'package:cip_payment_app/app/infrastructure/repositories/payment_repository_impl.dart';
 import 'package:cip_payment_app/app/infrastructure/repositories/quota_repository_impl.dart';
+import 'package:cip_payment_app/app/providers/auth_provider.dart';
 import 'package:cip_payment_app/app/providers/infodevice_provider.dart';
 import 'package:cip_payment_app/app/ui/components/alert/popup_checkout.dart';
 import 'package:cip_payment_app/app/ui/components/alert/popup_general.dart';
+import 'package:cip_payment_app/app/ui/components/payment/payment_bad.dart';
 import 'package:cip_payment_app/app/ui/components/payment/payment_good.dart';
 import 'package:cip_payment_app/app/ui/components/payment/warning_pay.dart';
 import 'package:cip_payment_app/app/ui/views/monthlyfees/widgets/culqi_checkout.dart';
@@ -35,27 +37,22 @@ class AdvancepaymentProvider with ChangeNotifier {
 
   String ctrlValueOfQuota = 'S/. 30.0';
   String ctrlPercentDiscount = '5%';
-  String ctrlEnabledUntil = 'Noviembre del 2024';
   String ctrlSubTotal = 'S/. 270';
   String ctrlDiscount = 'S/. 30';
 
-  TextEditingController ctrlLastPay =
-      TextEditingController(text: 'Agosto de 2024');
   TextEditingController ctrlQuantityCuotas = TextEditingController(text: '12');
   final PageController pageController = PageController();
-  TextEditingController ctrlTotal = TextEditingController(text: 'S/. 240');
 
   double totalToPay = 0;
   double valueOfQuota = 30.0;
   Future<void> onInit(BuildContext context) async {
+    selectTab(0);
     getInfoDevice(context);
     await getDataPerson();
     hasQuotasPending(context);
-    getHistoryQuotasPayment(context);
+    fetchLastQuotaByPerson();
     getHistoryPayment(context);
-    print('antes de calcular el pago');
     calculateToPay();
-    // totalToPay = double.parse(ctrlQuantityCuotas.text) * ;
   }
 
   String personId = '';
@@ -64,7 +61,8 @@ class AdvancepaymentProvider with ChangeNotifier {
     personId = PreferencesUser.personId;
     mainEmail = PreferencesUser.mainEmail;
   }
-/*     Future<void> openCheckout(BuildContext context) async {
+
+  Future<void> openCheckout(BuildContext context) async {
     try {
       final int amountRound = Helpers.toCents(totalToPay);
       final token = await showDialog(
@@ -110,39 +108,39 @@ class AdvancepaymentProvider with ChangeNotifier {
                     payCompleted.creationDate ?? 0,
                     totalToPay,
                     textCertificateskill,
-                    PaymentType.certificateskill.code,
+                    PaymentType.advancepay.code,
                   ),
                 );
               },
             );
+
+            final cuantityQuotas = int.parse(ctrlQuantityCuotas.text);
             //TODO: GUARDAR EN LA TABLA DE PAYMENT EL PAGO REALIZADO
-            //TODO: GENERAR LOS PAGOS ADELANTADOS EN LA TABLA MEMBER FEE
-            final cuantityCert = int.parse(quantityCertificate.text);
-            List<PaymentModel> paymentQuotaModels =
-                List.generate(cuantityCert, (index) {
-              return PaymentModel(
-                creationDatePay: Timestamp.fromDate(DateTime.now()),
-                deviceInfoPay: deviceInfo?.nameDevice ?? '',
-                ipAddressPay: deviceInfo?.ip ?? '',
-                locationCityPay: deviceInfo?.nameCity ?? '',
-                locationCountryPay: deviceInfo?.nameCountry ?? '',
-                locationPay: GeoPoint(
-                    deviceInfo?.latitude ?? 0.0, deviceInfo?.longitude ?? 0.0),
-                paymentState: true,
-                paymentValue: valueCertificate, // el monto del certificado
-                personId: personId,
-                platformPayment: PlatformPayment.app.name,
-                quantityPayment: 1, // cada uno representa un certificado
-                receiptType: receiptType, //ReceiptType.bill.code,
-                typePay: PaymentType.certificateskill.code,
-                paymentChannel: PaymentChannel.online.code,
-                rucId: rucId,
-                feeMonth: 0,
-                feeYear: 0,
-                specialtyId: currectSpecialty.id,
-              );
-            });
-            await paymentRepositoryImpl.payQuotas(paymentQuotaModels);
+            PaymentModel paymentQuota = PaymentModel(
+              creationDatePay: Timestamp.fromDate(DateTime.now()),
+              deviceInfoPay: deviceInfo?.nameDevice ?? '',
+              ipAddressPay: deviceInfo?.ip ?? '',
+              locationCityPay: deviceInfo?.nameCity ?? '',
+              locationCountryPay: deviceInfo?.nameCountry ?? '',
+              locationPay: GeoPoint(
+                  deviceInfo?.latitude ?? 0.0, deviceInfo?.longitude ?? 0.0),
+              paymentState: true,
+              paymentValue: totalToPay, // el monto del certificado
+              personId: personId,
+              platformPayment: PlatformPayment.app.name,
+              quantityPayment: 1, // cada uno representa un certificado
+              receiptType: receiptType, //ReceiptType.bill.code,
+              typePay: PaymentType.certificateskill.code,
+              paymentChannel: PaymentChannel.online.code,
+              rucId: rucId,
+              feeMonth: 0,
+              feeYear: 0,
+              specialtyId: '',
+            );
+            final paymentMade = await paymentRepositoryImpl
+                .payment(paymentQuota); //Tabla de pago
+            generateAdvancedQuotas(context, cuantityQuotas,
+                paymentMade); //Genera las cuotas adelantadas
           } else {
             showDialog(
               context: context,
@@ -164,10 +162,11 @@ class AdvancepaymentProvider with ChangeNotifier {
         }
       }
     } catch (e) {
+      debugPrint(e.toString());
     } finally {
       cleanVariables();
     }
-  } */
+  }
 
   bool stateCollegiate = false;
   Future<void> hasQuotasPending(BuildContext context) async {
@@ -207,7 +206,7 @@ class AdvancepaymentProvider with ChangeNotifier {
   }
 
   bool isGettinHistory = false;
-  List<Storepay> paymentHistory = [];
+  List<Payment> paymentHistory = [];
 
   Future<void> getHistoryPayment(BuildContext context) async {
     paymentHistory.clear();
@@ -215,7 +214,7 @@ class AdvancepaymentProvider with ChangeNotifier {
 
     try {
       final response = await paymentRepositoryImpl.historyPaymentQuotas(
-          personId, PaymentType.certificateskill.code);
+          personId, PaymentType.advancepay.code);
       if (response == null) {
         return;
       }
@@ -237,36 +236,81 @@ class AdvancepaymentProvider with ChangeNotifier {
     }
   }
 
-  List<Storepay> paymentHistoryQuotas = [];
   String enabledUntil = '-';
-  Future<void> getHistoryQuotasPayment(BuildContext context) async {
-    paymentHistoryQuotas.clear();
+  Future<void> fetchLastQuotaByPerson() async {
     enabledUntil = '-';
     try {
-      final response = await paymentRepositoryImpl.historyPaymentQuotas(
-          personId, PaymentType.monthlyFees.code);
-      if (response == null || response.isEmpty) {
+      final response =
+          await quotaRepositoryImpl.fetchLastQuotaByPerson(personId);
+      if (response == null) {
         return;
       }
-      paymentHistoryQuotas.addAll(response);
-      paymentHistoryQuotas
-          .sort((a, b) => (b.feeMonth ?? 0).compareTo(a.feeMonth ?? 0));
-
-      final mayor = paymentHistoryQuotas.first;
-
       enabledUntil =
-          '${Helpers.getNameMonth(mayor.feeMonth ?? 0)} del ${mayor.feeYear}';
+          '${Helpers.getNameMonth(response.feeMonth ?? 0)} del ${response.feeYear}';
     } catch (e) {
-      CustomSnackbar.showSnackBarCustom(
-        context,
-        title: 'Error',
-        message: kmessageErrorGeneral,
-        type: 2,
-        time: 2,
-      );
       debugPrint(e.toString());
     } finally {
       notifyListeners();
+    }
+  }
+
+  Future<void> generateAdvancedQuotas(
+      BuildContext context, int cuantityQuotas, Payment? paymentMade
+      // Person person,
+      ) async {
+    try {
+      final person =
+          Provider.of<AuthProvider>(context, listen: false).currentPerson;
+      // 1️⃣ Obtener la última cuota pagada
+      final lastQuota =
+          await quotaRepositoryImpl.fetchLastQuotaByPerson(personId);
+      final now = DateTime.now();
+      int currentMonth = lastQuota?.feeMonth ?? now.month;
+      int currentYear = lastQuota?.feeYear ?? now.year;
+
+      // 2️⃣ Generar nuevas cuotas
+      List<QuotaModel> paymentQuotaModels =
+          List.generate(cuantityQuotas, (index) {
+        // Avanzar al siguiente mes
+        currentMonth++;
+        if (currentMonth > 12) {
+          currentMonth = 1;
+          currentYear++;
+        }
+
+        return QuotaModel(
+          id: '', // Firestore lo genera
+          personId: personId,
+          namePerson: person?.namePerson,
+          motherSurname: person?.motherSurname,
+          paternalSurname: person?.paternalSurname,
+          dni: person?.dni,
+          fullNamePerson:
+              '${person?.namePerson} ${person?.paternalSurname} ${person?.motherSurname}',
+          amount: 20, //valor de la cuota
+          feeMonth: currentMonth,
+          feeYear: currentYear,
+          status: 'completed', // Porque estás pagando por adelantado
+          createdAt: Timestamp.fromDate(DateTime.now()),
+          updatedAt: Timestamp.fromDate(DateTime.now()),
+          dueDate: Timestamp.fromDate(
+              DateTime(currentYear, currentMonth, 10)), // Por ejemplo, día 10
+          isSelected: false,
+        );
+      });
+
+      // 3️⃣ Guardar las cuotas en la base de datos
+      final quotasCreated = await quotaRepositoryImpl.createQuotasByPerson(paymentQuotaModels);
+      // if(quotasCreated !=null){
+      //   await paymentRepositoryImpl.paymentDetail(
+      //     quotasCreated, paymentMade?.id ?? ''); //Tabla de pagoDetalle
+      // }
+      
+
+      debugPrint(
+          '✅ ${paymentQuotaModels.length} cuotas adelantadas creadas correctamente');
+    } catch (e) {
+      debugPrint('❌ Error al generar cuotas adelantadas: $e');
     }
   }
 

@@ -13,5 +13,6 @@ abstract class QuotaDatasource {
   Future<bool> hasPendingQuotas(String personId);
   
   Future<List<Quota>> updateQuotas(List<QuotaModel> quotasToPay);
-  
+  Future<Quota?> fetchLastQuotaByPerson(String personId);
+  Future<List<Quota>?> createQuotasByPerson(List<QuotaModel> quotas);
 }

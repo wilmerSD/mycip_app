@@ -1,7 +1,5 @@
 import 'package:cip_payment_app/app/providers/auth_provider.dart';
 import 'package:cip_payment_app/app/routes/app_routes_name.dart';
-import 'package:cip_payment_app/app/ui/components/payment/payment_bad.dart';
-import 'package:cip_payment_app/app/ui/components/payment/payment_good.dart';
 import 'package:cip_payment_app/app/ui/views/advancepayment/advancepayment_view.dart';
 import 'package:cip_payment_app/app/ui/views/certificateskill/certificateskill_view.dart';
 import 'package:cip_payment_app/app/ui/views/home/home_view.dart';

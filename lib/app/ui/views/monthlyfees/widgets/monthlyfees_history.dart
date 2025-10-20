@@ -28,33 +28,30 @@ class MonthlyfeesHistory extends StatelessWidget {
                     child: Wrap(
                       spacing: 30.0,
                       runSpacing: 10.0,
-                      children: List.generate(
-                          provider.paymentHistoryQuotas.length, (
+                      children:
+                          List.generate(provider.paymentHistoryQuotas.length, (
                         index,
                       ) {
                         final payment = provider.paymentHistoryQuotas[index];
-    
+
                         final paymentDate = payment.creationDatePay;
                         final paymentDateStr =
                             Helpers.timestampToString(paymentDate);
-                        final amount =
-                            payment.paymentValue?.toDouble() ?? 0.0;
-                            print('imprimiendo paymentid');
-                            print(payment.id);
-                        provider.getPaymentFeesByPaymentId(payment.id ?? '');
+                        final amount = payment.paymentValue?.toDouble() ?? 0.0;
+                        print('cuantas veces hace esto');
+
                         return PaymentTile(
                             Helpers.formatDateFromTimestamp(paymentDate),
-                            Helpers.typePay(payment.receiptType), () {
-                          print(provider.listQuotasPayment.length);
+                            Helpers.typePay(payment.receiptType), () async {
+                          await provider
+                              .getPaymentFeesByPayment(payment.id ?? '');
                           provider.getReceipt(
                             paymentDate?.seconds.toString() ?? '',
                             paymentDateStr,
                             fullName,
                             dni,
                             amount,
-                            provider.listQuotasPayment
                           );
-    
                         }, 'S/.$amount', 'Pagado el $paymentDateStr', false);
                       }),
                     ),
@@ -65,4 +62,3 @@ class MonthlyfeesHistory extends StatelessWidget {
           );
   }
 }
-

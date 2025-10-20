@@ -2,12 +2,10 @@ import 'package:cip_payment_app/app/domain/datasources/payment_datasource.dart';
 import 'package:cip_payment_app/app/domain/entities/culqipayment.dart';
 import 'package:cip_payment_app/app/domain/entities/payment.dart';
 import 'package:cip_payment_app/app/domain/entities/quota.dart';
-import 'package:cip_payment_app/app/domain/entities/storepay.dart';
 import 'package:cip_payment_app/app/domain/entities/token.dart';
 import 'package:cip_payment_app/app/infrastructure/mappers/culqipayment_mapper.dart';
 import 'package:cip_payment_app/app/infrastructure/mappers/payment_mapper.dart';
 import 'package:cip_payment_app/app/infrastructure/mappers/quota_mapper.dart';
-import 'package:cip_payment_app/app/infrastructure/mappers/storepay_mapper.dart';
 import 'package:cip_payment_app/app/infrastructure/mappers/token_mapper.dart';
 import 'package:cip_payment_app/app/infrastructure/models/culqi/culqi_payment_response.dart';
 import 'package:cip_payment_app/app/infrastructure/models/culqi/culqi_token_response.dart';
@@ -107,7 +105,6 @@ class PaymentdbDatasource extends PaymentDatasource {
           paidQuotas.add(quota);
         }
       }
-
       debugPrint('✅ ${paidQuotas.length} cuotas pagadas exitosamente');
       return paidQuotas;
     } catch (e) {
@@ -142,21 +139,22 @@ class PaymentdbDatasource extends PaymentDatasource {
   }
 
   @override
-  Future<bool> paymentFeeDetail(
-      List<QuotaModel> quotasToPay, String paymentId) async {
+  Future<bool> paymentDetail(
+      List<QuotaModel> quotasToPay, String paymentId, int typePay) async {
     try {
       final List<Quota> paidQuotas = [];
 
       for (final quota in quotasToPay) {
         final paymentFeeData = {
           'paymentId': paymentId,
-          'quotaId': quota.id,
+          'referenceId': quota.id,
           'amountPaid': quota.amount, // o el monto exacto pagado
           'createdAt': FieldValue.serverTimestamp(),
+          'referenceType': typePay,
         };
 
         final docRef = await FirebaseFirestore.instance
-            .collection('PaymentFee')
+            .collection('PaymentDetail')
             .add(paymentFeeData);
 
         await docRef.update({'id': docRef.id});
@@ -172,19 +170,41 @@ class PaymentdbDatasource extends PaymentDatasource {
       return false;
     }
   }
+
   @override
   Future<List<Quota>> getPaymentFeesByPaymentId(String paymentId) async {
     try {
       final query = await firestoredb
-          .collection('PaymentFee')
+          .collection('PaymentDetail')
           .where('paymentId', isEqualTo: paymentId)
           .get();
 
-      return query.docs.map((doc) {
+      final List<Quota> quotas = [];
+      for (final doc in query.docs) {
         final data = doc.data();
-        final quotaModel = QuotaModel.fromFirestore(data);
-        return QuotaMapper.quotaResponseToEntity(quotaModel);
-      }).toList();
+        final quotaId = data['referenceId'];
+
+        if (quotaId != null) {
+          // 🔹 Buscar la cuota real en la colección "Quota"
+          final quotaSnapshot =
+              await firestoredb.collection('MemberFee').doc(quotaId).get();
+
+          if (quotaSnapshot.exists) {
+            final quotaData = quotaSnapshot.data() as Map<String, dynamic>;
+            final quotaModel = QuotaModel.fromFirestore(quotaData);
+
+            final quota = QuotaMapper.quotaResponseToEntity(quotaModel);
+            quotas.add(quota);
+          }
+        }
+      }
+      debugPrint('✅ ${quotas.length} cuotas obtenidas para el pago $paymentId');
+      return quotas;
+      // return query.docs.map((doc) {
+      //   final data = doc.data();
+      //   final quotaModel = QuotaModel.fromFirestore(data);
+      //   return QuotaMapper.quotaResponseToEntity(quotaModel);
+      // }).toList();
     } catch (e) {
       debugPrint('❌ Error al obtener cuotas del pago: $e');
       return [];
@@ -192,7 +212,7 @@ class PaymentdbDatasource extends PaymentDatasource {
   }
 
   @override
-  Future<List<Storepay>?> historyPaymentQuotas(
+  Future<List<Payment>?> historyPaymentQuotas(
       String personId, int typePay) async {
     try {
       final snapshot = await firestoredb
@@ -207,7 +227,7 @@ class PaymentdbDatasource extends PaymentDatasource {
       }).toList();
       // print(paymentQuotaResponse);
       final paymentQuotas = paymentQuotaResponse
-          .map((resp) => StorepayMapper.storepayResponseToEntity(resp))
+          .map((resp) => PaymentMapper.storepayResponseToEntity(resp))
           .toList();
       return paymentQuotas;
     } catch (e) {

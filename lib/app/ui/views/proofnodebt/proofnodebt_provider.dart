@@ -1,7 +1,7 @@
 import 'package:cip_payment_app/app/domain/entities/deviceinfo.dart';
 import 'package:cip_payment_app/app/domain/entities/enums.dart';
+import 'package:cip_payment_app/app/domain/entities/payment.dart';
 import 'package:cip_payment_app/app/domain/entities/speciality.dart';
-import 'package:cip_payment_app/app/domain/entities/storepay.dart';
 import 'package:cip_payment_app/app/infrastructure/datasources/paymentdb_datasource.dart';
 import 'package:cip_payment_app/app/infrastructure/datasources/quotadb_datasource.dart';
 import 'package:cip_payment_app/app/infrastructure/datasources/specialitydb_datasource.dart';
@@ -44,7 +44,7 @@ class ProofnodebtProvider with ChangeNotifier {
     await getDataPerson();
     await hasQuotasPending(context);
     getHistoryPayment(context);
-    getHistoryQuotasPayment(context);
+    fetchLastQuotaByPerson();
     getSpecilaities();
   }
 
@@ -137,8 +137,11 @@ class ProofnodebtProvider with ChangeNotifier {
                   title: '',
                   onTapButton: () {},
                   scrollable: false,
-                  content: PaymentGood(payCompleted.creationDate ?? 0,
-                      amountToPay, textProofnodebt, PaymentType.proffnodebt.code),
+                  content: PaymentGood(
+                      payCompleted.creationDate ?? 0,
+                      amountToPay,
+                      textProofnodebt,
+                      PaymentType.proffnodebt.code),
                 );
               },
             );
@@ -167,7 +170,6 @@ class ProofnodebtProvider with ChangeNotifier {
             );
             final List<PaymentModel> paymentMadeList = [paymentMade];
             await paymentRepositoryImpl.payQuotas(paymentMadeList);
-
           } else {
             showDialog(
               context: context,
@@ -195,7 +197,7 @@ class ProofnodebtProvider with ChangeNotifier {
     }
   }
 
-  List<Storepay> paymentHistory = [];
+  List<Payment> paymentHistory = [];
   bool isGettinHistory = false;
 
   Future<void> getHistoryPayment(BuildContext context) async {
@@ -226,32 +228,17 @@ class ProofnodebtProvider with ChangeNotifier {
     }
   }
 
-  List<Storepay> paymentHistoryQuotas = [];
   String enabledUntil = '-';
-  Future<void> getHistoryQuotasPayment(BuildContext context) async {
-    paymentHistoryQuotas.clear();
+  Future<void> fetchLastQuotaByPerson() async {
     try {
-      final response = await paymentRepositoryImpl.historyPaymentQuotas(
-          personId, PaymentType.monthlyFees.code);
-      if (response == null || response.isEmpty) {
+      final response =
+          await quotaRepositoryImpl.fetchLastQuotaByPerson(personId);
+      if (response == null) {
         return;
       }
-      paymentHistoryQuotas.addAll(response);
-      paymentHistoryQuotas
-          .sort((a, b) => (b.feeMonth ?? 0).compareTo(a.feeMonth ?? 0));
-      // print(paymentHistoryQuotas.length);
-      final mayor = paymentHistoryQuotas.first;
-      // print(mayor);
       enabledUntil =
-          '${Helpers.getNameMonth(mayor.feeMonth ?? 0)} del ${mayor.feeYear}';
+          '${Helpers.getNameMonth(response.feeMonth ?? 0)} del ${response.feeYear}';
     } catch (e) {
-      CustomSnackbar.showSnackBarCustom(
-        context,
-        title: 'Error',
-        message: kmessageErrorGeneral,
-        type: 2,
-        time: 2,
-      );
       debugPrint(e.toString());
     } finally {
       notifyListeners();
@@ -264,7 +251,7 @@ class ProofnodebtProvider with ChangeNotifier {
     listSpecialities.clear();
     final response = await specialityRepositoryImpl.getSpecialties(personId);
     listSpecialities.addAll(response);
-    if (listSpecialities.isNotEmpty){
+    if (listSpecialities.isNotEmpty) {
       specialityToPdf = listSpecialities.first;
     }
   }

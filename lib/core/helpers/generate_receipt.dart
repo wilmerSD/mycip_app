@@ -15,13 +15,10 @@ Future<void> generateReceipt({
   required String typePay,
   List<Quota>? storepay,
 }) async {
-  print('tratando de imprimir');
-  print(storepay?.length);
-  print('tratando de imprimir1');
   // final logo = await PdfAssets.getLogo();
   final pdf = pw.Document();
-  final textVertical =
-      'Documento válido para efectos tributarios según resolución de SUNAT N° 007-99 / SUNAT - Documento no afecto al Régimen de Retención de I.G.V.. segun Resolución Superintendencia N° 037-2002/SUNAT';
+  // final textVertical =
+  //     'Documento válido para efectos tributarios según resolución de SUNAT N° 007-99 / SUNAT - Documento no afecto al Régimen de Retención de I.G.V.. segun Resolución Superintendencia N° 037-2002/SUNAT';
 
   pdf.addPage(
     pw.Page(
@@ -89,33 +86,29 @@ Future<void> generateReceipt({
                       pw.Text(typePay),
                       pw.Text("$total"),
                     ]),
-                    pw.Container(
-                        color: PdfColors.red,
-                        height: 20.0,
-                        width: 20.0,
-                      ),
-                storepay == null
-                    ? pw.Container(
-                        color: PdfColors.red,
-                        height: 20.0,
-                        width: 20.0,
-                      )
-                    : pw.Column(
-                        children: List.generate(
-                          storepay.length,
-                          (index) {
-                            final quota = storepay[index];
-                            return pw.Container(
-                              color: PdfColors.red,
-                              height: 20.0,
-                              width: 20.0,
-                            );
+                pw.Padding(
+                  padding: const pw.EdgeInsets.only(left: 15.0),
+                  child: storepay == null
+                      ? pw.SizedBox()
+                      : pw.Column(
+                          children: List.generate(
+                            storepay.length,
+                            (index) {
+                              final quota = storepay[index];
 
-                            // return pw.Text(
-                            //     'Cuota ${Helpers.getNameMonth(quota.feeMonth)} - Monto: ${quota.feeYear}');
-                          },
+                              return pw.Row(
+                                  mainAxisAlignment:
+                                      pw.MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    pw.Text(
+                                        'Cuota ${Helpers.getNameMonth(quota.feeMonth)} del ${quota.feeYear}'),
+                                    pw.Text("${quota.amount}"),
+                                  ]);
+                            },
+                          ),
                         ),
-                      ),
+                ),
+
                 pw.Spacer(),
 
                 // Totales abajo a la derecha

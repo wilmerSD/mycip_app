@@ -156,7 +156,7 @@ Widget payAdvance(BuildContext context) {
             textPopUp: 'Pagar certificado de habilidad',
             content: const SizedBox(),
             onTap: () {
-              // advancepayment.openCheckout(context);
+              advancepayment.openCheckout(context);
             },
           ),
           title: 'Detalle de pago',

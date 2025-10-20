@@ -1,7 +1,7 @@
 import 'package:cip_payment_app/app/domain/entities/deviceinfo.dart';
 import 'package:cip_payment_app/app/domain/entities/enums.dart';
+import 'package:cip_payment_app/app/domain/entities/payment.dart';
 import 'package:cip_payment_app/app/domain/entities/quota.dart';
-import 'package:cip_payment_app/app/domain/entities/storepay.dart';
 import 'package:cip_payment_app/app/domain/entities/token.dart';
 import 'package:cip_payment_app/app/infrastructure/datasources/paymentdb_datasource.dart';
 import 'package:cip_payment_app/app/infrastructure/datasources/quotadb_datasource.dart';
@@ -42,7 +42,7 @@ class MonthlyfeesProvider with ChangeNotifier {
   int _selectedIndex = 0;
   int get selectedIndex => _selectedIndex;
   double amoutToPay = 0;
-  List<Storepay> paymentHistoryQuotas = [];
+  List<Payment> paymentHistoryQuotas = [];
   bool isGettinHistory = false;
   Token tokenCreate = Token();
 
@@ -149,7 +149,6 @@ class MonthlyfeesProvider with ChangeNotifier {
       paymentHistoryQuotas.addAll(response);
       paymentHistoryQuotas
           .sort((a, b) => (b.feeMonth ?? 0).compareTo(a.feeMonth ?? 0));
-      
     } catch (e) {
       CustomSnackbar.showSnackBarCustom(
         context,
@@ -254,8 +253,8 @@ class MonthlyfeesProvider with ChangeNotifier {
                 .toList();
 
             final paymentMade = await paymentRepositoryImpl.payment(payment);
-            await paymentRepositoryImpl.paymentFeeDetail(
-                quotaModel, paymentMade?.id ?? '');
+            await paymentRepositoryImpl.paymentDetail(quotaModel,
+                paymentMade?.id ?? '', PaymentType.monthlyFees.code);
             await quotaRepositoryImpl.updateQuotas(quotaModel);
             fetchPendingPay(context);
             getHistoryPayment(context);
@@ -284,28 +283,30 @@ class MonthlyfeesProvider with ChangeNotifier {
       cleanVariables();
     }
   }
+
   List<Quota> listQuotasPayment = [];
-  Future<void> getPaymentFeesByPaymentId(String paymentId) async{
+  Future<void> getPaymentFeesByPayment(String paymentId) async {
+    // print('getPaymentFeesByPayment');
+    // paymentId = 'QzbIRNyfLXWWfs6p2YB2';
     listQuotasPayment.clear();
-    try{
-      final response = await paymentRepositoryImpl.getPaymentFeesByPaymentId(paymentId);
-      print(listQuotasPayment.length);
+    try {
+      final response =
+          await paymentRepositoryImpl.getPaymentFeesByPaymentId(paymentId);
+      print(response.length);
       listQuotasPayment.addAll(response);
-    }catch(e){
+    } catch (e) {
       debugPrint(e.toString());
-    }finally{
-
-    }
-
+    } finally {}
   }
+
   Future<void> getReceipt(
     String receiptNumber,
     String date,
     String name,
     String dni,
     double subtotal,
-    List<Quota> quota,
   ) async {
+    print(listQuotasPayment.length);
     final igv = subtotal * 0.18;
     await generateReceipt(
       receiptNumber: receiptNumber,
@@ -316,7 +317,7 @@ class MonthlyfeesProvider with ChangeNotifier {
       igv: igv,
       total: subtotal,
       typePay: textMonthlyfees,
-      storepay: quota,
+      storepay: listQuotasPayment,
     );
   }
 

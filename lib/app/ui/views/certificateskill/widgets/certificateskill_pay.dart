@@ -9,6 +9,7 @@ import 'package:cip_payment_app/app/ui/components/field/custom_text_field.dart';
 import 'package:cip_payment_app/app/ui/components/field/read_only_field.dart';
 import 'package:cip_payment_app/app/ui/components/modal_new_note.dart';
 import 'package:cip_payment_app/app/ui/views/certificateskill/certificateskill_provider.dart';
+import 'package:cip_payment_app/core/helpers/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -144,7 +145,7 @@ Widget customBtnPay(BuildContext context) {
   return Consumer<CertificateSkillProvider>(builder: (context, provider, _) {
     return BtnPrimaryInk(
       withIconProgress: false,
-      loading: provider.haveQuotasPending || provider.amountToPay == 0 || provider.listSpecialities.isEmpty || provider.stateCollegiate == false,
+      // loading: provider.haveQuotasPending || provider.amountToPay == 0 || provider.listSpecialities.isEmpty || provider.stateCollegiate == false,
       text: 'Pagar S/. ${provider.amountToPay}',
       onTap: () {
         // provider.prueba();
@@ -153,7 +154,7 @@ Widget customBtnPay(BuildContext context) {
           content: SelectReceipt(
             mainText: 'Pagar S/. ${provider.amountToPay}',
             textBtn: 'Pagar S/. ${provider.amountToPay}',
-            textPopUp: 'Pagar certificado de habilidad',
+            textPopUp: 'Pagar $textCertificateskill',
             content: const SizedBox(),
             onTap: () {
               provider.openCheckout(context);
